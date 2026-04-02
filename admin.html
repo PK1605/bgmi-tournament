@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Malwa Esports</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --fire: #ff4500;
+            --orange: #ff6a00;
+            --gold: #ffd700;
+            --amber: #ff8c00;
+            --dark: #0a0a12;
+            --card: #12121e;
+            --border: #2a2a4a;
+            --green: #00c853;
+            --red: #ff1744;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark);
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+
+        /* ========== LOGIN ========== */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 50px 40px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--fire), var(--amber), var(--gold));
+        }
+
+        .login-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--fire), var(--amber));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .login-sub {
+            font-family: 'Rajdhani', sans-serif;
+            color: #666;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            margin-bottom: 30px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            margin-bottom: 14px;
+            transition: all 0.3s;
+        }
+
+        .login-input:focus {
+            border-color: var(--fire);
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.1);
+        }
+
+        .login-input::placeholder { color: #555; }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--fire), var(--orange));
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 5px;
+        }
+
+        .login-btn:hover { box-shadow: 0 4px 30px rgba(255, 69, 0, 0.3); }
+
+        /* ========== DASHBOARD ========== */
+        .dashboard { display: none; }
+
+        .dash-header {
+            background: rgba(10, 10, 18, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 69, 0, 0.15);
+            padding: 0 30px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .dash-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--fire), var(--amber));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+
+        .dash-user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .dash-user span {
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .logout-btn {
+            background: rgba(255, 23, 68, 0.1);
+            border: 1px solid rgba(255, 23, 68, 0.3);
+            color: var(--red);
+            padding: 7px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .dash-body {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* ========== TABS ========== */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 24px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: #888;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover { border-color: rgba(255, 69, 0, 0.3); color: #ccc; }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--fire), var(--orange));
+            border-color: transparent;
+            color: #fff;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* ========== STAT CARDS ========== */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .stat-label {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .stat-value.total { color: var(--amber); }
+        .stat-value.paid { color: var(--green); }
+        .stat-value.unpaid { color: var(--red); }
+        .stat-value.today { color: var(--gold); }
+
+        /* ========== TABLE ========== */
+        .table-wrap {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .table-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--amber);
+        }
+
+        .table-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-select, .filter-input {
+            padding: 8px 14px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        .filter-select option { background: var(--card); }
+
+        .table-scroll { overflow-x: auto; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            white-space: nowrap;
+        }
+
+        th {
+            padding: 14px 18px;
+            text-align: left;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #666;
+            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 14px 18px;
+            font-size: 0.88rem;
+            color: #bbb;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+
+        tr:hover td { background: rgba(255, 69, 0, 0.03); }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .badge.pending { background: rgba(255,140,0,0.15); color: var(--amber); border: 1px solid rgba(255,140,0,0.3); }
+        .badge.submitted { background: rgba(33,150,243,0.15); color: #42a5f5; border: 1px solid rgba(33,150,243,0.3); }
+        .badge.verified { background: rgba(0,200,83,0.15); color: var(--green); border: 1px solid rgba(0,200,83,0.3); }
+
+        .action-btn {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+            margin-right: 4px;
+        }
+
+        .btn-verify { background: rgba(0,200,83,0.15); color: var(--green); border: 1px solid rgba(0,200,83,0.3); }
+        .btn-verify:hover { background: rgba(0,200,83,0.25); }
+
+        .btn-reject { background: rgba(255,23,68,0.15); color: var(--red); border: 1px solid rgba(255,23,68,0.3); }
+        .btn-reject:hover { background: rgba(255,23,68,0.25); }
+
+        .btn-details { background: rgba(255,140,0,0.15); color: var(--amber); border: 1px solid rgba(255,140,0,0.3); }
+        .btn-details:hover { background: rgba(255,140,0,0.25); }
+
+        /* ========== SETTINGS PANEL ========== */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .settings-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 28px;
+        }
+
+        .settings-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--amber);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .settings-card label {
+            display: block;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #888;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            margin-top: 14px;
+        }
+
+        .settings-card label:first-of-type { margin-top: 0; }
+
+        .settings-card input,
+        .settings-card textarea {
+            width: 100%;
+            padding: 12px 14px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .settings-card input:focus,
+        .settings-card textarea:focus { border-color: var(--fire); }
+
+        .settings-card input::placeholder,
+        .settings-card textarea::placeholder { color: #555; }
+
+        .settings-card textarea { resize: vertical; min-height: 60px; }
+
+        .save-btn {
+            margin-top: 18px;
+            padding: 12px 28px;
+            background: linear-gradient(135deg, var(--fire), var(--orange));
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .save-btn:hover { box-shadow: 0 4px 20px rgba(255, 69, 0, 0.3); }
+
+        /* ========== DETAIL MODAL ========== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.show { display: flex; }
+
+        .modal-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 30px;
+        }
+
+        .modal-box h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: var(--amber);
+            margin-bottom: 20px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .detail-label {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            color: #777;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .detail-value {
+            color: #ddd;
+            font-size: 0.9rem;
+            text-align: right;
+        }
+
+        .modal-close {
+            margin-top: 20px;
+            padding: 10px 28px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #888;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        /* ========== TOAST ========== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            padding: 14px 30px;
+            border-radius: 12px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            z-index: 5000;
+            transition: transform 0.4s ease;
+            white-space: nowrap;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+        .toast.success { background: var(--green); color: #fff; }
+        .toast.error { background: var(--red); color: #fff; }
+        .toast.info { background: var(--amber); color: #000; }
+
+        .loader {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            vertical-align: middle;
+            margin-left: 6px;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #555;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
+            .settings-grid { grid-template-columns: 1fr; }
+            .stat-grid { grid-template-columns: 1fr 1fr; }
+            .dash-body { padding: 20px 12px; }
+            .table-header { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==================== LOGIN PAGE ==================== -->
+<div class="login-page" id="loginPage">
+    <div class="login-card">
+        <div class="login-logo">MALWA ESPORTS</div>
+        <div class="login-sub">Admin Panel</div>
+        <input type="email" class="login-input" id="loginEmail" placeholder="Admin Email" value="malwaesports@1605.com">
+        <input type="password" class="login-input" id="loginPass" placeholder="Password">
+        <p style="color:#555; font-size:0.78rem; margin-bottom:14px; font-family:'Rajdhani',sans-serif; letter-spacing:1px;">Demo Password: <strong style="color:var(--amber);">admin123</strong></p>
+        <button class="login-btn" onclick="adminLogin()">Login</button>
+    </div>
+</div>
+
+<!-- ==================== DASHBOARD ==================== -->
+<div class="dashboard" id="dashboard">
+
+    <div class="dash-header">
+        <div class="dash-logo"><a href="index.html" style="color:inherit;text-decoration:none;" title="Back to Player Page">MALWA ESPORTS</a> — ADMIN</div>
+        <div class="dash-user">
+            <span id="adminEmail"></span>
+            <button class="logout-btn" onclick="adminLogout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="dash-body">
+
+        <!-- STAT CARDS -->
+        <div class="stat-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Registrations</div>
+                <div class="stat-value total" id="statTotal">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Payment Verified</div>
+                <div class="stat-value paid" id="statPaid">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Payment Pending</div>
+                <div class="stat-value unpaid" id="statPending">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Today's Entries</div>
+                <div class="stat-value today" id="statToday">0</div>
+            </div>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('registrations',this)">All Registrations</button>
+            <button class="tab-btn" onclick="switchTab('today',this)">Today's Entries</button>
+            <button class="tab-btn" onclick="switchTab('room',this)">Room ID / Pass</button>
+            <button class="tab-btn" onclick="switchTab('settings',this)">Settings</button>
+        </div>
+
+        <!-- TAB: ALL REGISTRATIONS -->
+        <div class="tab-content active" id="tab-registrations">
+            <div class="table-wrap">
+                <div class="table-header">
+                    <div class="table-title">All Registrations</div>
+                    <div class="table-filters">
+                        <select class="filter-select" id="filterStatus" onchange="loadRegistrations()">
+                            <option value="all">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="submitted">Payment Submitted</option>
+                            <option value="verified">Verified</option>
+                        </select>
+                        <input class="filter-input" type="text" id="filterSearch" placeholder="Search team..." oninput="loadRegistrations()">
+                    </div>
+                </div>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Team Name</th>
+                                <th>Tag</th>
+                                <th>Leader</th>
+                                <th>WhatsApp</th>
+                                <th>Email</th>
+                                <th>Txn ID</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="regTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: TODAY'S ENTRIES -->
+        <div class="tab-content" id="tab-today">
+            <div class="table-wrap">
+                <div class="table-header">
+                    <div class="table-title">Today's Entries &mdash; <span id="todayDate"></span></div>
+                    <div class="table-filters">
+                        <input type="date" class="filter-input" id="dateFilter" onchange="loadTodayEntries()">
+                    </div>
+                </div>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Team Name</th>
+                                <th>Tag</th>
+                                <th>Leader</th>
+                                <th>WhatsApp</th>
+                                <th>Players</th>
+                                <th>Status</th>
+                                <th>Txn ID</th>
+                            </tr>
+                        </thead>
+                        <tbody id="todayTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: ROOM ID -->
+        <div class="tab-content" id="tab-room">
+            <div class="settings-grid">
+                <div class="settings-card">
+                    <h3>&#127919; Send Room ID & Password</h3>
+                    <p style="color: #666; font-size: 0.85rem; margin-bottom: 15px;">
+                        Ye info sabhi verified players ko dikhegi unki registration page pe.
+                    </p>
+                    <label>Room ID</label>
+                    <input type="text" id="roomId" placeholder="e.g. 12345678">
+                    <label>Room Password</label>
+                    <input type="text" id="roomPass" placeholder="e.g. abc123">
+                    <label>Match Time / Message</label>
+                    <input type="text" id="roomMsg" placeholder="e.g. Match at 8 PM - Erangel">
+                    <button class="save-btn" onclick="saveRoomInfo()">&#127919; Update Room Info</button>
+                    <button class="save-btn" style="background: rgba(255,23,68,0.15); color: var(--red); margin-left: 8px;" onclick="clearRoomInfo()">Clear Room Info</button>
+                </div>
+                <div class="settings-card">
+                    <h3>&#128203; Current Room Info</h3>
+                    <div id="currentRoomDisplay" style="margin-top: 10px;">
+                        <div class="empty-state" style="padding: 30px;">No room info set</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: SETTINGS -->
+        <div class="tab-content" id="tab-settings">
+            <div class="settings-grid">
+                <div class="settings-card">
+                    <h3>&#128176; Payment Settings</h3>
+                    <label>Entry Fee (INR)</label>
+                    <input type="number" id="setEntryFee" placeholder="e.g. 100">
+                    <label>UPI ID</label>
+                    <input type="text" id="setUpiId" placeholder="e.g. yourname@paytm">
+                    <button class="save-btn" onclick="savePaymentSettings()">Save Payment Settings</button>
+                </div>
+                <div class="settings-card">
+                    <h3>&#128172; WhatsApp Group</h3>
+                    <label>WhatsApp Group Invite Link</label>
+                    <input type="url" id="setWhatsAppLink" placeholder="https://chat.whatsapp.com/...">
+                    <p style="color: #555; font-size: 0.8rem; margin-top: 8px;">
+                        Payment verify hone ke baad player ko ye link dikhega.
+                    </p>
+                    <button class="save-btn" onclick="saveWhatsAppLink()">Save WhatsApp Link</button>
+                </div>
+                <div class="settings-card" style="grid-column: span 2;">
+                    <h3>&#128230; Export Data</h3>
+                    <p style="color: #666; font-size: 0.85rem; margin-bottom: 15px;">
+                        Saari registrations ka data CSV file mein download karo.
+                    </p>
+                    <button class="save-btn" onclick="exportCSV()">&#128229; Download CSV</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="detailModal">
+    <div class="modal-box">
+        <h3 id="modalTeamName">Team Details</h3>
+        <div id="modalContent"></div>
+        <button class="modal-close" onclick="closeModal()">Close</button>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center; padding:20px; color:#333; font-size:0.8rem; border-top:1px solid var(--border);">
+    &copy; 2026 Malwa Esports Private Limited &mdash; Founded by Purushottam Patidar
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+    const today = new Date().toISOString().split('T')[0];
+    let allRegistrations = [];
+
+    function showToast(msg, type = 'info') {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.className = 'toast ' + type;
+        setTimeout(() => t.classList.add('show'), 10);
+        setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    function esc(str) {
+        if (!str) return '';
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    // ============================================================
+    // LOGIN via API
+    // ============================================================
+    async function adminLogin() {
+        const email = document.getElementById('loginEmail').value.trim();
+        const pass = document.getElementById('loginPass').value;
+        if (!email || !pass) { showToast('Enter email and password!', 'error'); return; }
+
+        try {
+            const res = await fetch('/api/settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type: 'adminLogin', password: pass }),
+            });
+            const data = await res.json();
+            if (data.success) {
+                localStorage.setItem('bgmi_admin', email);
+                showDashboard(email);
+                showToast('Login successful!', 'success');
+            } else {
+                showToast('Wrong password! Use: admin123', 'error');
+            }
+        } catch (err) {
+            showToast('Server error: ' + err.message, 'error');
+        }
+    }
+
+    function showDashboard(email) {
+        document.getElementById('loginPage').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        document.getElementById('adminEmail').textContent = email;
+        initDashboard();
+    }
+
+    function adminLogout() {
+        localStorage.removeItem('bgmi_admin');
+        document.getElementById('loginPage').style.display = 'flex';
+        document.getElementById('dashboard').style.display = 'none';
+        showToast('Logged out!', 'info');
+    }
+
+    const savedAdmin = localStorage.getItem('bgmi_admin');
+    if (savedAdmin) showDashboard(savedAdmin);
+
+    // ============================================================
+    // DASHBOARD INIT
+    // ============================================================
+    async function initDashboard() {
+        document.getElementById('todayDate').textContent = today;
+        document.getElementById('dateFilter').value = today;
+
+        try {
+            const res = await fetch('/api/settings');
+            const cfg = await res.json();
+            document.getElementById('setEntryFee').value = cfg.entryFee || 100;
+            document.getElementById('setUpiId').value = 'malwaesports@upi';
+            document.getElementById('setWhatsAppLink').value = cfg.whatsappLink || '';
+            if (cfg.roomInfo) {
+                document.getElementById('roomId').value = cfg.roomInfo.roomId || '';
+                document.getElementById('roomPass').value = cfg.roomInfo.roomPass || '';
+                document.getElementById('roomMsg').value = cfg.roomInfo.roomMessage || '';
+            }
+        } catch (e) {
+            document.getElementById('setEntryFee').value = '100';
+            document.getElementById('setUpiId').value = 'malwaesports@upi';
+            document.getElementById('setWhatsAppLink').value = 'https://chat.whatsapp.com/demo';
+            document.getElementById('roomId').value = '87654321';
+            document.getElementById('roomPass').value = 'malwa2026';
+            document.getElementById('roomMsg').value = 'Match at 8 PM — Erangel TPP';
+        }
+
+        updateRoomDisplay();
+        loadRegistrations();
+    }
+
+    // ============================================================
+    // TABS
+    // ============================================================
+    function switchTab(tab, el) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        if (el) el.classList.add('active');
+        document.getElementById('tab-' + tab).classList.add('active');
+        if (tab === 'today') loadTodayEntries();
+        if (tab === 'registrations') loadRegistrations();
+    }
+
+    // ============================================================
+    // REGISTRATIONS TABLE
+    // ============================================================
+    function updateStatsFromData(stats) {
+        document.getElementById('statTotal').textContent = stats.total || 0;
+        document.getElementById('statPaid').textContent = stats.paid || 0;
+        document.getElementById('statPending').textContent = stats.pending || 0;
+        document.getElementById('statToday').textContent = stats.today || 0;
+    }
+
+    function renderTable(data) {
+        const tbody = document.getElementById('regTableBody');
+        if (data.length === 0) { tbody.innerHTML = '<tr><td colspan="10" class="empty-state">No registrations found</td></tr>'; return; }
+        tbody.innerHTML = data.map((r, i) => `<tr>
+            <td>${i+1}</td>
+            <td style="color:#fff;font-weight:600;">${esc(r.teamName)}</td>
+            <td>[${esc(r.teamTag)}]</td>
+            <td>${esc(r.leaderName)}</td>
+            <td><a href="https://wa.me/${(r.leaderWhatsApp||'').replace(/[^0-9]/g,'')}" target="_blank" style="color:#25D366;">${esc(r.leaderWhatsApp)}</a></td>
+            <td style="font-size:0.8rem;">${esc(r.leaderEmail)}</td>
+            <td style="font-size:0.8rem;color:#888;">${esc(r.txnId||'—')}</td>
+            <td><span class="badge ${r.paymentStatus}">${r.paymentStatus}</span></td>
+            <td style="font-size:0.8rem;color:#666;">${r.date||'—'}</td>
+            <td>
+                ${r.paymentStatus!=='verified'?`<button class="action-btn btn-verify" onclick="verifyPayment('${r.id}')">Verify</button>`:''}
+                ${r.paymentStatus==='submitted'?`<button class="action-btn btn-reject" onclick="rejectPayment('${r.id}')">Reject</button>`:''}
+                <button class="action-btn btn-details" onclick="showDetails('${r.id}')">Details</button>
+            </td>
+        </tr>`).join('');
+    }
+
+    async function loadRegistrations() {
+        const filter = document.getElementById('filterStatus').value;
+        const search = document.getElementById('filterSearch').value;
+        let url = '/api/registrations?status=' + filter;
+        if (search) url += '&search=' + encodeURIComponent(search);
+
+        try {
+            const res = await fetch(url);
+            const data = await res.json();
+            allRegistrations = data.registrations || [];
+            updateStatsFromData(data.stats || {});
+            renderTable(allRegistrations);
+        } catch (e) {
+            showToast('Error loading registrations', 'error');
+        }
+    }
+
+    async function loadTodayEntries() {
+        const date = document.getElementById('dateFilter').value;
+        document.getElementById('todayDate').textContent = date;
+        try {
+            const res = await fetch('/api/registrations?date=' + date);
+            const data = await res.json();
+            const filtered = data.registrations || [];
+            const tbody = document.getElementById('todayTableBody');
+            if (filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="empty-state">No entries for this date</td></tr>'; return; }
+            tbody.innerHTML = filtered.map((r,i) => {
+                const players = (r.players||[]).map(p=>p.ign).join(', ');
+                return `<tr><td>${i+1}</td><td style="color:#fff;font-weight:600;">${esc(r.teamName)}</td><td>[${esc(r.teamTag)}]</td><td>${esc(r.leaderName)}</td><td style="color:#25D366;">${esc(r.leaderWhatsApp)}</td><td style="font-size:0.8rem;">${esc(players)}</td><td><span class="badge ${r.paymentStatus}">${r.paymentStatus}</span></td><td style="font-size:0.8rem;">${esc(r.txnId||'—')}</td></tr>`;
+            }).join('');
+        } catch (e) {
+            showToast('Error loading entries', 'error');
+        }
+    }
+
+    // ============================================================
+    // VERIFY / REJECT via API
+    // ============================================================
+    async function verifyPayment(id) {
+        try {
+            const res = await fetch('/api/registrations', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, action: 'verify' }),
+            });
+            const data = await res.json();
+            if (data.success) showToast('Payment verified!', 'success');
+            loadRegistrations();
+        } catch (e) { showToast('Error', 'error'); }
+    }
+
+    async function rejectPayment(id) {
+        try {
+            const res = await fetch('/api/registrations', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, action: 'reject' }),
+            });
+            const data = await res.json();
+            if (data.success) showToast('Payment rejected.', 'info');
+            loadRegistrations();
+        } catch (e) { showToast('Error', 'error'); }
+    }
+
+    // ============================================================
+    // DETAILS MODAL
+    // ============================================================
+    function showDetails(id) {
+        const reg = allRegistrations.find(r => r.id === id);
+        if (!reg) return;
+        document.getElementById('modalTeamName').textContent = reg.teamName + ' [' + reg.teamTag + ']';
+        let html = '';
+        const addRow = (l, v) => { html += `<div class="detail-row"><div class="detail-label">${l}</div><div class="detail-value">${esc(v||'—')}</div></div>`; };
+        addRow('Leader Name', reg.leaderName); addRow('Leader Email', reg.leaderEmail);
+        addRow('Leader WhatsApp', reg.leaderWhatsApp); addRow('Payment Status', reg.paymentStatus);
+        addRow('Transaction ID', reg.txnId); addRow('Payment Note', reg.payNote); addRow('Registration Date', reg.date);
+        if (reg.orderId) addRow('Razorpay Order', reg.orderId);
+        if (reg.players) reg.players.forEach((p,i) => { addRow('Player '+(i+1)+' IGN', p.ign); addRow('Player '+(i+1)+' BGMI ID', p.bgmiId); });
+        if (reg.substitute && reg.substitute.ign) { addRow('Substitute IGN', reg.substitute.ign); addRow('Substitute BGMI ID', reg.substitute.bgmiId); }
+        document.getElementById('modalContent').innerHTML = html;
+        document.getElementById('detailModal').classList.add('show');
+    }
+
+    function closeModal() { document.getElementById('detailModal').classList.remove('show'); }
+
+    // ============================================================
+    // ROOM INFO via API
+    // ============================================================
+    function updateRoomDisplay() {
+        const display = document.getElementById('currentRoomDisplay');
+        const rid = document.getElementById('roomId').value;
+        const rpass = document.getElementById('roomPass').value;
+        const rmsg = document.getElementById('roomMsg').value;
+        if (rid) {
+            display.innerHTML = `
+                <div class="detail-row"><div class="detail-label">Room ID</div><div class="detail-value" style="color:var(--fire);font-family:'Orbitron',sans-serif;font-weight:700;">${esc(rid)}</div></div>
+                <div class="detail-row"><div class="detail-label">Password</div><div class="detail-value" style="color:var(--fire);font-family:'Orbitron',sans-serif;font-weight:700;">${esc(rpass)}</div></div>
+                <div class="detail-row"><div class="detail-label">Message</div><div class="detail-value">${esc(rmsg||'—')}</div></div>`;
+        } else {
+            display.innerHTML = '<div class="empty-state" style="padding:30px;">No room info set</div>';
+        }
+    }
+
+    async function saveRoomInfo() {
+        try {
+            await fetch('/api/settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    type: 'room',
+                    roomId: document.getElementById('roomId').value.trim(),
+                    roomPass: document.getElementById('roomPass').value.trim(),
+                    roomMessage: document.getElementById('roomMsg').value.trim(),
+                }),
+            });
+            updateRoomDisplay();
+            showToast('Room info updated!', 'success');
+        } catch (e) { showToast('Error saving', 'error'); }
+    }
+
+    async function clearRoomInfo() {
+        try {
+            await fetch('/api/settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type: 'clearRoom' }),
+            });
+            document.getElementById('roomId').value = '';
+            document.getElementById('roomPass').value = '';
+            document.getElementById('roomMsg').value = '';
+            updateRoomDisplay();
+            showToast('Room info cleared!', 'info');
+        } catch (e) { showToast('Error', 'error'); }
+    }
+
+    // ============================================================
+    // SETTINGS via API
+    // ============================================================
+    async function savePaymentSettings() {
+        const fee = document.getElementById('setEntryFee').value;
+        const upi = document.getElementById('setUpiId').value.trim();
+        if (!fee || !upi) { showToast('Fill both fields!', 'error'); return; }
+        try {
+            await fetch('/api/settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type: 'payment', entryFee: fee, upiId: upi }),
+            });
+            showToast('Payment settings saved!', 'success');
+        } catch (e) { showToast('Error', 'error'); }
+    }
+
+    async function saveWhatsAppLink() {
+        const link = document.getElementById('setWhatsAppLink').value.trim();
+        if (!link) { showToast('Enter link!', 'error'); return; }
+        try {
+            await fetch('/api/settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type: 'whatsapp', whatsappLink: link }),
+            });
+            showToast('WhatsApp link saved!', 'success');
+        } catch (e) { showToast('Error', 'error'); }
+    }
+
+    // ============================================================
+    // CSV EXPORT
+    // ============================================================
+    function exportCSV() {
+        if (allRegistrations.length === 0) { showToast('No data!', 'error'); return; }
+        const headers = ['Team Name','Tag','Leader','WhatsApp','Email','P1 IGN','P1 ID','P2 IGN','P2 ID','P3 IGN','P3 ID','P4 IGN','P4 ID','Sub IGN','Sub ID','Payment','TXN ID','Order ID','Date'];
+        const rows = allRegistrations.map(r => { const p=r.players||[]; const s=r.substitute||{};
+            return [r.teamName,r.teamTag,r.leaderName,r.leaderWhatsApp,r.leaderEmail,p[0]?.ign||'',p[0]?.bgmiId||'',p[1]?.ign||'',p[1]?.bgmiId||'',p[2]?.ign||'',p[2]?.bgmiId||'',p[3]?.ign||'',p[3]?.bgmiId||'',s.ign||'',s.bgmiId||'',r.paymentStatus,r.txnId||'',r.orderId||'',r.date||''].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',');
+        });
+        const blob = new Blob([[headers.join(','),...rows].join('\n')],{type:'text/csv'});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'malwa_esports_registrations_'+today+'.csv'; a.click();
+        showToast('CSV downloaded!', 'success');
+    }
+
+    document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') adminLogin(); });
+</script>
+
+</body>
+</html>

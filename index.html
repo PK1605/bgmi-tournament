@@ -1,0 +1,1816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malwa Esports | BGMI Tournament Registration</title>
+    <meta name="description" content="Register your squad for BGMI Tournament by Malwa Esports Pvt. Ltd. BGIS 2026 Point System. Cash Prizes. Competitive Esports.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --fire: #ff4500;
+            --orange: #ff6a00;
+            --gold: #ffd700;
+            --amber: #ff8c00;
+            --dark: #0a0a12;
+            --card: #12121e;
+            --border: #2a2a4a;
+            --green: #00c853;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark);
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+
+        /* ========== NAVBAR ========== */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 18, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 69, 0, 0.15);
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        .nav-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--fire), var(--amber));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+
+        .nav-links { display: flex; gap: 8px; list-style: none; }
+
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover { color: #fff; background: rgba(255, 69, 0, 0.1); }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--fire), var(--orange)) !important;
+            color: #fff !important;
+            padding: 8px 22px !important;
+            border-radius: 8px !important;
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* ========== HERO ========== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            padding: 100px 20px 60px;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(255, 69, 0, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 30%, rgba(255, 140, 0, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(255, 0, 50, 0.06) 0%, transparent 50%),
+                linear-gradient(180deg, #0a0a1a 0%, #0f0a1e 30%, #1a0a12 60%, var(--dark) 100%);
+        }
+
+        .hero-grid {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                linear-gradient(rgba(255, 69, 0, 0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 69, 0, 0.025) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50px); }
+        }
+
+        .hero-content { position: relative; z-index: 2; }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 69, 0, 0.1);
+            border: 1px solid rgba(255, 69, 0, 0.25);
+            padding: 8px 24px;
+            border-radius: 30px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--amber);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .hero-game {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: #777;
+            letter-spacing: 15px;
+            margin-bottom: 10px;
+            animation: fadeInUp 0.8s ease 0.1s both;
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(4rem, 12vw, 9rem);
+            line-height: 0.95;
+            background: linear-gradient(180deg, #ffffff 0%, var(--amber) 40%, var(--fire) 70%, #cc3300 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 4px 30px rgba(255, 69, 0, 0.25));
+            margin-bottom: 5px;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .hero-subtitle {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2rem, 6vw, 4.5rem);
+            letter-spacing: 15px;
+            color: transparent;
+            -webkit-text-stroke: 2px rgba(255, 140, 0, 0.4);
+            margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease 0.3s both;
+        }
+
+        .hero-crosshair {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            opacity: 0.6;
+            animation: fadeInUp 0.8s ease 0.35s both, spin 30s linear infinite;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .hero-info-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 35px;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .hero-chip {
+            background: rgba(255, 69, 0, 0.08);
+            border: 1px solid rgba(255, 69, 0, 0.2);
+            padding: 12px 28px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            color: #ccc;
+            clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+        }
+
+        .hero-chip strong { color: var(--amber); }
+
+        .hero-cta {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--fire), var(--orange));
+            color: #fff;
+            text-decoration: none;
+            padding: 18px 50px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            border-radius: 12px;
+            box-shadow: 0 0 40px rgba(255, 69, 0, 0.3);
+            transition: all 0.3s;
+            animation: fadeInUp 0.8s ease 0.5s both;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 60px rgba(255, 69, 0, 0.4);
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #444;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== SECTION COMMON ========== */
+        .section {
+            padding: 80px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-header { text-align: center; margin-bottom: 50px; }
+
+        .section-label {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--amber);
+            margin-bottom: 10px;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .section-line {
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--fire), var(--amber));
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+
+        /* ========== POINT SYSTEM ========== */
+        #points { background: linear-gradient(180deg, var(--dark) 0%, #0e0e18 100%); }
+
+        .points-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        .point-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 10px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .point-card:hover {
+            border-color: rgba(255, 69, 0, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .point-card.first {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.03));
+            border-color: rgba(255, 215, 0, 0.3);
+            grid-column: span 2;
+        }
+
+        .point-rank {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #777;
+            margin-bottom: 6px;
+        }
+
+        .point-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        .point-card.first .point-value { color: var(--gold); }
+
+        .point-unit {
+            font-size: 0.8rem;
+            color: #666;
+            font-family: 'Rajdhani', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .kill-highlight {
+            max-width: 800px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(255, 69, 0, 0.08), rgba(255, 69, 0, 0.02));
+            border: 1px solid rgba(255, 69, 0, 0.2);
+            border-radius: 14px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .kill-highlight .kill-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        .kill-highlight .kill-val {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--fire);
+        }
+
+        .kill-highlight .kill-desc {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        /* ========== PRIZES ========== */
+        #prizes { background: var(--dark); }
+
+        .prize-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .prize-card {
+            text-align: center;
+            padding: 35px 20px;
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .prize-card:hover { transform: translateY(-5px); }
+
+        .prize-card.g {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.12), rgba(255, 165, 0, 0.03));
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            order: 2;
+            transform: scale(1.05);
+        }
+        .prize-card.s {
+            background: linear-gradient(135deg, rgba(192, 192, 192, 0.08), rgba(169, 169, 169, 0.02));
+            border: 2px solid rgba(192, 192, 192, 0.2);
+            order: 1;
+        }
+        .prize-card.b {
+            background: linear-gradient(135deg, rgba(205, 127, 50, 0.08), rgba(205, 127, 50, 0.02));
+            border: 2px solid rgba(205, 127, 50, 0.2);
+            order: 3;
+        }
+
+        .prize-emoji { font-size: 2.8rem; margin-bottom: 12px; }
+        .prize-place {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 8px;
+        }
+        .prize-amt {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+        }
+        .prize-card.g .prize-amt { color: var(--gold); }
+        .prize-card.s .prize-amt { color: #c0c0c0; }
+        .prize-card.b .prize-amt { color: #cd7f32; }
+
+        /* ========== RULES ========== */
+        #rules { background: linear-gradient(180deg, var(--dark), #0e0e18); }
+
+        .rules-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .rule-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
+            transition: border-color 0.3s;
+        }
+
+        .rule-item:hover { border-color: rgba(255, 69, 0, 0.25); }
+
+        .rule-num {
+            flex-shrink: 0;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, var(--fire), var(--orange));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #fff;
+        }
+
+        .rule-text { font-size: 0.92rem; color: #bbb; line-height: 1.5; }
+        .rule-text strong { color: #fff; }
+
+        /* ========== REGISTER ========== */
+        #register { background: var(--dark); }
+
+        .form-card {
+            max-width: 700px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, var(--card), #1a1a2e);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--fire), var(--amber), var(--gold));
+        }
+
+        .form-group { margin-bottom: 20px; }
+
+        .form-group label {
+            display: block;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            color: #ccc;
+            margin-bottom: 7px;
+        }
+
+        .form-group label .req { color: var(--fire); }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 13px 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder { color: #555; }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--fire);
+            background: rgba(255, 69, 0, 0.04);
+            box-shadow: 0 0 20px rgba(255, 69, 0, 0.08);
+        }
+
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ff6a00' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+
+        .form-group select option { background: #1a1a2e; color: #fff; }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .player-block {
+            background: rgba(255, 69, 0, 0.03);
+            border: 1px solid rgba(255, 69, 0, 0.1);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 16px;
+        }
+
+        .player-block .p-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .player-block .p-num {
+            width: 26px;
+            height: 26px;
+            background: linear-gradient(135deg, var(--fire), var(--orange));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: #fff;
+        }
+
+        .player-block .p-label {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            color: var(--amber);
+            letter-spacing: 1px;
+        }
+
+        .player-block.sub {
+            opacity: 0.65;
+            border-style: dashed;
+        }
+
+        .player-block.sub .p-num { background: #555; }
+
+        .form-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+            margin: 28px 0;
+        }
+
+        .section-heading {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: var(--amber);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-heading .icon-box {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--fire), var(--orange));
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+
+        .agree-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 14px;
+            background: rgba(255, 69, 0, 0.03);
+            border: 1px solid rgba(255, 69, 0, 0.08);
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .agree-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--fire);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .agree-item span { font-size: 0.88rem; color: #999; line-height: 1.5; }
+        .agree-item span strong { color: #ddd; }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--fire), var(--orange));
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 4px 30px rgba(255, 69, 0, 0.3);
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 40px rgba(255, 69, 0, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ========== PAYMENT SECTION ========== */
+        .payment-section {
+            max-width: 700px;
+            margin: 0 auto;
+            display: none;
+        }
+
+        .payment-card {
+            background: linear-gradient(135deg, var(--card), #1a1a2e);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .payment-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--green), #00e676);
+        }
+
+        .payment-amount {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--green);
+            margin: 20px 0 10px;
+        }
+
+        .payment-label {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 25px;
+        }
+
+        .upi-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .upi-id-display {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: var(--gold);
+            margin: 10px 0;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            background: rgba(255, 215, 0, 0.15);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: var(--gold);
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 215, 0, 0.25);
+        }
+
+        .txn-form {
+            margin-top: 25px;
+            text-align: left;
+        }
+
+        .txn-form input {
+            width: 100%;
+            padding: 13px 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s;
+            margin-bottom: 14px;
+        }
+
+        .txn-form input:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 20px rgba(0, 200, 83, 0.1);
+        }
+
+        .txn-form input::placeholder { color: #555; }
+
+        .pay-submit-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--green), #00e676);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pay-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 30px rgba(0, 200, 83, 0.3);
+        }
+
+        /* ========== SUCCESS SECTION ========== */
+        .success-section {
+            max-width: 700px;
+            margin: 0 auto;
+            display: none;
+        }
+
+        .success-card {
+            background: linear-gradient(135deg, var(--card), #1a1a2e);
+            border: 2px solid rgba(0, 200, 83, 0.3);
+            border-radius: 20px;
+            padding: 50px 40px;
+            text-align: center;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .success-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--green);
+            margin-bottom: 10px;
+        }
+
+        .success-msg {
+            color: #999;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #25D366;
+            color: #fff;
+            text-decoration: none;
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 30px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: #fff;
+        }
+
+        .pending-card {
+            background: linear-gradient(135deg, var(--card), #1a1a2e);
+            border: 2px solid rgba(255, 140, 0, 0.3);
+            border-radius: 20px;
+            padding: 50px 40px;
+            text-align: center;
+        }
+
+        .pending-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--amber);
+            margin-bottom: 10px;
+        }
+
+        .pending-msg {
+            color: #999;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* ========== ROOM ID BANNER ========== */
+        .room-banner {
+            display: none;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, rgba(255, 69, 0, 0.1), rgba(255, 69, 0, 0.03));
+            border: 2px solid rgba(255, 69, 0, 0.4);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { border-color: rgba(255, 69, 0, 0.4); }
+            50% { border-color: rgba(255, 69, 0, 0.8); }
+        }
+
+        .room-banner .room-label {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 12px;
+        }
+
+        .room-banner .room-info {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--fire);
+            margin-bottom: 5px;
+        }
+
+        .room-banner .room-msg {
+            font-size: 0.9rem;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        /* ========== STATUS CHECK ========== */
+        .status-check {
+            max-width: 700px;
+            margin: 30px auto 0;
+            text-align: center;
+        }
+
+        .status-link {
+            color: var(--amber);
+            text-decoration: underline;
+            cursor: pointer;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+
+        .status-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .status-modal.show { display: flex; }
+
+        .status-modal-inner {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 35px;
+            max-width: 450px;
+            width: 100%;
+        }
+
+        .status-modal-inner h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: var(--amber);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .status-modal-inner input {
+            width: 100%;
+            padding: 13px 16px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            margin-bottom: 14px;
+        }
+
+        .status-modal-inner input:focus {
+            border-color: var(--fire);
+        }
+
+        .status-modal-inner input::placeholder { color: #555; }
+
+        .status-modal-inner .btn-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .status-modal-inner button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-check {
+            background: linear-gradient(135deg, var(--fire), var(--orange));
+            color: #fff;
+        }
+
+        .btn-close {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1) !important;
+            color: #888;
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            border-top: 1px solid var(--border);
+            color: #444;
+            font-size: 0.85rem;
+        }
+        .footer span { color: var(--fire); font-weight: 600; }
+
+        /* ========== TOAST ========== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            padding: 14px 30px;
+            border-radius: 12px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            z-index: 5000;
+            transition: transform 0.4s ease;
+            white-space: nowrap;
+        }
+
+        .toast.show { transform: translateX(-50%) translateY(0); }
+        .toast.success { background: #00c853; color: #fff; }
+        .toast.error { background: #ff1744; color: #fff; }
+        .toast.info { background: var(--amber); color: #000; }
+
+        /* ========== LOADER ========== */
+        .loader {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spinLoader 0.6s linear infinite;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spinLoader { 100% { transform: rotate(360deg); } }
+
+        /* ========== MOBILE ========== */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 64px;
+                left: 0;
+                right: 0;
+                background: rgba(10, 10, 18, 0.98);
+                padding: 20px;
+                border-bottom: 1px solid var(--border);
+            }
+            .mobile-toggle { display: block; }
+            .hero-info-row { gap: 10px; }
+            .hero-chip { font-size: 0.85rem; padding: 10px 18px; }
+            .rules-grid { grid-template-columns: 1fr; }
+            .prize-row { grid-template-columns: 1fr; }
+            .prize-card.g { order: 0; transform: none; }
+            .prize-card.s { order: 1; }
+            .prize-card.b { order: 2; }
+            .form-row { grid-template-columns: 1fr; }
+            .form-card { padding: 25px 18px; }
+            .payment-card { padding: 25px 18px; }
+            .success-card, .pending-card { padding: 35px 18px; }
+            .points-grid { grid-template-columns: repeat(3, 1fr); }
+            .point-card.first { grid-column: span 3; }
+        }
+
+        @media (max-width: 400px) {
+            .points-grid { grid-template-columns: repeat(2, 1fr); }
+            .point-card.first { grid-column: span 2; }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="nav-logo">MALWA ESPORTS</div>
+    <button class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">&#9776;</button>
+    <ul class="nav-links">
+        <li><a href="#points">Points</a></li>
+        <li><a href="#prizes">Prizes</a></li>
+        <li><a href="#rules">Rules</a></li>
+        <li><a href="admin.html" style="color:#666;">Admin</a></li>
+        <li><a href="#register" class="nav-cta">Register</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+        <div class="hero-badge">Malwa Esports Pvt. Ltd. — Season 1</div>
+        <div class="hero-game">BATTLEGROUNDS MOBILE INDIA</div>
+        <h1 class="hero-title">MALWA</h1>
+        <div class="hero-subtitle">ESPORTS</div>
+
+        <svg class="hero-crosshair" viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="70" stroke="rgba(255,69,0,0.3)" stroke-width="2"/>
+            <circle cx="100" cy="100" r="45" stroke="rgba(255,69,0,0.15)" stroke-width="1.5"/>
+            <circle cx="100" cy="100" r="8" fill="rgba(255,69,0,0.5)"/>
+            <line x1="100" y1="15" x2="100" y2="80" stroke="rgba(255,140,0,0.4)" stroke-width="2"/>
+            <line x1="100" y1="120" x2="100" y2="185" stroke="rgba(255,140,0,0.4)" stroke-width="2"/>
+            <line x1="15" y1="100" x2="80" y2="100" stroke="rgba(255,140,0,0.4)" stroke-width="2"/>
+            <line x1="120" y1="100" x2="185" y2="100" stroke="rgba(255,140,0,0.4)" stroke-width="2"/>
+        </svg>
+
+        <div class="hero-info-row">
+            <div class="hero-chip"><strong>Squad</strong> TPP</div>
+            <div class="hero-chip"><strong>16</strong> Teams</div>
+            <div class="hero-chip"><strong>6</strong> Matches/Day</div>
+            <div class="hero-chip"><strong>BGIS</strong> Points</div>
+        </div>
+
+        <a href="#register" class="hero-cta">Register Your Squad</a>
+    </div>
+    <div class="hero-scroll">&#8595; Scroll Down</div>
+</section>
+
+<!-- POINT SYSTEM -->
+<section id="points">
+    <div class="section">
+        <div class="section-header fade-in">
+            <div class="section-label">BGIS 2026 Format</div>
+            <h2 class="section-title">Point System</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="points-grid fade-in">
+            <div class="point-card first">
+                <div class="point-rank">&#127942; 1st Place</div>
+                <div class="point-value">10</div>
+                <div class="point-unit">Points</div>
+            </div>
+            <div class="point-card">
+                <div class="point-rank">2nd</div>
+                <div class="point-value" style="color: #c0c0c0;">6</div>
+                <div class="point-unit">Points</div>
+            </div>
+            <div class="point-card">
+                <div class="point-rank">3rd</div>
+                <div class="point-value" style="color: #cd7f32;">5</div>
+                <div class="point-unit">Points</div>
+            </div>
+            <div class="point-card">
+                <div class="point-rank">4th</div>
+                <div class="point-value">4</div>
+                <div class="point-unit">Points</div>
+            </div>
+            <div class="point-card">
+                <div class="point-rank">5th</div>
+                <div class="point-value">3</div>
+                <div class="point-unit">Points</div>
+            </div>
+            <div class="point-card">
+                <div class="point-rank">6th</div>
+                <div class="point-value">2</div>
+                <div class="point-unit">Points</div>
+            </div>
+            <div class="point-card">
+                <div class="point-rank">7th-8th</div>
+                <div class="point-value">1</div>
+                <div class="point-unit">Point</div>
+            </div>
+            <div class="point-card">
+                <div class="point-rank">9th-16th</div>
+                <div class="point-value" style="color: #555;">0</div>
+                <div class="point-unit">Points</div>
+            </div>
+        </div>
+
+        <div class="kill-highlight fade-in">
+            <div class="kill-title">Kill Points</div>
+            <div class="kill-val">+1 Point Per Kill</div>
+            <div class="kill-desc">Total Score = Placement Points + Kill Points</div>
+        </div>
+    </div>
+</section>
+
+<!-- PRIZES -->
+<section id="prizes">
+    <div class="section">
+        <div class="section-header fade-in">
+            <div class="section-label">Rewards</div>
+            <h2 class="section-title">Prize Pool</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="prize-row fade-in">
+            <div class="prize-card s">
+                <div class="prize-emoji">&#129352;</div>
+                <div class="prize-place">2nd Place</div>
+                <div class="prize-amt">TBA</div>
+            </div>
+            <div class="prize-card g">
+                <div class="prize-emoji">&#127942;</div>
+                <div class="prize-place">Champion</div>
+                <div class="prize-amt">TBA</div>
+            </div>
+            <div class="prize-card b">
+                <div class="prize-emoji">&#129353;</div>
+                <div class="prize-place">3rd Place</div>
+                <div class="prize-amt">TBA</div>
+            </div>
+        </div>
+
+        <p style="text-align: center; color: #555; margin-top: 25px; font-size: 0.9rem;">
+            Prize pool details will be announced soon. Additional awards for MVP & Most Kills.
+        </p>
+    </div>
+</section>
+
+<!-- RULES -->
+<section id="rules">
+    <div class="section">
+        <div class="section-header fade-in">
+            <div class="section-label">Fair Play</div>
+            <h2 class="section-title">Tournament Rules</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="rules-grid fade-in">
+            <div class="rule-item"><div class="rule-num">1</div><div class="rule-text">All members must have a valid BGMI account with <strong>Level 20+</strong>.</div></div>
+            <div class="rule-item"><div class="rule-num">2</div><div class="rule-text">Each team: <strong>4 players + 1 substitute</strong> (sub optional).</div></div>
+            <div class="rule-item"><div class="rule-num">3</div><div class="rule-text"><strong>Hacks, cheats, emulators, triggers</strong> = instant ban. Zero tolerance.</div></div>
+            <div class="rule-item"><div class="rule-num">4</div><div class="rule-text">Join lobby <strong>10 minutes before</strong> match time. Late = walkover.</div></div>
+            <div class="rule-item"><div class="rule-num">5</div><div class="rule-text"><strong>Team killing</strong> is strictly prohibited. Leads to disqualification.</div></div>
+            <div class="rule-item"><div class="rule-num">6</div><div class="rule-text"><strong>Organizer's decision is final</strong> in all disputes.</div></div>
+            <div class="rule-item"><div class="rule-num">7</div><div class="rule-text"><strong>Screen recording mandatory</strong> for all matches.</div></div>
+            <div class="rule-item"><div class="rule-num">8</div><div class="rule-text">Use your <strong>registered IGN</strong> during all matches.</div></div>
+            <div class="rule-item"><div class="rule-num">9</div><div class="rule-text"><strong>No griefing, teaming</strong>, or unsportsmanlike conduct.</div></div>
+            <div class="rule-item"><div class="rule-num">10</div><div class="rule-text">Room ID shared <strong>15 min before</strong> each match via official group.</div></div>
+            <div class="rule-item"><div class="rule-num">11</div><div class="rule-text"><strong>Mobile phones only</strong> — no iPads/tablets unless specified.</div></div>
+            <div class="rule-item"><div class="rule-num">12</div><div class="rule-text">Server crash replay only if <strong>&lt;50% teams</strong> eliminated.</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- REGISTRATION SECTION -->
+<section id="register">
+    <div class="section">
+        <div class="section-header fade-in">
+            <div class="section-label">Join The Battle</div>
+            <h2 class="section-title">Register Your Squad</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <!-- STEP 1: Registration Form -->
+        <div class="form-card fade-in" id="regFormCard">
+            <form id="regForm" onsubmit="return false;">
+
+                <h3 class="section-heading">
+                    <span class="icon-box">&#9889;</span> Team Information
+                </h3>
+
+                <div class="form-group">
+                    <label>Team Name <span class="req">*</span></label>
+                    <input type="text" id="teamName" placeholder="e.g. Team SouL, GodLike Esports" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Team Tag <span class="req">*</span></label>
+                        <input type="text" id="teamTag" placeholder="e.g. TSM, GL" maxlength="6" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Team Leader Name <span class="req">*</span></label>
+                        <input type="text" id="leaderName" placeholder="Real name" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Leader WhatsApp <span class="req">*</span></label>
+                        <input type="tel" id="leaderWhatsApp" placeholder="+91 XXXXXXXXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Leader Email <span class="req">*</span></label>
+                        <input type="email" id="leaderEmail" placeholder="email@example.com" required>
+                    </div>
+                </div>
+
+                <div class="form-divider"></div>
+
+                <h3 class="section-heading">
+                    <span class="icon-box">&#128101;</span> Squad Members
+                </h3>
+
+                <div class="player-block">
+                    <div class="p-head"><div class="p-num">1</div><div class="p-label">Player 1 (IGL / Leader)</div></div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>IGN (In-Game Name) <span class="req">*</span></label>
+                            <input type="text" id="p1ign" placeholder="Exact BGMI name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>BGMI ID <span class="req">*</span></label>
+                            <input type="text" id="p1id" placeholder="e.g. 5123456789" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="player-block">
+                    <div class="p-head"><div class="p-num">2</div><div class="p-label">Player 2</div></div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>IGN <span class="req">*</span></label>
+                            <input type="text" id="p2ign" placeholder="Exact BGMI name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>BGMI ID <span class="req">*</span></label>
+                            <input type="text" id="p2id" placeholder="e.g. 5123456789" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="player-block">
+                    <div class="p-head"><div class="p-num">3</div><div class="p-label">Player 3</div></div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>IGN <span class="req">*</span></label>
+                            <input type="text" id="p3ign" placeholder="Exact BGMI name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>BGMI ID <span class="req">*</span></label>
+                            <input type="text" id="p3id" placeholder="e.g. 5123456789" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="player-block">
+                    <div class="p-head"><div class="p-num">4</div><div class="p-label">Player 4</div></div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>IGN <span class="req">*</span></label>
+                            <input type="text" id="p4ign" placeholder="Exact BGMI name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>BGMI ID <span class="req">*</span></label>
+                            <input type="text" id="p4id" placeholder="e.g. 5123456789" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="player-block sub">
+                    <div class="p-head"><div class="p-num">5</div><div class="p-label">Substitute (Optional)</div></div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>IGN</label>
+                            <input type="text" id="p5ign" placeholder="Optional">
+                        </div>
+                        <div class="form-group">
+                            <label>BGMI ID</label>
+                            <input type="text" id="p5id" placeholder="Optional">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-divider"></div>
+
+                <div class="agree-item">
+                    <input type="checkbox" required id="a1">
+                    <span><strong>I confirm</strong> all information is accurate. False info may lead to disqualification.</span>
+                </div>
+
+                <div class="agree-item">
+                    <input type="checkbox" required id="a2">
+                    <span>I agree to all <strong>tournament rules</strong>. No hacks, no emulators, no cheating.</span>
+                </div>
+
+                <div class="agree-item">
+                    <input type="checkbox" required id="a3">
+                    <span><strong>Organizer's decision is final</strong>. Screen recording is mandatory.</span>
+                </div>
+
+                <button type="button" class="submit-btn" id="submitBtn" onclick="submitRegistration()">&#9889; Register & Proceed to Pay</button>
+            </form>
+        </div>
+
+        <!-- STEP 2: Payment Processing -->
+        <div class="payment-section" id="paymentSection">
+            <div class="payment-card">
+                <div class="section-heading" style="justify-content: center;">
+                    <span class="icon-box">&#128176;</span> Payment
+                </div>
+                <div class="payment-amount" id="entryFeeDisplay">&#8377;100</div>
+                <div class="payment-label">Entry Fee Per Team</div>
+
+                <div style="margin: 25px 0; padding: 20px; background: rgba(0,200,83,0.05); border: 1px solid rgba(0,200,83,0.2); border-radius: 14px;">
+                    <div style="font-size: 0.9rem; color: #aaa; margin-bottom: 12px;">
+                        Pay securely via <strong style="color:#fff;">UPI, Card, NetBanking, Wallet</strong> — powered by Razorpay
+                    </div>
+                    <button class="pay-submit-btn" id="payNowBtn" onclick="openRazorpayCheckout()">&#9889; PAY NOW</button>
+                </div>
+
+                <div style="font-size: 0.8rem; color: #555; margin-top: 10px;">
+                    <span id="mockBadge" style="display:none; background:rgba(255,215,0,0.15); border:1px solid rgba(255,215,0,0.3); color:var(--gold); padding:4px 12px; border-radius:6px; font-family:'Rajdhani',sans-serif; font-weight:600;">
+                        TEST MODE — No real money charged
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 2b: Payment Processing (loading) -->
+        <div class="success-section" id="processingSection">
+            <div class="pending-card">
+                <div class="success-icon"><span class="loader" style="width:40px;height:40px;border-width:4px;"></span></div>
+                <div class="pending-title" style="margin-top:15px;">Processing Payment...</div>
+                <div class="pending-msg">Please wait while we verify your payment.</div>
+            </div>
+        </div>
+
+        <!-- STEP 3b: Payment Verified - WhatsApp Link -->
+        <div class="success-section" id="successSection">
+            <!-- Room ID Banner -->
+            <div class="room-banner" id="roomBanner">
+                <div class="room-label">&#127919; Today's Match</div>
+                <div class="room-info" id="roomIdDisplay"></div>
+                <div class="room-info" id="roomPassDisplay"></div>
+                <div class="room-msg" id="roomMsgDisplay"></div>
+            </div>
+
+            <div class="success-card">
+                <div class="success-icon">&#9989;</div>
+                <div class="success-title">Registration Complete!</div>
+                <div class="success-msg">
+                    Payment verified! Ab tum officially registered ho.<br>
+                    Neeche WhatsApp group join karo — Room ID wahi milega.
+                </div>
+                <a href="#" class="whatsapp-btn" id="whatsappLink" target="_blank">
+                    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    Join WhatsApp Group
+                </a>
+            </div>
+        </div>
+
+        <!-- Status Check Link -->
+        <div class="status-check" id="statusCheckArea">
+            <br>
+            <span class="status-link" onclick="openStatusModal()">Already registered? Check your status</span>
+        </div>
+
+        <!-- DEMO MODE PREVIEW BUTTONS -->
+        <div id="demoBar" style="display:none; max-width:700px; margin:30px auto 0; background:rgba(255,215,0,0.06); border:1px dashed rgba(255,215,0,0.3); border-radius:14px; padding:20px; text-align:center;">
+            <div style="font-family:'Orbitron',sans-serif; font-size:0.8rem; color:var(--gold); letter-spacing:2px; margin-bottom:14px;">DEMO MODE — Preview All Screens</div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
+                <button onclick="demoShow('form')" style="padding:8px 18px; background:rgba(255,69,0,0.15); border:1px solid rgba(255,69,0,0.3); color:var(--fire); border-radius:8px; cursor:pointer; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:0.85rem;">Registration Form</button>
+                <button onclick="demoShow('payment')" style="padding:8px 18px; background:rgba(0,200,83,0.15); border:1px solid rgba(0,200,83,0.3); color:var(--green); border-radius:8px; cursor:pointer; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:0.85rem;">Payment Screen</button>
+                <button onclick="demoShow('success')" style="padding:8px 18px; background:rgba(37,211,102,0.15); border:1px solid rgba(37,211,102,0.3); color:#25D366; border-radius:8px; cursor:pointer; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:0.85rem;">Success + WhatsApp</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- STATUS CHECK MODAL -->
+<div class="status-modal" id="statusModal">
+    <div class="status-modal-inner">
+        <h3>Check Registration Status</h3>
+        <input type="email" id="statusEmail" placeholder="Enter your registered email">
+        <div class="btn-row">
+            <button class="btn-check" onclick="checkStatus()">Check Status</button>
+            <button class="btn-close" onclick="closeStatusModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- FOOTER -->
+<footer class="footer">
+    &copy; 2026 <span>Malwa Esports Private Limited</span><br>
+    <span style="font-size: 0.8rem; color: #555;">Founded by Purushottam Patidar</span><br>
+    <span style="font-size: 0.78rem; color: #444; margin-top: 4px; display: inline-block;">
+        &#128222; 7489244521 &nbsp;|&nbsp; &#9993; malwaesports@1605.com
+    </span>
+</footer>
+
+<!-- Razorpay Checkout SDK -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+    // ============================================================
+    // GLOBALS
+    // ============================================================
+    let siteConfig = { entryFee: 100, keyId: 'rzp_test_MOCK', mockMode: true };
+    let currentReg = null;
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    document.querySelector('.navbar').addEventListener('click', (e) => {
+        if (e.target.tagName === 'A') document.querySelector('.nav-links').classList.remove('open');
+    });
+
+    function showToast(msg, type = 'info') {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.className = 'toast ' + type;
+        setTimeout(() => t.classList.add('show'), 10);
+        setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    // Load settings from server
+    async function loadConfig() {
+        try {
+            const res = await fetch('/api/settings');
+            siteConfig = await res.json();
+            document.getElementById('entryFeeDisplay').textContent = '\u20B9' + (siteConfig.entryFee || 100);
+            if (siteConfig.mockMode) {
+                document.getElementById('demoBar').style.display = 'block';
+                document.getElementById('mockBadge').style.display = 'inline-block';
+            }
+        } catch (e) {
+            document.getElementById('entryFeeDisplay').textContent = '\u20B9100';
+            document.getElementById('demoBar').style.display = 'block';
+            document.getElementById('mockBadge').style.display = 'inline-block';
+        }
+    }
+    loadConfig();
+
+    // ============================================================
+    // SCREEN MANAGEMENT
+    // ============================================================
+    function showScreen(screen) {
+        document.getElementById('regFormCard').style.display = 'none';
+        document.getElementById('paymentSection').style.display = 'none';
+        document.getElementById('processingSection').style.display = 'none';
+        document.getElementById('successSection').style.display = 'none';
+
+        if (screen === 'form') {
+            document.getElementById('regFormCard').style.display = 'block';
+        } else if (screen === 'payment') {
+            document.getElementById('paymentSection').style.display = 'block';
+        } else if (screen === 'processing') {
+            document.getElementById('processingSection').style.display = 'block';
+        } else if (screen === 'success') {
+            document.getElementById('successSection').style.display = 'block';
+            if (siteConfig.roomInfo && siteConfig.roomInfo.roomId) {
+                document.getElementById('roomBanner').style.display = 'block';
+                document.getElementById('roomIdDisplay').textContent = 'Room ID: ' + siteConfig.roomInfo.roomId;
+                document.getElementById('roomPassDisplay').textContent = 'Password: ' + siteConfig.roomInfo.roomPass;
+                document.getElementById('roomMsgDisplay').textContent = siteConfig.roomInfo.roomMessage || '';
+            }
+            document.getElementById('whatsappLink').href = siteConfig.whatsappLink || '#';
+        }
+    }
+
+    function demoShow(screen) {
+        showScreen(screen);
+        document.getElementById('register').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        showToast('Preview: ' + screen.charAt(0).toUpperCase() + screen.slice(1), 'info');
+    }
+
+    // ============================================================
+    // REGISTRATION (Step 1 — Form Submit)
+    // ============================================================
+    async function submitRegistration() {
+        const checks = [document.getElementById('a1'), document.getElementById('a2'), document.getElementById('a3')];
+        if (!checks.every(c => c.checked)) { showToast('Please agree to all terms!', 'error'); return; }
+
+        const fields = ['teamName','teamTag','leaderName','leaderWhatsApp','leaderEmail','p1ign','p1id','p2ign','p2id','p3ign','p3id','p4ign','p4id'];
+        for (const f of fields) {
+            if (!document.getElementById(f).value.trim()) { showToast('Please fill all required fields!', 'error'); return; }
+        }
+
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.innerHTML = 'Registering... <span class="loader"></span>';
+
+        const body = {
+            teamName: document.getElementById('teamName').value.trim(),
+            teamTag: document.getElementById('teamTag').value.trim(),
+            leaderName: document.getElementById('leaderName').value.trim(),
+            leaderWhatsApp: document.getElementById('leaderWhatsApp').value.trim(),
+            leaderEmail: document.getElementById('leaderEmail').value.trim(),
+            players: [
+                { ign: document.getElementById('p1ign').value.trim(), bgmiId: document.getElementById('p1id').value.trim() },
+                { ign: document.getElementById('p2ign').value.trim(), bgmiId: document.getElementById('p2id').value.trim() },
+                { ign: document.getElementById('p3ign').value.trim(), bgmiId: document.getElementById('p3id').value.trim() },
+                { ign: document.getElementById('p4ign').value.trim(), bgmiId: document.getElementById('p4id').value.trim() },
+            ],
+            substitute: { ign: document.getElementById('p5ign').value.trim(), bgmiId: document.getElementById('p5id').value.trim() },
+        };
+
+        try {
+            const res = await fetch('/api/create-order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
+            });
+            const data = await res.json();
+
+            if (data.existing) {
+                currentReg = data.registration;
+                localStorage.setItem('bgmi_reg_id', currentReg.id);
+                if (currentReg.paymentStatus === 'verified') {
+                    showScreen('success');
+                    showToast('Already registered & paid!', 'info');
+                } else {
+                    showScreen('payment');
+                    showToast('Already registered! Complete payment.', 'info');
+                }
+                btn.disabled = false; btn.innerHTML = '&#9889; Register & Proceed to Pay';
+                return;
+            }
+
+            currentReg = data.registration;
+            localStorage.setItem('bgmi_reg_id', currentReg.id);
+            siteConfig.keyId = data.keyId;
+            siteConfig._orderId = data.orderId;
+            siteConfig._amount = data.amount;
+            siteConfig._mockMode = data.mockMode;
+
+            showToast('Registered! Now complete payment.', 'success');
+            showScreen('payment');
+
+        } catch (err) {
+            showToast('Error: ' + err.message, 'error');
+        }
+
+        btn.disabled = false; btn.innerHTML = '&#9889; Register & Proceed to Pay';
+    }
+
+    // ============================================================
+    // PAYMENT (Step 2 — Razorpay Checkout)
+    // ============================================================
+    function openRazorpayCheckout() {
+        if (!currentReg) { showToast('Register first!', 'error'); return; }
+
+        // Mock mode — simulate payment instantly
+        if (siteConfig._mockMode || siteConfig.mockMode) {
+            showScreen('processing');
+            setTimeout(async () => {
+                try {
+                    const res = await fetch('/api/verify-payment', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            razorpay_order_id: siteConfig._orderId || currentReg.orderId,
+                            razorpay_payment_id: 'mock_pay_' + Date.now(),
+                            razorpay_signature: 'mock_sig',
+                            registrationId: currentReg.id,
+                        }),
+                    });
+                    const data = await res.json();
+                    if (data.verified) {
+                        currentReg = data.registration;
+                        if (data.roomInfo) siteConfig.roomInfo = data.roomInfo;
+                        if (data.whatsappLink) siteConfig.whatsappLink = data.whatsappLink;
+                        showScreen('success');
+                        showToast('Payment verified! (Test Mode)', 'success');
+                    } else {
+                        showScreen('payment');
+                        showToast('Verification failed', 'error');
+                    }
+                } catch (err) {
+                    showScreen('payment');
+                    showToast('Error: ' + err.message, 'error');
+                }
+            }, 1500);
+            return;
+        }
+
+        // Real Razorpay Checkout
+        const options = {
+            key: siteConfig.keyId,
+            amount: siteConfig._amount,
+            currency: 'INR',
+            name: 'Malwa Esports',
+            description: 'BGMI Tournament Entry Fee',
+            order_id: siteConfig._orderId,
+            prefill: {
+                name: currentReg.leaderName,
+                email: currentReg.leaderEmail,
+                contact: currentReg.leaderWhatsApp,
+            },
+            theme: { color: '#ff4500' },
+            handler: async function(response) {
+                showScreen('processing');
+                try {
+                    const res = await fetch('/api/verify-payment', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_signature: response.razorpay_signature,
+                            registrationId: currentReg.id,
+                        }),
+                    });
+                    const data = await res.json();
+                    if (data.verified) {
+                        currentReg = data.registration;
+                        if (data.roomInfo) siteConfig.roomInfo = data.roomInfo;
+                        if (data.whatsappLink) siteConfig.whatsappLink = data.whatsappLink;
+                        showScreen('success');
+                        showToast('Payment verified!', 'success');
+                    } else {
+                        showScreen('payment');
+                        showToast('Payment verification failed!', 'error');
+                    }
+                } catch (err) {
+                    showScreen('payment');
+                    showToast('Error verifying payment', 'error');
+                }
+            },
+            modal: {
+                ondismiss: function() { showToast('Payment cancelled', 'info'); }
+            }
+        };
+
+        const rzp = new Razorpay(options);
+        rzp.open();
+    }
+
+    // ============================================================
+    // STATUS CHECK
+    // ============================================================
+    function openStatusModal() { document.getElementById('statusModal').classList.add('show'); }
+    function closeStatusModal() { document.getElementById('statusModal').classList.remove('show'); }
+
+    async function checkStatus() {
+        const email = document.getElementById('statusEmail').value.trim().toLowerCase();
+        if (!email) { showToast('Enter your email!', 'error'); return; }
+
+        try {
+            const res = await fetch('/api/registrations?email=' + encodeURIComponent(email));
+            const data = await res.json();
+
+            if (!data.registration) { showToast('No registration found.', 'error'); return; }
+
+            currentReg = data.registration;
+            localStorage.setItem('bgmi_reg_id', currentReg.id);
+            closeStatusModal();
+
+            if (currentReg.paymentStatus === 'verified') {
+                showScreen('success');
+                showToast('Payment verified!', 'success');
+            } else {
+                showScreen('payment');
+                showToast('Payment pending — complete it now.', 'info');
+            }
+        } catch (err) {
+            showToast('Error checking status', 'error');
+        }
+    }
+
+    // ============================================================
+    // AUTO-CHECK ON PAGE LOAD
+    // ============================================================
+    (async function() {
+        const regId = localStorage.getItem('bgmi_reg_id');
+        if (!regId) return;
+        try {
+            const res = await fetch('/api/registrations');
+            const data = await res.json();
+            const reg = (data.registrations || []).find(r => r.id === regId);
+            if (!reg) return;
+            currentReg = reg;
+            if (reg.paymentStatus === 'verified') showScreen('success');
+            else showScreen('payment');
+        } catch (e) {}
+    })();
+</script>
+
+</body>
+</html>
