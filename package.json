@@ -5,12 +5,12 @@
   "description": "Malwa Esports BGMI Tournament Platform",
   "scripts": {
     "dev": "node dev-server.js",
-    "vercel-dev": "vercel dev"
+    "build": "npm install"
   },
   "dependencies": {
     "razorpay": "^2.9.4"
   },
   "engines": {
-  "node": "20.x"
-}
+    "node": "18.x"
+  }
 }
