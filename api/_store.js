@@ -14,9 +14,10 @@ const DEMO_REGISTRATIONS = [
 
 if (!global.__malwa_store) {
   global.__malwa_store = {
+    users: [],
     registrations: [...DEMO_REGISTRATIONS],
     settings: {
-      entryFee: 100,
+      entryFee: 99,
       upiId: 'malwaesports@upi',
       whatsappLink: 'https://chat.whatsapp.com/demo',
     },

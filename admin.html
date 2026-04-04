@@ -816,7 +816,7 @@
         try {
             const res = await fetch('/api/settings');
             const cfg = await res.json();
-            document.getElementById('setEntryFee').value = cfg.entryFee || 100;
+            document.getElementById('setEntryFee').value = cfg.entryFee || 99;
             document.getElementById('setUpiId').value = 'malwaesports@upi';
             document.getElementById('setWhatsAppLink').value = cfg.whatsappLink || '';
             if (cfg.roomInfo) {
@@ -825,7 +825,7 @@
                 document.getElementById('roomMsg').value = cfg.roomInfo.roomMessage || '';
             }
         } catch (e) {
-            document.getElementById('setEntryFee').value = '100';
+            document.getElementById('setEntryFee').value = '99';
             document.getElementById('setUpiId').value = 'malwaesports@upi';
             document.getElementById('setWhatsAppLink').value = 'https://chat.whatsapp.com/demo';
             document.getElementById('roomId').value = '87654321';
