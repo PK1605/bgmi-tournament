@@ -1,5 +1,5 @@
 const Razorpay = require('razorpay');
-const store = require('./_store');
+const { db } = require('./_firebase');
 
 module.exports = async function handler(req, res) {
   res.setHeader('Content-Type', 'application/json');
@@ -12,8 +12,13 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    const existing = store.registrations.find(r => r.leaderEmail === leaderEmail.toLowerCase());
-    if (existing) {
+    const emailLower = leaderEmail.toLowerCase();
+    const existingSnap = await db.collection('registrations')
+      .where('leaderEmail', '==', emailLower)
+      .limit(1).get();
+
+    if (!existingSnap.empty) {
+      const existing = { id: existingSnap.docs[0].id, ...existingSnap.docs[0].data() };
       return res.status(200).json({
         existing: true,
         registration: existing,
@@ -21,7 +26,9 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    const amount = (store.settings.entryFee || 100) * 100; // paise
+    const settingsSnap = await db.collection('config').doc('settings').get();
+    const settings = settingsSnap.exists ? settingsSnap.data() : {};
+    const amount = (settings.entryFee || 99) * 100;
 
     const MOCK_MODE = !process.env.RAZORPAY_KEY_ID || process.env.RAZORPAY_KEY_ID === 'rzp_test_MOCK';
 
@@ -45,7 +52,7 @@ module.exports = async function handler(req, res) {
           amount,
           currency: 'INR',
           receipt: 'malwa_' + Date.now(),
-          notes: { teamName, leaderEmail },
+          notes: { teamName, leaderEmail: emailLower },
         });
       } catch (rzpErr) {
         console.error('Razorpay API error:', rzpErr.statusCode, rzpErr.error || rzpErr.message);
@@ -57,12 +64,11 @@ module.exports = async function handler(req, res) {
     }
 
     const reg = {
-      id: 'reg_' + Date.now(),
       teamName,
       teamTag: teamTag || '',
       leaderName,
       leaderWhatsApp: leaderWhatsApp || '',
-      leaderEmail: leaderEmail.toLowerCase(),
+      leaderEmail: emailLower,
       players,
       substitute: substitute || { ign: '', bgmiId: '' },
       paymentStatus: 'pending',
@@ -70,9 +76,10 @@ module.exports = async function handler(req, res) {
       payNote: '',
       orderId: order.id,
       date: new Date().toISOString().split('T')[0],
+      createdAt: Date.now(),
     };
 
-    store.registrations.push(reg);
+    const docRef = await db.collection('registrations').add(reg);
 
     return res.status(200).json({
       existing: false,
@@ -80,7 +87,7 @@ module.exports = async function handler(req, res) {
       amount: order.amount,
       currency: order.currency,
       keyId: process.env.RAZORPAY_KEY_ID || 'rzp_test_MOCK',
-      registration: reg,
+      registration: { id: docRef.id, ...reg },
       mockMode: MOCK_MODE,
     });
 

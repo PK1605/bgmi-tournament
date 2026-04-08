@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Format | Malwa Esports</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .fmt-list { max-width: 700px; margin: 0 auto; }
+
+        .fmt-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 28px 30px;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .fmt-status {
+            position: absolute;
+            top: 16px; right: 20px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 3px 12px;
+            border-radius: 20px;
+        }
+        .fmt-status.active { background: rgba(46,204,113,0.12); color: #2ecc71; border: 1px solid rgba(46,204,113,0.2); }
+        .fmt-status.upcoming { background: rgba(255,107,0,0.1); color: var(--amber); border: 1px solid rgba(255,107,0,0.2); }
+
+        .fmt-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+
+        .fmt-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 30px;
+        }
+
+        .fmt-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .fmt-key {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #666;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .fmt-val {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #ccc;
+        }
+
+        .fmt-maps {
+            margin-top: 14px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .fmt-map-tag {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 5px 14px;
+            border-radius: 6px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #999;
+            letter-spacing: 1px;
+        }
+
+        .fmt-prizes {
+            margin-top: 14px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .fmt-prize-tag {
+            background: rgba(255,107,0,0.05);
+            border: 1px solid rgba(255,107,0,0.1);
+            padding: 5px 14px;
+            border-radius: 6px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #aaa;
+        }
+
+        .fmt-prize-tag strong { color: var(--amber); }
+
+        .fmt-empty {
+            text-align: center;
+            color: #555;
+            padding: 50px 20px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 600px) {
+            .fmt-grid { grid-template-columns: 1fr; }
+            .fmt-card { padding: 22px 18px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bgmi-bg-canvas" id="bgmiCanvas"></div>
+
+<nav class="navbar">
+    <a href="index.html" class="nav-logo">MALWA ESPORTS</a>
+    <button type="button" class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">&#9776;</button>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="format.html" class="nav-active">Format</a></li>
+        <li><a href="maps.html">Maps</a></li>
+        <li><a href="points.html">Points</a></li>
+        <li><a href="prizes.html">Prizes</a></li>
+        <li><a href="rules.html">Rules</a></li>
+        <li><a href="admin.html" class="nav-admin">Admin</a></li>
+        <li><a href="register.html" class="nav-cta">Register</a></li>
+    </ul>
+</nav>
+
+<div class="page-top"></div>
+
+<section style="position:relative;z-index:1;">
+    <div class="section">
+        <div class="section-header fade-in">
+            <div class="section-label">How It Works</div>
+            <h2 class="section-title">Tournament Format</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="fmt-list" id="fmtList">
+            <div class="fmt-empty">Loading...</div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    &copy; 2026 <span>Malwa Esports Private Limited</span><br>
+    <span style="font-size:0.8rem;color:#555;">Founded by Purushottam Patidar</span><br>
+    <span style="font-size:0.78rem;color:#444;margin-top:4px;display:inline-block;">7489244521 | malwaesports@1605.com</span>
+</footer>
+
+<script>
+(function(){
+    fetch('/api/settings')
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+            var list = document.getElementById('fmtList');
+            var tournaments = d.tournaments || [];
+            if (!tournaments.length) {
+                list.innerHTML = '<div class="fmt-empty">No tournaments scheduled yet.</div>';
+                return;
+            }
+            var html = '';
+            tournaments.forEach(function(t){
+                var statusCls = t.status === 'active' ? 'active' : 'upcoming';
+                var statusTxt = t.status === 'active' ? 'Live' : 'Upcoming';
+                var totalPrize = (t.prizes || []).reduce(function(a,b){ return a+b; }, 0);
+
+                html += '<div class="fmt-card fade-in">';
+                html += '<div class="fmt-status ' + statusCls + '">' + statusTxt + '</div>';
+                html += '<div class="fmt-name">' + t.name + '</div>';
+                html += '<div class="fmt-grid">';
+                html += '<div class="fmt-item"><span class="fmt-key">Mode</span><span class="fmt-val">' + t.mode + '</span></div>';
+                html += '<div class="fmt-item"><span class="fmt-key">Perspective</span><span class="fmt-val">' + t.perspective + '</span></div>';
+                html += '<div class="fmt-item"><span class="fmt-key">Team Size</span><span class="fmt-val">' + t.teamSize + ' Players</span></div>';
+                html += '<div class="fmt-item"><span class="fmt-key">Matches</span><span class="fmt-val">' + t.matches + ' per day</span></div>';
+                html += '<div class="fmt-item"><span class="fmt-key">Time</span><span class="fmt-val">' + t.time + '</span></div>';
+                html += '<div class="fmt-item"><span class="fmt-key">Entry Fee</span><span class="fmt-val">\u20B9' + t.entryFee + '</span></div>';
+                html += '<div class="fmt-item"><span class="fmt-key">Prize Pool</span><span class="fmt-val">\u20B9' + totalPrize.toLocaleString() + '</span></div>';
+                html += '<div class="fmt-item"><span class="fmt-key">Winners</span><span class="fmt-val">Top ' + (t.prizes || []).length + '</span></div>';
+                html += '</div>';
+
+                if (t.maps && t.maps.length) {
+                    html += '<div class="fmt-maps">';
+                    t.maps.forEach(function(m){ html += '<span class="fmt-map-tag">' + m + '</span>'; });
+                    html += '</div>';
+                }
+
+                if (t.prizes && t.prizes.length) {
+                    html += '<div class="fmt-prizes">';
+                    t.prizes.forEach(function(p, i){
+                        html += '<span class="fmt-prize-tag"><strong>#' + (i+1) + '</strong> \u20B9' + p + '</span>';
+                    });
+                    html += '</div>';
+                }
+
+                html += '</div>';
+            });
+            list.innerHTML = html;
+
+            var obs = new IntersectionObserver(function(entries){
+                entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('visible'); });
+            },{threshold:0.1});
+            document.querySelectorAll('.fade-in').forEach(function(el){ obs.observe(el); });
+        })
+        .catch(function(){ document.getElementById('fmtList').innerHTML = '<div class="fmt-empty">Failed to load.</div>'; });
+})();
+
+(function(){
+    document.querySelector('.navbar').addEventListener('click',function(e){
+        if(e.target.tagName==='A') document.querySelector('.nav-links').classList.remove('open');
+    });
+})();
+
+(function(){
+    var c=document.getElementById('bgmiCanvas'); if(!c) return;
+    var icons=['<svg viewBox="0 0 24 60" fill="currentColor"><rect x="6" y="0" width="12" height="40" rx="6" ry="6"/><rect x="4" y="36" width="16" height="20" rx="2"/><rect x="6" y="52" width="12" height="8" rx="1"/></svg>','<svg viewBox="0 0 60 50" fill="currentColor"><path d="M10,35 Q10,8 30,5 Q50,8 50,35 L48,40 Q30,45 12,40Z"/><rect x="8" y="35" width="44" height="6" rx="3"/></svg>','<svg viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="2"><circle cx="25" cy="25" r="18"/><circle cx="25" cy="25" r="8"/><line x1="25" y1="2" x2="25" y2="15"/><line x1="25" y1="35" x2="25" y2="48"/><line x1="2" y1="25" x2="15" y2="25"/><line x1="35" y1="25" x2="48" y2="25"/></svg>'];
+    for(var i=0;i<15;i++){var el=document.createElement('div');el.className='float-icon';el.innerHTML=icons[Math.floor(Math.random()*icons.length)];var s=20+Math.random()*30,l=Math.random()*100,d=20+Math.random()*30,dl=Math.random()*-40,o=0.015+Math.random()*0.03;el.style.cssText='left:'+l+'%;width:'+s+'px;height:'+s+'px;color:rgba(255,107,0,'+(o/0.03)+');opacity:'+o+';animation-duration:'+d+'s;animation-delay:'+dl+'s;';c.appendChild(el);}
+})();
+</script>
+
+</body>
+</html>

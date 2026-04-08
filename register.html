@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Squad | Malwa Esports</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .auth-signed-in {
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(255,107,0,0.06); border: 1px solid rgba(255,107,0,0.15);
+            border-radius: 10px; padding: 12px 18px; margin-bottom: 24px;
+        }
+        .auth-signed-in .auth-email { color: var(--amber); font-weight: 600; font-family: 'Rajdhani', sans-serif; font-size: 0.95rem; }
+        .auth-signed-in .auth-logout-btn {
+            background: none; border: 1px solid rgba(255,255,255,0.1); color: #888;
+            padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;
+            font-family: 'Rajdhani', sans-serif; font-weight: 600; letter-spacing: 1px; transition: all 0.3s;
+        }
+        .auth-signed-in .auth-logout-btn:hover { border-color: #ff4444; color: #ff4444; }
+        .pass-wrap { position: relative; }
+        .pass-wrap input { padding-right: 42px; }
+    </style>
+</head>
+<body>
+
+<div class="bgmi-bg-canvas" id="bgmiCanvas"></div>
+
+<nav class="navbar">
+    <a href="index.html" class="nav-logo">MALWA ESPORTS</a>
+    <button type="button" class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">&#9776;</button>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="format.html">Format</a></li>
+        <li><a href="maps.html">Maps</a></li>
+        <li><a href="points.html">Points</a></li>
+        <li><a href="prizes.html">Prizes</a></li>
+        <li><a href="rules.html">Rules</a></li>
+        <li><a href="admin.html" class="nav-admin">Admin</a></li>
+        <li><a href="register.html" class="nav-active nav-cta">Register</a></li>
+    </ul>
+</nav>
+
+<div class="page-top"></div>
+
+<section id="register">
+    <div class="section">
+        <div class="section-header fade-in">
+            <div class="section-label">Squad Registration</div>
+            <h2 class="section-title">Register Your Team</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <!-- AUTH GATE -->
+        <div id="authGate" class="form-card fade-in">
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchAuthTab('signin')">Sign In</button>
+                <button class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
+            </div>
+            <div id="authSignupName" style="display:none">
+                <div class="form-group">
+                    <label>Full Name <span class="req">*</span></label>
+                    <input type="text" id="authName" placeholder="Your full name" minlength="2" maxlength="50">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Email <span class="req">*</span></label>
+                <input type="email" id="authEmail" placeholder="you@email.com">
+            </div>
+            <div class="form-group">
+                <label>Password <span class="req">*</span></label>
+                <div class="pass-wrap">
+                    <input type="password" id="authPass" placeholder="Min 6 characters" minlength="6">
+                    <span class="pass-toggle" onclick="togglePass('authPass',this)">&#128065;</span>
+                </div>
+            </div>
+            <div id="authConfirmWrap" style="display:none">
+                <div class="form-group">
+                    <label>Confirm Password <span class="req">*</span></label>
+                    <div class="pass-wrap">
+                        <input type="password" id="authConfirm" placeholder="Re-enter password">
+                        <span class="pass-toggle" onclick="togglePass('authConfirm',this)">&#128065;</span>
+                    </div>
+                </div>
+            </div>
+            <button class="submit-btn" id="authSubmitBtn" onclick="doAuth()">SIGN IN</button>
+            <p id="authError" style="color:#ff4444;text-align:center;margin-top:12px;font-size:0.85rem;display:none"></p>
+            <p style="text-align:center;margin-top:16px;font-size:0.85rem;color:#666">
+                <span id="authSwitchText">Don't have an account?</span>
+                <a href="#" style="color:var(--amber)" onclick="event.preventDefault();switchAuthTab(authMode==='signin'?'signup':'signin')">
+                    <span id="authSwitchLink">Sign Up</span>
+                </a>
+            </p>
+        </div>
+
+        <!-- REGISTRATION FORM (hidden until auth) -->
+        <div id="regFormCard" class="form-card fade-in" style="display:none">
+            <div id="signedInBar" class="auth-signed-in">
+                <span class="auth-email" id="signedEmail"></span>
+                <button class="auth-logout-btn" onclick="doLogout()">Logout</button>
+            </div>
+
+            <form id="regForm" onsubmit="return false;">
+                <div class="section-heading"><span class="icon-box">&#9813;</span> Team Info</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Team Name <span class="req">*</span></label>
+                        <input type="text" id="teamName" placeholder="e.g. Team SouL" required minlength="3" maxlength="30" onblur="validateField(this)" oninput="clearError(this)">
+                        <div class="field-error" id="err-teamName">Team name must be 3-30 characters</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Team Tag <span class="req">*</span></label>
+                        <input type="text" id="teamTag" placeholder="e.g. TSM" required minlength="2" maxlength="5" onblur="validateField(this)" oninput="clearError(this)">
+                        <div class="field-error" id="err-teamTag">Tag must be 2-5 characters</div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Leader Name <span class="req">*</span></label>
+                        <input type="text" id="leaderName" placeholder="Leader's real name" required minlength="2" maxlength="50" onblur="validateField(this)" oninput="clearError(this)">
+                        <div class="field-error" id="err-leaderName">Name must be 2-50 characters</div>
+                    </div>
+                    <div class="form-group">
+                        <label>WhatsApp Number <span class="req">*</span></label>
+                        <input type="tel" id="leaderWhatsApp" placeholder="10 digit mobile" required pattern="[6-9][0-9]{9}" maxlength="10" onblur="validateField(this)" oninput="clearError(this)">
+                        <div class="field-error" id="err-leaderWhatsApp">Enter valid 10-digit Indian mobile</div>
+                    </div>
+                </div>
+
+                <div class="form-divider"></div>
+                <div class="section-heading"><span class="icon-box">&#9876;</span> Players</div>
+
+                <div class="player-block">
+                    <div class="p-head"><div class="p-num">1</div><div class="p-label">Player 1 (Leader)</div></div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>In-Game Name <span class="req">*</span></label>
+                            <input type="text" class="ign-input" id="ign1" placeholder="IGN" required minlength="3" maxlength="20" onblur="validateField(this)" oninput="clearError(this)">
+                            <div class="field-error">IGN must be 3-20 characters</div>
+                        </div>
+                        <div class="form-group">
+                            <label>BGMI ID <span class="req">*</span></label>
+                            <input type="text" class="bgmi-input" id="bgmi1" placeholder="e.g. 5100000001" required minlength="8" maxlength="12" onblur="validateField(this)" oninput="clearError(this)">
+                            <div class="field-error">BGMI ID must be 8-12 digits</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="player-block">
+                    <div class="p-head"><div class="p-num">2</div><div class="p-label">Player 2</div></div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>In-Game Name <span class="req">*</span></label>
+                            <input type="text" class="ign-input" id="ign2" placeholder="IGN" required minlength="3" maxlength="20" onblur="validateField(this)" oninput="clearError(this)">
+                            <div class="field-error">IGN must be 3-20 characters</div>
+                        </div>
+                        <div class="form-group">
+                            <label>BGMI ID <span class="req">*</span></label>
+                            <input type="text" class="bgmi-input" id="bgmi2" placeholder="e.g. 5200000002" required minlength="8" maxlength="12" onblur="validateField(this)" oninput="clearError(this)">
+                            <div class="field-error">BGMI ID must be 8-12 digits</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="player-block">
+                    <div class="p-head"><div class="p-num">3</div><div class="p-label">Player 3</div></div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>In-Game Name <span class="req">*</span></label>
+                            <input type="text" class="ign-input" id="ign3" placeholder="IGN" required minlength="3" maxlength="20" onblur="validateField(this)" oninput="clearError(this)">
+                            <div class="field-error">IGN must be 3-20 characters</div>
+                        </div>
+                        <div class="form-group">
+                            <label>BGMI ID <span class="req">*</span></label>
+                            <input type="text" class="bgmi-input" id="bgmi3" placeholder="e.g. 5300000003" required minlength="8" maxlength="12" onblur="validateField(this)" oninput="clearError(this)">
+                            <div class="field-error">BGMI ID must be 8-12 digits</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="player-block">
+                    <div class="p-head"><div class="p-num">4</div><div class="p-label">Player 4</div></div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>In-Game Name <span class="req">*</span></label>
+                            <input type="text" class="ign-input" id="ign4" placeholder="IGN" required minlength="3" maxlength="20" onblur="validateField(this)" oninput="clearError(this)">
+                            <div class="field-error">IGN must be 3-20 characters</div>
+                        </div>
+                        <div class="form-group">
+                            <label>BGMI ID <span class="req">*</span></label>
+                            <input type="text" class="bgmi-input" id="bgmi4" placeholder="e.g. 5400000004" required minlength="8" maxlength="12" onblur="validateField(this)" oninput="clearError(this)">
+                            <div class="field-error">BGMI ID must be 8-12 digits</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="player-block sub">
+                    <div class="p-head"><div class="p-num">S</div><div class="p-label">Substitute (Optional)</div></div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>In-Game Name</label>
+                            <input type="text" id="subIgn" placeholder="Substitute IGN" maxlength="20">
+                        </div>
+                        <div class="form-group">
+                            <label>BGMI ID</label>
+                            <input type="text" id="subBgmi" placeholder="Substitute BGMI ID" maxlength="12">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-divider"></div>
+                <div class="section-heading"><span class="icon-box">&#9745;</span> Confirm</div>
+
+                <div class="agree-item">
+                    <input type="checkbox" id="agreeRules" required>
+                    <span>I have read and agree to the <strong>tournament rules</strong>. My team will follow all guidelines.</span>
+                </div>
+                <div class="agree-item">
+                    <input type="checkbox" id="agreeRefund" required>
+                    <span>I understand the <strong>entry fee (&#8377;99) is non-refundable</strong> once payment is confirmed.</span>
+                </div>
+
+                <button class="submit-btn" onclick="submitRegistration()">REGISTER SQUAD &mdash; &#8377;99</button>
+            </form>
+        </div>
+
+        <!-- PAYMENT -->
+        <div id="paymentSection" class="payment-section">
+            <div class="payment-card">
+                <div style="font-size:2.5rem;margin-bottom:10px">&#128176;</div>
+                <div class="payment-amount">&#8377;99</div>
+                <div class="payment-label">Entry Fee</div>
+                <button class="submit-btn" id="payNowBtn" onclick="openRazorpayCheckout()" style="max-width:350px;margin:0 auto">PAY NOW</button>
+                <p style="color:#555;font-size:0.8rem;margin-top:14px">Powered by Razorpay</p>
+            </div>
+        </div>
+
+        <!-- SUCCESS -->
+        <div id="successSection" class="success-section">
+            <div class="success-card">
+                <div class="success-icon">&#9989;</div>
+                <div class="success-title">REGISTRATION COMPLETE</div>
+                <div class="success-msg">Your squad has been registered. Join the WhatsApp group for room details and match updates.</div>
+                <a href="#" id="whatsappBtn" class="whatsapp-btn" target="_blank">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.694-1.322A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.315 0-4.46-.764-6.187-2.054l-.432-.33-3.22.907.84-3.088-.362-.476A9.935 9.935 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+                    JOIN WHATSAPP GROUP
+                </a>
+            </div>
+            <div id="roomBanner" class="room-banner">
+                <div class="room-label">Room Details</div>
+                <div class="room-info" id="roomId"></div>
+                <div class="room-info" id="roomPass"></div>
+                <div class="room-msg" id="roomMsg"></div>
+            </div>
+        </div>
+
+        <!-- STATUS CHECK -->
+        <div class="status-check fade-in">
+            <span class="status-link" onclick="document.getElementById('statusModal').classList.add('show')">Already registered? Check your status</span>
+        </div>
+    </div>
+</section>
+
+<!-- STATUS MODAL -->
+<div class="status-modal" id="statusModal">
+    <div class="status-modal-inner">
+        <h3>Check Registration</h3>
+        <input type="email" id="statusEmail" placeholder="Enter your email">
+        <div class="btn-row">
+            <button class="btn-check" onclick="checkStatus()">Check</button>
+            <button class="btn-close" onclick="document.getElementById('statusModal').classList.remove('show')">Close</button>
+        </div>
+        <div id="statusResult" style="margin-top:16px;font-size:0.9rem;color:#999;text-align:center"></div>
+    </div>
+</div>
+
+<footer class="footer">
+    &copy; 2026 <span>Malwa Esports Private Limited</span><br>
+    <span style="font-size:0.8rem;color:#555;">Founded by Purushottam Patidar</span><br>
+    <span style="font-size:0.78rem;color:#444;margin-top:4px;display:inline-block;">7489244521 | malwaesports@1605.com</span>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var currentUser = null;
+var authMode = 'signin';
+var currentRegistration = null;
+var currentOrder = null;
+
+// ==================== TOAST ====================
+function showToast(msg, type) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast ' + (type || 'info') + ' show';
+    setTimeout(function () { t.classList.remove('show'); }, 3000);
+}
+
+// ==================== AUTH ====================
+function switchAuthTab(mode) {
+    authMode = mode;
+    var tabs = document.querySelectorAll('.auth-tab');
+    tabs[0].classList.toggle('active', mode === 'signin');
+    tabs[1].classList.toggle('active', mode === 'signup');
+    document.getElementById('authSignupName').style.display = mode === 'signup' ? '' : 'none';
+    document.getElementById('authConfirmWrap').style.display = mode === 'signup' ? '' : 'none';
+    document.getElementById('authSubmitBtn').textContent = mode === 'signup' ? 'CREATE ACCOUNT' : 'SIGN IN';
+    document.getElementById('authSwitchText').textContent = mode === 'signup' ? 'Already have an account?' : "Don't have an account?";
+    document.getElementById('authSwitchLink').textContent = mode === 'signup' ? 'Sign In' : 'Sign Up';
+    document.getElementById('authError').style.display = 'none';
+}
+
+function togglePass(id, el) {
+    var inp = document.getElementById(id);
+    if (inp.type === 'password') { inp.type = 'text'; el.style.opacity = '0.8'; }
+    else { inp.type = 'password'; el.style.opacity = '0.4'; }
+}
+
+function doAuth() {
+    var email = document.getElementById('authEmail').value.trim();
+    var pass = document.getElementById('authPass').value;
+    var errEl = document.getElementById('authError');
+    errEl.style.display = 'none';
+
+    if (!email || !pass) { errEl.textContent = 'Fill all fields'; errEl.style.display = 'block'; return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { errEl.textContent = 'Invalid email format'; errEl.style.display = 'block'; return; }
+
+    var body = { action: authMode, email: email, password: pass };
+
+    if (authMode === 'signup') {
+        var name = document.getElementById('authName').value.trim();
+        var confirm = document.getElementById('authConfirm').value;
+        if (!name || name.length < 2) { errEl.textContent = 'Name is required (min 2 chars)'; errEl.style.display = 'block'; return; }
+        if (pass.length < 6) { errEl.textContent = 'Password must be at least 6 characters'; errEl.style.display = 'block'; return; }
+        if (pass !== confirm) { errEl.textContent = 'Passwords do not match'; errEl.style.display = 'block'; return; }
+        body.name = name;
+    }
+
+    var btn = document.getElementById('authSubmitBtn');
+    btn.disabled = true;
+    btn.innerHTML = (authMode === 'signup' ? 'CREATING...' : 'SIGNING IN...') + '<span class="loader"></span>';
+
+    fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    })
+    .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+    .then(function (res) {
+        btn.disabled = false;
+        if (!res.ok) {
+            errEl.textContent = res.data.error || 'Something went wrong';
+            errEl.style.display = 'block';
+            btn.textContent = authMode === 'signup' ? 'CREATE ACCOUNT' : 'SIGN IN';
+            return;
+        }
+        currentUser = res.data.user;
+        localStorage.setItem('bgmi_auth', JSON.stringify({ email: currentUser.email, token: currentUser.token }));
+        onAuthSuccess();
+    })
+    .catch(function () {
+        btn.disabled = false;
+        btn.textContent = authMode === 'signup' ? 'CREATE ACCOUNT' : 'SIGN IN';
+        errEl.textContent = 'Network error. Try again.';
+        errEl.style.display = 'block';
+    });
+}
+
+function onAuthSuccess() {
+    document.getElementById('authGate').style.display = 'none';
+    document.getElementById('regFormCard').style.display = '';
+    document.getElementById('signedEmail').textContent = 'Signed in as ' + currentUser.email;
+    if (currentUser.name) document.getElementById('leaderName').value = currentUser.name;
+    showToast('Welcome, ' + (currentUser.name || currentUser.email) + '!', 'success');
+}
+
+function doLogout() {
+    currentUser = null;
+    localStorage.removeItem('bgmi_auth');
+    document.getElementById('authGate').style.display = '';
+    document.getElementById('regFormCard').style.display = 'none';
+    switchAuthTab('signin');
+    showToast('Logged out', 'info');
+}
+
+// Auto-restore session
+(function () {
+    try {
+        var saved = JSON.parse(localStorage.getItem('bgmi_auth'));
+        if (saved && saved.email && saved.token) {
+            fetch('/api/auth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'verify', email: saved.email, password: 'x', token: saved.token })
+            })
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+                if (d.success && d.user) {
+                    currentUser = d.user;
+                    onAuthSuccess();
+                }
+            })
+            .catch(function () {});
+        }
+    } catch (e) {}
+})();
+
+// ==================== VALIDATION ====================
+var V = {
+    teamName: { min: 3, max: 30 },
+    teamTag: { min: 2, max: 5 },
+    leaderName: { min: 2, max: 50 },
+    leaderWhatsApp: { regex: /^[6-9]\d{9}$/ },
+    ign: { min: 3, max: 20 },
+    bgmi: { regex: /^\d{8,12}$/ }
+};
+
+function validateField(el) {
+    var id = el.id;
+    var val = el.value.trim();
+    var group = el.closest('.form-group');
+    if (!group) return true;
+
+    var valid = true;
+    if (id === 'leaderWhatsApp') { valid = V.leaderWhatsApp.regex.test(val); }
+    else if (id.startsWith('bgmi')) { valid = V.bgmi.regex.test(val); }
+    else if (id.startsWith('ign')) { valid = val.length >= V.ign.min && val.length <= V.ign.max; }
+    else if (V[id]) { valid = val.length >= V[id].min && val.length <= V[id].max; }
+
+    group.classList.toggle('has-error', !valid);
+    group.classList.toggle('valid', valid);
+    return valid;
+}
+
+function clearError(el) {
+    var g = el.closest('.form-group');
+    if (g) { g.classList.remove('has-error'); }
+}
+
+function validateAllFields() {
+    var allValid = true;
+    var fields = ['teamName', 'teamTag', 'leaderName', 'leaderWhatsApp', 'ign1', 'bgmi1', 'ign2', 'bgmi2', 'ign3', 'bgmi3', 'ign4', 'bgmi4'];
+    fields.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el && !validateField(el)) allValid = false;
+    });
+
+    // Check duplicate IGNs
+    var igns = [];
+    for (var i = 1; i <= 4; i++) { igns.push(document.getElementById('ign' + i).value.trim().toLowerCase()); }
+    var ignSet = new Set(igns.filter(Boolean));
+    if (ignSet.size < igns.filter(Boolean).length) {
+        showToast('Duplicate IGN names found!', 'error');
+        allValid = false;
+    }
+
+    // Check duplicate BGMI IDs
+    var bgmis = [];
+    for (var j = 1; j <= 4; j++) { bgmis.push(document.getElementById('bgmi' + j).value.trim()); }
+    var bgmiSet = new Set(bgmis.filter(Boolean));
+    if (bgmiSet.size < bgmis.filter(Boolean).length) {
+        showToast('Duplicate BGMI IDs found!', 'error');
+        allValid = false;
+    }
+
+    if (!document.getElementById('agreeRules').checked || !document.getElementById('agreeRefund').checked) {
+        showToast('Please agree to all terms', 'error');
+        allValid = false;
+    }
+
+    return allValid;
+}
+
+// ==================== REGISTRATION ====================
+function submitRegistration() {
+    if (!validateAllFields()) return;
+
+    var players = [];
+    for (var i = 1; i <= 4; i++) {
+        players.push({
+            ign: document.getElementById('ign' + i).value.trim(),
+            bgmiId: document.getElementById('bgmi' + i).value.trim()
+        });
+    }
+
+    var data = {
+        teamName: document.getElementById('teamName').value.trim(),
+        teamTag: document.getElementById('teamTag').value.trim(),
+        leaderName: document.getElementById('leaderName').value.trim(),
+        leaderWhatsApp: document.getElementById('leaderWhatsApp').value.trim(),
+        leaderEmail: currentUser.email,
+        players: players,
+        substitute: {
+            ign: document.getElementById('subIgn').value.trim(),
+            bgmiId: document.getElementById('subBgmi').value.trim()
+        }
+    };
+
+    var btn = document.querySelector('#regForm .submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = 'SUBMITTING...<span class="loader"></span>';
+
+    fetch('/api/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
+    .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+    .then(function (res) {
+        btn.disabled = false;
+        btn.textContent = 'REGISTER SQUAD — \u20B999';
+
+        if (!res.ok) {
+            showToast(res.data.error || 'Registration failed', 'error');
+            return;
+        }
+
+        if (res.data.existing) {
+            currentRegistration = res.data.registration;
+            handleExistingRegistration(currentRegistration);
+            return;
+        }
+
+        currentRegistration = res.data.registration;
+        currentOrder = res.data;
+
+        document.getElementById('regFormCard').style.display = 'none';
+        document.getElementById('paymentSection').style.display = '';
+        showToast('Squad registered! Proceed to payment.', 'success');
+    })
+    .catch(function () {
+        btn.disabled = false;
+        btn.textContent = 'REGISTER SQUAD — \u20B999';
+        showToast('Network error. Try again.', 'error');
+    });
+}
+
+function handleExistingRegistration(reg) {
+    if (reg.paymentStatus === 'verified') {
+        document.getElementById('regFormCard').style.display = 'none';
+        document.getElementById('successSection').style.display = '';
+        showToast('Already registered & paid!', 'success');
+        loadRoomInfo();
+    } else {
+        showToast('Already registered. Complete payment.', 'info');
+        document.getElementById('regFormCard').style.display = 'none';
+        document.getElementById('paymentSection').style.display = '';
+    }
+}
+
+// ==================== PAYMENT ====================
+function openRazorpayCheckout() {
+    if (!currentOrder || !currentRegistration) {
+        showToast('No order found. Register first.', 'error');
+        return;
+    }
+
+    if (currentOrder.mockMode) {
+        showToast('Payment gateway not configured. Contact admin.', 'error');
+        return;
+    }
+
+    var options = {
+        key: currentOrder.keyId,
+        amount: currentOrder.amount,
+        currency: currentOrder.currency,
+        name: 'Malwa Esports',
+        description: 'Tournament Entry Fee',
+        order_id: currentOrder.orderId,
+        handler: function (response) { verifyPayment(response); },
+        prefill: {
+            name: currentRegistration.leaderName,
+            email: currentRegistration.leaderEmail,
+            contact: currentRegistration.leaderWhatsApp
+        },
+        theme: { color: '#FF6B00' }
+    };
+
+    var rzp = new Razorpay(options);
+    rzp.open();
+}
+
+function verifyPayment(response) {
+    var btn = document.getElementById('payNowBtn');
+    btn.disabled = true;
+    btn.innerHTML = 'VERIFYING...<span class="loader"></span>';
+
+    fetch('/api/verify-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+            registrationId: currentRegistration.id
+        })
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+        btn.disabled = false;
+        if (data.verified) {
+            document.getElementById('paymentSection').style.display = 'none';
+            document.getElementById('successSection').style.display = '';
+            if (data.whatsappLink) {
+                document.getElementById('whatsappBtn').href = data.whatsappLink;
+            }
+            if (data.roomInfo && data.roomInfo.roomId) {
+                showRoomInfo(data.roomInfo);
+            }
+            showToast('Payment verified! Welcome aboard!', 'success');
+        } else {
+            btn.textContent = 'PAY NOW';
+            showToast('Payment verification failed', 'error');
+        }
+    })
+    .catch(function () {
+        btn.disabled = false;
+        btn.textContent = 'PAY NOW';
+        showToast('Verification error. Contact admin.', 'error');
+    });
+}
+
+function showRoomInfo(info) {
+    var banner = document.getElementById('roomBanner');
+    banner.style.display = '';
+    document.getElementById('roomId').textContent = 'Room ID: ' + info.roomId;
+    document.getElementById('roomPass').textContent = 'Password: ' + info.roomPass;
+    document.getElementById('roomMsg').textContent = info.roomMessage || '';
+}
+
+function loadRoomInfo() {
+    fetch('/api/settings')
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+            if (d.whatsappLink) document.getElementById('whatsappBtn').href = d.whatsappLink;
+            if (d.roomInfo && d.roomInfo.roomId) showRoomInfo(d.roomInfo);
+        })
+        .catch(function () {});
+}
+
+// ==================== STATUS CHECK ====================
+function checkStatus() {
+    var email = document.getElementById('statusEmail').value.trim();
+    var resultEl = document.getElementById('statusResult');
+    if (!email) { resultEl.innerHTML = '<span style="color:#ff4444">Enter your email</span>'; return; }
+
+    resultEl.innerHTML = 'Checking...';
+
+    fetch('/api/registrations?email=' + encodeURIComponent(email))
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+            if (!d.registration) {
+                resultEl.innerHTML = '<span style="color:#ff4444">No registration found for this email</span>';
+                return;
+            }
+            var r = d.registration;
+            var statusColor = r.paymentStatus === 'verified' ? '#2ecc71' : r.paymentStatus === 'submitted' ? '#f39c12' : '#ff4444';
+            resultEl.innerHTML =
+                '<div style="text-align:left;margin-top:10px">' +
+                '<div style="margin-bottom:6px"><strong style="color:#fff">' + r.teamName + '</strong> [' + r.teamTag + ']</div>' +
+                '<div style="margin-bottom:4px">Leader: ' + r.leaderName + '</div>' +
+                '<div>Payment: <span style="color:' + statusColor + ';font-weight:700">' + r.paymentStatus.toUpperCase() + '</span></div>' +
+                '</div>';
+        })
+        .catch(function () {
+            resultEl.innerHTML = '<span style="color:#ff4444">Network error</span>';
+        });
+}
+
+// ==================== COMMON ====================
+(function () {
+    var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(function (el) { observer.observe(el); });
+    document.querySelector('.navbar').addEventListener('click', function (e) {
+        if (e.target.tagName === 'A') document.querySelector('.nav-links').classList.remove('open');
+    });
+})();
+
+(function () {
+    var c = document.getElementById('bgmiCanvas'); if (!c) return;
+    var icons = [
+        '<svg viewBox="0 0 24 60" fill="currentColor"><rect x="6" y="0" width="12" height="40" rx="6" ry="6"/><rect x="4" y="36" width="16" height="20" rx="2"/><rect x="6" y="52" width="12" height="8" rx="1"/></svg>',
+        '<svg viewBox="0 0 60 50" fill="currentColor"><path d="M10,35 Q10,8 30,5 Q50,8 50,35 L48,40 Q30,45 12,40Z"/><rect x="8" y="35" width="44" height="6" rx="3"/></svg>',
+        '<svg viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="2"><circle cx="25" cy="25" r="18"/><circle cx="25" cy="25" r="8"/><line x1="25" y1="2" x2="25" y2="15"/><line x1="25" y1="35" x2="25" y2="48"/><line x1="2" y1="25" x2="15" y2="25"/><line x1="35" y1="25" x2="48" y2="25"/></svg>'
+    ];
+    for (var i = 0; i < 20; i++) {
+        var el = document.createElement('div');
+        el.className = 'float-icon';
+        el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+        var s = 20 + Math.random() * 35, l = Math.random() * 100, d = 18 + Math.random() * 30, dl = Math.random() * -40, o = 0.02 + Math.random() * 0.04;
+        el.style.cssText = 'left:' + l + '%;width:' + s + 'px;height:' + s + 'px;color:rgba(255,107,0,' + (o / 0.04) + ');opacity:' + o + ';animation-duration:' + d + 's;animation-delay:' + dl + 's;';
+        c.appendChild(el);
+    }
+})();
+</script>
+
+</body>
+</html>

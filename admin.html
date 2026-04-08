@@ -7,15 +7,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --fire: #ff4500;
-            --orange: #ff6a00;
-            --gold: #ffd700;
-            --amber: #ff8c00;
-            --dark: #0a0a12;
-            --card: #12121e;
-            --border: #2a2a4a;
-            --green: #00c853;
-            --red: #ff1744;
+            --fire: #FF6B00;
+            --orange: #E55A00;
+            --gold: #FF9D45;
+            --amber: #FF7A1A;
+            --dark: #080808;
+            --card: #111111;
+            --border: #1e1e1e;
+            --green: #2ecc71;
+            --red: #e74c3c;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -33,7 +33,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 70px 20px 20px;
         }
 
         .login-card {
@@ -92,7 +92,7 @@
 
         .login-input:focus {
             border-color: var(--fire);
-            box-shadow: 0 0 15px rgba(255, 69, 0, 0.1);
+            box-shadow: 0 0 15px rgba(245, 166, 35, 0.1);
         }
 
         .login-input::placeholder { color: #555; }
@@ -113,7 +113,7 @@
             margin-top: 5px;
         }
 
-        .login-btn:hover { box-shadow: 0 4px 30px rgba(255, 69, 0, 0.3); }
+        .login-btn:hover { box-shadow: 0 4px 30px rgba(245, 166, 35, 0.3); }
 
         /* ========== DASHBOARD ========== */
         .dashboard { display: none; }
@@ -121,7 +121,7 @@
         .dash-header {
             background: rgba(10, 10, 18, 0.95);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 69, 0, 0.15);
+            border-bottom: 1px solid rgba(245, 166, 35, 0.15);
             padding: 0 30px;
             height: 64px;
             display: flex;
@@ -194,7 +194,7 @@
             transition: all 0.3s;
         }
 
-        .tab-btn:hover { border-color: rgba(255, 69, 0, 0.3); color: #ccc; }
+        .tab-btn:hover { border-color: rgba(245, 166, 35, 0.3); color: #ccc; }
 
         .tab-btn.active {
             background: linear-gradient(135deg, var(--fire), var(--orange));
@@ -312,7 +312,7 @@
             border-bottom: 1px solid rgba(255,255,255,0.03);
         }
 
-        tr:hover td { background: rgba(255, 69, 0, 0.03); }
+        tr:hover td { background: rgba(245, 166, 35, 0.03); }
 
         .badge {
             display: inline-block;
@@ -425,7 +425,7 @@
             transition: all 0.3s;
         }
 
-        .save-btn:hover { box-shadow: 0 4px 20px rgba(255, 69, 0, 0.3); }
+        .save-btn:hover { box-shadow: 0 4px 20px rgba(245, 166, 35, 0.3); }
 
         /* ========== DETAIL MODAL ========== */
         .modal-overlay {
@@ -546,14 +546,23 @@
 </head>
 <body>
 
+<div style="position:fixed;top:0;left:0;right:0;z-index:999;background:rgba(10,10,20,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,107,0,0.15);padding:0 30px;display:flex;align-items:center;justify-content:space-between;height:50px;">
+    <a href="index.html" style="font-family:'Orbitron',sans-serif;font-size:0.85rem;font-weight:800;color:var(--fire);text-decoration:none;letter-spacing:2px;">MALWA ESPORTS</a>
+    <div style="display:flex;gap:10px;align-items:center;">
+        <a href="index.html" style="color:#777;text-decoration:none;font-family:'Rajdhani',sans-serif;font-weight:600;font-size:0.85rem;letter-spacing:1px;">Home</a>
+        <a href="register.html" style="color:#777;text-decoration:none;font-family:'Rajdhani',sans-serif;font-weight:600;font-size:0.85rem;letter-spacing:1px;">Register</a>
+        <span style="color:var(--amber);font-family:'Rajdhani',sans-serif;font-weight:600;font-size:0.85rem;letter-spacing:1px;">Admin</span>
+    </div>
+</div>
+
 <!-- ==================== LOGIN PAGE ==================== -->
 <div class="login-page" id="loginPage">
     <div class="login-card">
         <div class="login-logo">MALWA ESPORTS</div>
         <div class="login-sub">Admin Panel</div>
-        <input type="email" class="login-input" id="loginEmail" placeholder="Admin Email" value="malwaesports@1605.com">
+        <input type="email" class="login-input" id="loginEmail" placeholder="Admin Email">
         <input type="password" class="login-input" id="loginPass" placeholder="Password">
-        <p style="color:#555; font-size:0.78rem; margin-bottom:14px; font-family:'Rajdhani',sans-serif; letter-spacing:1px;">Demo Password: <strong style="color:var(--amber);">admin123</strong></p>
+        <p style="color:#555; font-size:0.78rem; margin-bottom:14px; font-family:'Rajdhani',sans-serif; letter-spacing:1px;">Admin access only</p>
         <button class="login-btn" onclick="adminLogin()">Login</button>
     </div>
 </div>
@@ -596,6 +605,8 @@
             <button class="tab-btn active" onclick="switchTab('registrations',this)">All Registrations</button>
             <button class="tab-btn" onclick="switchTab('today',this)">Today's Entries</button>
             <button class="tab-btn" onclick="switchTab('room',this)">Room ID / Pass</button>
+            <button class="tab-btn" onclick="switchTab('tournaments',this)">Tournaments</button>
+            <button class="tab-btn" onclick="switchTab('announcements',this)">Announcements</button>
             <button class="tab-btn" onclick="switchTab('settings',this)">Settings</button>
         </div>
 
@@ -693,6 +704,63 @@
             </div>
         </div>
 
+        <!-- TAB: TOURNAMENTS -->
+        <div class="tab-content" id="tab-tournaments">
+            <div class="settings-grid" style="grid-template-columns:1fr;">
+                <div class="settings-card">
+                    <div class="settings-title">Manage Tournaments</div>
+                    <p style="color:#666;font-size:0.8rem;margin-bottom:16px;">Add or edit scrims/tournaments. These show on the Format page and Tonight popup.</p>
+                    <div id="tournamentList" style="margin-bottom:20px;"></div>
+                    <div style="border-top:1px solid var(--border);padding-top:18px;margin-top:10px;">
+                        <div class="settings-title" style="font-size:0.85rem;">Add New Tournament</div>
+                        <label>Name</label>
+                        <input id="tName" placeholder="e.g. Daily Squad Scrims">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                            <div><label>Mode</label><input id="tMode" placeholder="Squad / Duo / Solo" value="Squad"></div>
+                            <div><label>Perspective</label><input id="tPerspective" placeholder="TPP / FPP" value="TPP"></div>
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+                            <div><label>Team Size</label><input id="tTeamSize" type="number" value="4"></div>
+                            <div><label>Matches</label><input id="tMatches" type="number" value="3"></div>
+                            <div><label>Entry Fee</label><input id="tEntryFee" type="number" value="99"></div>
+                        </div>
+                        <label>Time</label>
+                        <input id="tTime" placeholder="9:00 PM" value="9:00 PM">
+                        <label>Maps (comma separated)</label>
+                        <input id="tMaps" placeholder="Erangel, Miramar, Rondo" value="Erangel, Miramar, Rondo">
+                        <label>Prizes (comma separated, e.g. 400,250,200,150,100)</label>
+                        <input id="tPrizes" placeholder="400,250,200,150,100" value="400,250,200,150,100">
+                        <label>Status</label>
+                        <select id="tStatus" style="width:100%;padding:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:0.9rem;">
+                            <option value="active">Active (Live)</option>
+                            <option value="upcoming">Upcoming</option>
+                        </select>
+                        <button class="save-btn" onclick="addTournament()">Add Tournament</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: ANNOUNCEMENTS -->
+        <div class="tab-content" id="tab-announcements">
+            <div class="settings-grid" style="grid-template-columns:1fr;">
+                <div class="settings-card">
+                    <div class="settings-title">Home Page Updates</div>
+                    <p style="color:#666;font-size:0.8rem;margin-bottom:16px;">Add updates that show on the home page ticker strip. Pinned items get highlighted.</p>
+                    <div id="announcementList" style="margin-bottom:20px;"></div>
+                    <div style="border-top:1px solid var(--border);padding-top:18px;margin-top:10px;">
+                        <div class="settings-title" style="font-size:0.85rem;">Post New Update</div>
+                        <label>Message</label>
+                        <textarea id="annText" rows="2" placeholder="e.g. Tonight Squad Scrims — 9 PM | Erangel, Miramar, Rondo" style="width:100%;padding:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:0.9rem;font-family:'Inter',sans-serif;resize:vertical;"></textarea>
+                        <label style="display:flex;align-items:center;gap:8px;margin:10px 0;cursor:pointer;font-size:0.85rem;color:#888;">
+                            <input type="checkbox" id="annPinned" style="accent-color:var(--fire);width:16px;height:16px;"> Pin this update
+                        </label>
+                        <button class="save-btn" onclick="addAnnouncement()">Post Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- TAB: SETTINGS -->
         <div class="tab-content" id="tab-settings">
             <div class="settings-grid">
@@ -777,12 +845,13 @@
                 body: JSON.stringify({ type: 'adminLogin', password: pass }),
             });
             const data = await res.json();
-            if (data.success) {
+            if (data.success && data.adminToken) {
                 localStorage.setItem('bgmi_admin', email);
+                localStorage.setItem('bgmi_admin_token', data.adminToken);
                 showDashboard(email);
                 showToast('Login successful!', 'success');
             } else {
-                showToast('Wrong password! Use: admin123', 'error');
+                showToast('Invalid credentials', 'error');
             }
         } catch (err) {
             showToast('Server error: ' + err.message, 'error');
@@ -798,9 +867,15 @@
 
     function adminLogout() {
         localStorage.removeItem('bgmi_admin');
+        localStorage.removeItem('bgmi_admin_token');
         document.getElementById('loginPage').style.display = 'flex';
         document.getElementById('dashboard').style.display = 'none';
         showToast('Logged out!', 'info');
+    }
+
+    function adminHeaders() {
+        const token = localStorage.getItem('bgmi_admin_token') || '';
+        return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token };
     }
 
     const savedAdmin = localStorage.getItem('bgmi_admin');
@@ -816,8 +891,8 @@
         try {
             const res = await fetch('/api/settings');
             const cfg = await res.json();
-            document.getElementById('setEntryFee').value = cfg.entryFee || 99;
-            document.getElementById('setUpiId').value = 'malwaesports@upi';
+            document.getElementById('setEntryFee').value = cfg.entryFee || '';
+            document.getElementById('setUpiId').value = cfg.upiId || '';
             document.getElementById('setWhatsAppLink').value = cfg.whatsappLink || '';
             if (cfg.roomInfo) {
                 document.getElementById('roomId').value = cfg.roomInfo.roomId || '';
@@ -825,12 +900,7 @@
                 document.getElementById('roomMsg').value = cfg.roomInfo.roomMessage || '';
             }
         } catch (e) {
-            document.getElementById('setEntryFee').value = '99';
-            document.getElementById('setUpiId').value = 'malwaesports@upi';
-            document.getElementById('setWhatsAppLink').value = 'https://chat.whatsapp.com/demo';
-            document.getElementById('roomId').value = '87654321';
-            document.getElementById('roomPass').value = 'malwa2026';
-            document.getElementById('roomMsg').value = 'Match at 8 PM — Erangel TPP';
+            showToast('Failed to load settings', 'error');
         }
 
         updateRoomDisplay();
@@ -887,7 +957,8 @@
         if (search) url += '&search=' + encodeURIComponent(search);
 
         try {
-            const res = await fetch(url);
+            const res = await fetch(url, { headers: { 'Authorization': 'Bearer ' + (localStorage.getItem('bgmi_admin_token') || '') } });
+            if (res.status === 401) { adminLogout(); return; }
             const data = await res.json();
             allRegistrations = data.registrations || [];
             updateStatsFromData(data.stats || {});
@@ -901,7 +972,7 @@
         const date = document.getElementById('dateFilter').value;
         document.getElementById('todayDate').textContent = date;
         try {
-            const res = await fetch('/api/registrations?date=' + date);
+            const res = await fetch('/api/registrations?date=' + date, { headers: { 'Authorization': 'Bearer ' + (localStorage.getItem('bgmi_admin_token') || '') } });
             const data = await res.json();
             const filtered = data.registrations || [];
             const tbody = document.getElementById('todayTableBody');
@@ -922,7 +993,7 @@
         try {
             const res = await fetch('/api/registrations', {
                 method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
+                headers: adminHeaders(),
                 body: JSON.stringify({ id, action: 'verify' }),
             });
             const data = await res.json();
@@ -935,7 +1006,7 @@
         try {
             const res = await fetch('/api/registrations', {
                 method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
+                headers: adminHeaders(),
                 body: JSON.stringify({ id, action: 'reject' }),
             });
             const data = await res.json();
@@ -987,7 +1058,7 @@
         try {
             await fetch('/api/settings', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: adminHeaders(),
                 body: JSON.stringify({
                     type: 'room',
                     roomId: document.getElementById('roomId').value.trim(),
@@ -1004,7 +1075,7 @@
         try {
             await fetch('/api/settings', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: adminHeaders(),
                 body: JSON.stringify({ type: 'clearRoom' }),
             });
             document.getElementById('roomId').value = '';
@@ -1025,7 +1096,7 @@
         try {
             await fetch('/api/settings', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: adminHeaders(),
                 body: JSON.stringify({ type: 'payment', entryFee: fee, upiId: upi }),
             });
             showToast('Payment settings saved!', 'success');
@@ -1038,7 +1109,7 @@
         try {
             await fetch('/api/settings', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: adminHeaders(),
                 body: JSON.stringify({ type: 'whatsapp', whatsappLink: link }),
             });
             showToast('WhatsApp link saved!', 'success');
@@ -1060,6 +1131,141 @@
     }
 
     document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') adminLogin(); });
+
+    // ==================== TOURNAMENTS ====================
+    async function loadTournaments() {
+        try {
+            const res = await fetch('/api/settings');
+            const d = await res.json();
+            const list = document.getElementById('tournamentList');
+            const ts = d.tournaments || [];
+            if (!ts.length) { list.innerHTML = '<p style="color:#555;font-size:0.85rem;">No tournaments yet.</p>'; return; }
+            let html = '';
+            ts.forEach(function(t) {
+                const total = (t.prizes||[]).reduce((a,b)=>a+b,0);
+                const statusColor = t.status === 'active' ? '#2ecc71' : 'var(--amber)';
+                html += '<div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px;">';
+                html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">';
+                html += '<span style="font-family:Orbitron,sans-serif;font-size:0.85rem;font-weight:700;color:#fff;">' + t.name + '</span>';
+                html += '<span style="font-size:0.7rem;color:' + statusColor + ';font-weight:700;letter-spacing:1px;text-transform:uppercase;">' + t.status + '</span>';
+                html += '</div>';
+                html += '<div style="font-size:0.8rem;color:#888;">' + t.mode + ' ' + t.perspective + ' | ' + t.matches + ' matches | ' + t.time + ' | \u20B9' + t.entryFee + ' entry | \u20B9' + total + ' prizes</div>';
+                html += '<div style="font-size:0.75rem;color:#666;margin-top:4px;">Maps: ' + (t.maps||[]).join(', ') + '</div>';
+                html += '<button style="margin-top:8px;background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.2);color:#e74c3c;padding:5px 14px;border-radius:6px;font-size:0.75rem;cursor:pointer;" onclick="deleteTournament(\'' + t.id + '\')">Delete</button>';
+                html += '</div>';
+            });
+            list.innerHTML = html;
+        } catch(e) {}
+    }
+
+    async function addTournament() {
+        const name = document.getElementById('tName').value.trim();
+        if (!name) { showToast('Enter tournament name', 'error'); return; }
+        const maps = document.getElementById('tMaps').value.split(',').map(s=>s.trim()).filter(Boolean);
+        const prizes = document.getElementById('tPrizes').value.split(',').map(s=>parseInt(s.trim())).filter(n=>!isNaN(n));
+        try {
+            const res = await fetch('/api/settings', {
+                method: 'POST',
+                headers: adminHeaders(),
+                body: JSON.stringify({
+                    type: 'addTournament',
+                    name: name,
+                    mode: document.getElementById('tMode').value.trim() || 'Squad',
+                    perspective: document.getElementById('tPerspective').value.trim() || 'TPP',
+                    teamSize: document.getElementById('tTeamSize').value || 4,
+                    matches: document.getElementById('tMatches').value || 3,
+                    entryFee: document.getElementById('tEntryFee').value || 99,
+                    time: document.getElementById('tTime').value.trim() || '9:00 PM',
+                    maps: maps,
+                    prizes: prizes,
+                    status: document.getElementById('tStatus').value
+                })
+            });
+            const d = await res.json();
+            if (d.success) {
+                showToast('Tournament added!', 'success');
+                document.getElementById('tName').value = '';
+                loadTournaments();
+            }
+        } catch(e) { showToast('Error adding tournament', 'error'); }
+    }
+
+    async function deleteTournament(id) {
+        if (!confirm('Delete this tournament?')) return;
+        try {
+            await fetch('/api/settings', {
+                method: 'POST',
+                headers: adminHeaders(),
+                body: JSON.stringify({ type: 'deleteTournament', id: id })
+            });
+            showToast('Tournament deleted', 'success');
+            loadTournaments();
+        } catch(e) {}
+    }
+
+    // ==================== ANNOUNCEMENTS ====================
+    async function loadAnnouncements() {
+        try {
+            const res = await fetch('/api/settings');
+            const d = await res.json();
+            const list = document.getElementById('announcementList');
+            const items = d.announcements || [];
+            if (!items.length) { list.innerHTML = '<p style="color:#555;font-size:0.85rem;">No updates posted yet.</p>'; return; }
+            let html = '';
+            items.forEach(function(a) {
+                html += '<div style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;">';
+                html += '<div style="flex:1;">';
+                if (a.pinned) html += '<span style="font-size:0.6rem;font-weight:700;letter-spacing:1px;color:var(--fire);background:rgba(255,107,0,0.1);padding:1px 6px;border-radius:3px;margin-right:6px;">PINNED</span>';
+                html += '<span style="font-size:0.85rem;color:#ccc;">' + a.text + '</span>';
+                html += '<div style="font-size:0.7rem;color:#444;margin-top:4px;">' + (a.date || '') + '</div>';
+                html += '</div>';
+                html += '<button style="background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.2);color:#e74c3c;padding:4px 10px;border-radius:5px;font-size:0.7rem;cursor:pointer;flex-shrink:0;" onclick="deleteAnnouncement(\'' + a.id + '\')">Delete</button>';
+                html += '</div>';
+            });
+            list.innerHTML = html;
+        } catch(e) {}
+    }
+
+    async function addAnnouncement() {
+        const text = document.getElementById('annText').value.trim();
+        if (!text) { showToast('Enter a message', 'error'); return; }
+        const pinned = document.getElementById('annPinned').checked;
+        try {
+            const res = await fetch('/api/settings', {
+                method: 'POST',
+                headers: adminHeaders(),
+                body: JSON.stringify({ type: 'addAnnouncement', text: text, pinned: pinned })
+            });
+            const d = await res.json();
+            if (d.success) {
+                showToast('Update posted!', 'success');
+                document.getElementById('annText').value = '';
+                document.getElementById('annPinned').checked = false;
+                loadAnnouncements();
+            }
+        } catch(e) { showToast('Error posting update', 'error'); }
+    }
+
+    async function deleteAnnouncement(id) {
+        if (!confirm('Delete this update?')) return;
+        try {
+            await fetch('/api/settings', {
+                method: 'POST',
+                headers: adminHeaders(),
+                body: JSON.stringify({ type: 'deleteAnnouncement', id: id })
+            });
+            showToast('Update deleted', 'success');
+            loadAnnouncements();
+        } catch(e) {}
+    }
+
+    const origSwitchTab = switchTab;
+    const _switchTab = switchTab;
+    switchTab = function(tab, btn) {
+        _switchTab(tab, btn);
+        if (tab === 'tournaments') loadTournaments();
+        if (tab === 'announcements') loadAnnouncements();
+    };
 </script>
 
 </body>

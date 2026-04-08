@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const store = require('./_store');
+const { db } = require('./_firebase');
 
 function hashPassword(password, salt) {
   if (!salt) salt = crypto.randomBytes(16).toString('hex');
@@ -22,8 +22,8 @@ module.exports = async function handler(req, res) {
   }
 
   const emailLower = email.trim().toLowerCase();
+  const usersRef = db.collection('users');
 
-  // ======================== SIGN UP ========================
   if (action === 'signup') {
     if (!name || name.trim().length < 2) {
       return res.status(400).json({ error: 'Name is required (min 2 chars)' });
@@ -32,15 +32,14 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'Password must be at least 6 characters' });
     }
 
-    const exists = store.users.find(u => u.email === emailLower);
-    if (exists) {
+    const snap = await usersRef.where('email', '==', emailLower).limit(1).get();
+    if (!snap.empty) {
       return res.status(409).json({ error: 'Account already exists. Please sign in.' });
     }
 
     const { salt, hash } = hashPassword(password);
     const token = generateToken();
     const user = {
-      id: 'usr_' + Date.now(),
       name: name.trim(),
       email: emailLower,
       passwordHash: hash,
@@ -49,45 +48,52 @@ module.exports = async function handler(req, res) {
       createdAt: new Date().toISOString(),
     };
 
-    store.users.push(user);
+    const docRef = await usersRef.add(user);
 
     return res.status(201).json({
       success: true,
-      user: { id: user.id, name: user.name, email: user.email, token },
+      user: { id: docRef.id, name: user.name, email: user.email, token },
     });
   }
 
-  // ======================== SIGN IN ========================
   if (action === 'signin') {
-    const user = store.users.find(u => u.email === emailLower);
-    if (!user) {
+    const snap = await usersRef.where('email', '==', emailLower).limit(1).get();
+    if (snap.empty) {
       return res.status(401).json({ error: 'Account not found. Please sign up first.' });
     }
 
-    const { hash } = hashPassword(password, user.salt);
-    if (hash !== user.passwordHash) {
+    const doc = snap.docs[0];
+    const userData = doc.data();
+    const { hash } = hashPassword(password, userData.salt);
+
+    if (hash !== userData.passwordHash) {
       return res.status(401).json({ error: 'Wrong password. Try again.' });
     }
 
     const token = generateToken();
-    user.token = token;
+    await doc.ref.update({ token });
 
     return res.status(200).json({
       success: true,
-      user: { id: user.id, name: user.name, email: user.email, token },
+      user: { id: doc.id, name: userData.name, email: userData.email, token },
     });
   }
 
-  // ======================== VERIFY TOKEN ========================
   if (action === 'verify') {
     const { token } = req.body;
-    const user = store.users.find(u => u.email === emailLower && u.token === token);
-    if (!user) {
+    const snap = await usersRef
+      .where('email', '==', emailLower)
+      .where('token', '==', token)
+      .limit(1).get();
+
+    if (snap.empty) {
       return res.status(401).json({ error: 'Session expired. Please sign in again.' });
     }
+
+    const userData = snap.docs[0].data();
     return res.status(200).json({
       success: true,
-      user: { id: user.id, name: user.name, email: user.email },
+      user: { id: snap.docs[0].id, name: userData.name, email: userData.email },
     });
   }
 

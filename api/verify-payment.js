@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const store = require('./_store');
+const { db } = require('./_firebase');
 
 module.exports = async function handler(req, res) {
   res.setHeader('Content-Type', 'application/json');
@@ -12,19 +12,31 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'Missing registrationId' });
     }
 
-    const reg = store.registrations.find(r => r.id === registrationId);
-    if (!reg) return res.status(404).json({ error: 'Registration not found' });
+    const ref = db.collection('registrations').doc(registrationId);
+    const snap = await ref.get();
+    if (!snap.exists) return res.status(404).json({ error: 'Registration not found' });
 
     const MOCK_MODE = !process.env.RAZORPAY_KEY_SECRET || process.env.RAZORPAY_KEY_ID === 'rzp_test_MOCK';
 
     if (MOCK_MODE) {
-      reg.paymentStatus = 'verified';
-      reg.txnId = razorpay_payment_id || 'mock_pay_' + Date.now();
+      await ref.update({
+        paymentStatus: 'verified',
+        txnId: razorpay_payment_id || 'mock_pay_' + Date.now(),
+      });
+
+      const [settingsSnap, roomSnap] = await Promise.all([
+        db.collection('config').doc('settings').get(),
+        db.collection('config').doc('room').get(),
+      ]);
+      const settings = settingsSnap.exists ? settingsSnap.data() : {};
+      const roomInfo = roomSnap.exists ? roomSnap.data() : {};
+
+      const updatedSnap = await ref.get();
       return res.status(200).json({
         verified: true,
-        registration: reg,
-        whatsappLink: store.settings.whatsappLink,
-        roomInfo: store.roomInfo,
+        registration: { id: updatedSnap.id, ...updatedSnap.data() },
+        whatsappLink: settings.whatsappLink || '',
+        roomInfo,
       });
     }
 
@@ -36,18 +48,25 @@ module.exports = async function handler(req, res) {
       .digest('hex');
 
     if (expectedSignature !== razorpay_signature) {
-      reg.paymentStatus = 'failed';
+      await ref.update({ paymentStatus: 'failed' });
       return res.status(400).json({ verified: false, error: 'Payment verification failed' });
     }
 
-    reg.paymentStatus = 'verified';
-    reg.txnId = razorpay_payment_id;
+    await ref.update({ paymentStatus: 'verified', txnId: razorpay_payment_id });
 
+    const [settingsSnap, roomSnap] = await Promise.all([
+      db.collection('config').doc('settings').get(),
+      db.collection('config').doc('room').get(),
+    ]);
+    const settings = settingsSnap.exists ? settingsSnap.data() : {};
+    const roomInfo = roomSnap.exists ? roomSnap.data() : {};
+
+    const updatedSnap = await ref.get();
     return res.status(200).json({
       verified: true,
-      registration: reg,
-      whatsappLink: store.settings.whatsappLink,
-      roomInfo: store.roomInfo,
+      registration: { id: updatedSnap.id, ...updatedSnap.data() },
+      whatsappLink: settings.whatsappLink || '',
+      roomInfo,
     });
 
   } catch (err) {

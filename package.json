@@ -8,6 +8,7 @@
     "build": "npm install"
   },
   "dependencies": {
+    "firebase-admin": "^13.7.0",
     "razorpay": "^2.9.4"
   },
   "engines": {

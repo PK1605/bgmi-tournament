@@ -3,2436 +3,427 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Malwa Esports | BGMI Tournament Registration</title>
-    <meta name="description" content="Register your squad for BGMI Tournament by Malwa Esports Pvt. Ltd. BGIS 2026 Point System. Cash Prizes. Competitive Esports.">
+    <title>Malwa Esports | BGMI Tournament</title>
+    <meta name="description" content="Malwa Esports Pvt. Ltd. Season 1 — BGMI daily scrims, maps, points, and squad registration.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
     <style>
-        :root {
-            --fire: #ff4500;
-            --orange: #ff6a00;
-            --gold: #ffd700;
-            --amber: #ff8c00;
-            --dark: #0a0a12;
-            --card: #12121e;
-            --border: #2a2a4a;
-            --green: #00c853;
+        html, body { height: 100%; overflow: hidden; }
+
+        .home-layout {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: relative;
+            z-index: 1;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--dark);
-            color: #e0e0e0;
-            overflow-x: hidden;
-        }
-
-        /* ========== NAVBAR ========== */
-        .navbar {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 1000;
-            background: rgba(10, 10, 18, 0.92);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 69, 0, 0.15);
-            padding: 0 30px;
+        .home-main {
+            flex: 1;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            height: 64px;
+            padding: 74px 40px 0;
+            max-width: 1300px;
+            margin: 0 auto;
+            width: 100%;
+            gap: 50px;
         }
 
-        .nav-logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--fire), var(--amber));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 2px;
+        .home-left {
+            flex: 1;
+            min-width: 0;
         }
 
-        .nav-links { display: flex; gap: 8px; list-style: none; }
-
-        .nav-links a {
-            color: #888;
-            text-decoration: none;
+        .home-badge {
+            display: inline-block;
+            background: rgba(255,107,0,0.08);
+            border: 1px solid rgba(255,107,0,0.2);
+            padding: 6px 18px;
+            border-radius: 20px;
             font-family: 'Rajdhani', sans-serif;
             font-weight: 600;
-            font-size: 0.95rem;
-            letter-spacing: 1.5px;
+            font-size: 0.75rem;
+            color: var(--amber);
+            letter-spacing: 3px;
             text-transform: uppercase;
-            padding: 8px 16px;
-            border-radius: 8px;
+            margin-bottom: 14px;
+        }
+
+        .home-game {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            color: #555;
+            letter-spacing: 8px;
+            margin-bottom: 6px;
+        }
+
+        .home-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3.5rem, 8vw, 7rem);
+            line-height: 0.9;
+            background: linear-gradient(180deg, #ffffff 0%, #FF9D45 40%, #FF6B00 70%, #E55A00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 4px 25px rgba(255,107,0,0.15));
+            margin-bottom: 2px;
+        }
+
+        .home-subtitle {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(1.8rem, 5vw, 3.5rem);
+            letter-spacing: 12px;
+            color: transparent;
+            -webkit-text-stroke: 2px rgba(255,107,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        .home-chips {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .home-chip {
+            background: rgba(255,107,0,0.06);
+            border: 1px solid rgba(255,107,0,0.12);
+            padding: 8px 18px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
+            color: #bbb;
+            border-radius: 6px;
+        }
+
+        .home-chip strong { color: var(--amber); }
+
+        .home-cta {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--fire), var(--orange));
+            color: #fff;
+            text-decoration: none;
+            padding: 14px 38px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            border-radius: 10px;
+            box-shadow: 0 0 25px rgba(255,107,0,0.15);
             transition: all 0.3s;
         }
 
-        .nav-links a:hover { color: #fff; background: rgba(255, 69, 0, 0.1); }
-
-        .nav-cta {
-            background: linear-gradient(135deg, var(--fire), var(--orange)) !important;
-            color: #fff !important;
-            padding: 8px 22px !important;
-            border-radius: 8px !important;
+        .home-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 40px rgba(255,107,0,0.25);
         }
 
-        .mobile-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 1.5rem;
-            cursor: pointer;
+        .home-right {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            width: 420px;
+            flex-shrink: 0;
         }
 
-        /* ========== HERO ========== */
-        .hero {
-            position: relative; z-index: 1;
-            min-height: 100vh;
+        .nav-card {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            padding: 100px 20px 60px;
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background:
-                radial-gradient(ellipse at 20% 20%, rgba(255, 69, 0, 0.12) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 30%, rgba(255, 140, 0, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 80%, rgba(255, 0, 50, 0.06) 0%, transparent 50%),
-                linear-gradient(180deg, #0a0a1a 0%, #0f0a1e 30%, #1a0a12 60%, var(--dark) 100%);
-        }
-
-        .hero-grid {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image:
-                linear-gradient(rgba(255, 69, 0, 0.025) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 69, 0, 0.025) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: gridMove 20s linear infinite;
-        }
-
-        @keyframes gridMove {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(50px); }
-        }
-
-        .hero-content { position: relative; z-index: 2; }
-
-        .hero-badge {
-            display: inline-block;
-            background: rgba(255, 69, 0, 0.1);
-            border: 1px solid rgba(255, 69, 0, 0.25);
-            padding: 8px 24px;
-            border-radius: 30px;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--amber);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 25px;
-            animation: fadeInUp 0.8s ease;
-        }
-
-        .hero-game {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            color: #777;
-            letter-spacing: 15px;
-            margin-bottom: 10px;
-            animation: fadeInUp 0.8s ease 0.1s both;
-        }
-
-        .hero-title {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(4rem, 12vw, 9rem);
-            line-height: 0.95;
-            background: linear-gradient(180deg, #ffffff 0%, var(--amber) 40%, var(--fire) 70%, #cc3300 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 4px 30px rgba(255, 69, 0, 0.25));
-            margin-bottom: 5px;
-            animation: fadeInUp 0.8s ease 0.2s both;
-        }
-
-        .hero-subtitle {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(2rem, 6vw, 4.5rem);
-            letter-spacing: 15px;
-            color: transparent;
-            -webkit-text-stroke: 2px rgba(255, 140, 0, 0.4);
-            margin-bottom: 30px;
-            animation: fadeInUp 0.8s ease 0.3s both;
-        }
-
-        .hero-crosshair {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 30px;
-            opacity: 0.6;
-            animation: fadeInUp 0.8s ease 0.35s both, spin 30s linear infinite;
-        }
-
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        .hero-info-row {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-bottom: 35px;
-            animation: fadeInUp 0.8s ease 0.4s both;
-        }
-
-        .hero-chip {
-            background: rgba(255, 69, 0, 0.08);
-            border: 1px solid rgba(255, 69, 0, 0.2);
-            padding: 12px 28px;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 600;
-            font-size: 1rem;
-            letter-spacing: 2px;
-            color: #ccc;
-            clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
-        }
-
-        .hero-chip strong { color: var(--amber); }
-
-        .hero-cta {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--fire), var(--orange));
-            color: #fff;
-            text-decoration: none;
-            padding: 18px 50px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            border-radius: 12px;
-            box-shadow: 0 0 40px rgba(255, 69, 0, 0.3);
-            transition: all 0.3s;
-            animation: fadeInUp 0.8s ease 0.5s both;
-        }
-
-        .hero-cta:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 60px rgba(255, 69, 0, 0.4);
-        }
-
-        .hero-scroll {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #444;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.85rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(8px); }
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(25px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ========== SECTION COMMON ========== */
-        .section {
-            padding: 80px 20px;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .section-header { text-align: center; margin-bottom: 50px; }
-
-        .section-label {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.9rem;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            color: var(--amber);
-            margin-bottom: 10px;
-        }
-
-        .section-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(1.5rem, 3vw, 2.2rem);
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 10px;
-        }
-
-        .section-line {
-            width: 80px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--fire), var(--amber));
-            margin: 0 auto;
-            border-radius: 2px;
-        }
-
-        /* ========== POINT SYSTEM ========== */
-        #points { background: linear-gradient(180deg, rgba(10,10,18,0.92) 0%, rgba(14,14,24,0.92) 100%); position: relative; z-index: 1; }
-
-        .points-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 12px;
-            max-width: 800px;
-            margin: 0 auto 30px;
-        }
-
-        .point-card {
             background: var(--card);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px 10px;
-            text-align: center;
-            transition: all 0.3s;
-        }
-
-        .point-card:hover {
-            border-color: rgba(255, 69, 0, 0.3);
-            transform: translateY(-3px);
-        }
-
-        .point-card.first {
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.03));
-            border-color: rgba(255, 215, 0, 0.3);
-            grid-column: span 2;
-        }
-
-        .point-rank {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #777;
-            margin-bottom: 6px;
-        }
-
-        .point-value {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 800;
-        }
-
-        .point-card.first .point-value { color: var(--gold); }
-
-        .point-unit {
-            font-size: 0.8rem;
-            color: #666;
-            font-family: 'Rajdhani', sans-serif;
-            letter-spacing: 1px;
-        }
-
-        .kill-highlight {
-            max-width: 800px;
-            margin: 0 auto;
-            background: linear-gradient(135deg, rgba(255, 69, 0, 0.08), rgba(255, 69, 0, 0.02));
-            border: 1px solid rgba(255, 69, 0, 0.2);
             border-radius: 14px;
-            padding: 25px;
-            text-align: center;
-        }
-
-        .kill-highlight .kill-title {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.85rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: #888;
-            margin-bottom: 8px;
-        }
-
-        .kill-highlight .kill-val {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: var(--fire);
-        }
-
-        .kill-highlight .kill-desc {
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 8px;
-        }
-
-        /* ========== PRIZES ========== */
-        #prizes { background: rgba(10,10,18,0.9); position: relative; z-index: 1; }
-
-        .prize-row {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .prize-card {
-            text-align: center;
-            padding: 35px 20px;
-            border-radius: 16px;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s;
-        }
-
-        .prize-card:hover { transform: translateY(-5px); }
-
-        .prize-card.g {
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.12), rgba(255, 165, 0, 0.03));
-            border: 2px solid rgba(255, 215, 0, 0.3);
-        }
-        .prize-card.s {
-            background: linear-gradient(135deg, rgba(192, 192, 192, 0.08), rgba(169, 169, 169, 0.02));
-            border: 2px solid rgba(192, 192, 192, 0.2);
-        }
-        .prize-card.b {
-            background: linear-gradient(135deg, rgba(205, 127, 50, 0.08), rgba(205, 127, 50, 0.02));
-            border: 2px solid rgba(205, 127, 50, 0.2);
-        }
-
-        .prize-emoji { font-size: 2.8rem; margin-bottom: 12px; }
-        .prize-place {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: #888;
-            margin-bottom: 8px;
-        }
-        .prize-amt {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.6rem;
-            font-weight: 800;
-        }
-        .prize-card.g .prize-amt { color: var(--gold); }
-        .prize-card.s .prize-amt { color: #c0c0c0; }
-        .prize-card.b .prize-amt { color: #cd7f32; }
-
-        /* ========== RULES ========== */
-        #rules { background: linear-gradient(180deg, rgba(10,10,18,0.92), rgba(14,14,24,0.92)); position: relative; z-index: 1; }
-
-        .rules-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .rule-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 18px;
-            transition: border-color 0.3s;
-        }
-
-        .rule-item:hover { border-color: rgba(255, 69, 0, 0.25); }
-
-        .rule-num {
-            flex-shrink: 0;
-            width: 30px;
-            height: 30px;
-            background: linear-gradient(135deg, var(--fire), var(--orange));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 700;
-            font-size: 0.85rem;
-            color: #fff;
-        }
-
-        .rule-text { font-size: 0.92rem; color: #bbb; line-height: 1.5; }
-        .rule-text strong { color: #fff; }
-
-        /* ========== REGISTER ========== */
-        #register { background: rgba(10,10,18,0.9); position: relative; z-index: 1; }
-
-        .form-card {
-            max-width: 700px;
-            margin: 0 auto;
-            background: linear-gradient(135deg, var(--card), #1a1a2e);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 40px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .form-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--fire), var(--amber), var(--gold));
-        }
-
-        .form-group { margin-bottom: 20px; }
-
-        .form-group label {
-            display: block;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 600;
-            font-size: 0.95rem;
-            letter-spacing: 1px;
-            color: #ccc;
-            margin-bottom: 7px;
-        }
-
-        .form-group label .req { color: var(--fire); }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 13px 16px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            color: #fff;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.95rem;
-            outline: none;
-            transition: all 0.3s;
-        }
-
-        .form-group input::placeholder,
-        .form-group textarea::placeholder { color: #555; }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: var(--fire);
-            background: rgba(255, 69, 0, 0.04);
-            box-shadow: 0 0 20px rgba(255, 69, 0, 0.08);
-        }
-
-        .form-group select {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ff6a00' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 16px center;
-            padding-right: 40px;
-        }
-
-        .form-group select option { background: #1a1a2e; color: #fff; }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-        }
-
-        .player-block {
-            background: rgba(255, 69, 0, 0.03);
-            border: 1px solid rgba(255, 69, 0, 0.1);
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 16px;
-        }
-
-        .player-block .p-head {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 14px;
-        }
-
-        .player-block .p-num {
-            width: 26px;
-            height: 26px;
-            background: linear-gradient(135deg, var(--fire), var(--orange));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 700;
-            font-size: 0.8rem;
-            color: #fff;
-        }
-
-        .player-block .p-label {
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 600;
-            color: var(--amber);
-            letter-spacing: 1px;
-        }
-
-        .player-block.sub {
-            opacity: 0.65;
-            border-style: dashed;
-        }
-
-        .player-block.sub .p-num { background: #555; }
-
-        .form-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border), transparent);
-            margin: 28px 0;
-        }
-
-        .section-heading {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
-            color: var(--amber);
-            margin-bottom: 18px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .section-heading .icon-box {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 28px;
-            height: 28px;
-            background: linear-gradient(135deg, var(--fire), var(--orange));
-            border-radius: 6px;
-            font-size: 0.8rem;
-        }
-
-        .agree-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            padding: 14px;
-            background: rgba(255, 69, 0, 0.03);
-            border: 1px solid rgba(255, 69, 0, 0.08);
-            border-radius: 10px;
-            margin-bottom: 12px;
-        }
-
-        .agree-item input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--fire);
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-
-        .agree-item span { font-size: 0.88rem; color: #999; line-height: 1.5; }
-        .agree-item span strong { color: #ddd; }
-
-        .submit-btn {
-            display: block;
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, var(--fire), var(--orange));
-            color: #fff;
-            border: none;
-            border-radius: 12px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            cursor: pointer;
-            box-shadow: 0 4px 30px rgba(255, 69, 0, 0.3);
-            transition: all 0.3s;
-            margin-top: 10px;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 40px rgba(255, 69, 0, 0.4);
-        }
-
-        .submit-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* ========== PAYMENT SECTION ========== */
-        .payment-section {
-            max-width: 700px;
-            margin: 0 auto;
-            display: none;
-        }
-
-        .payment-card {
-            background: linear-gradient(135deg, var(--card), #1a1a2e);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .payment-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--green), #00e676);
-        }
-
-        .payment-amount {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--green);
-            margin: 20px 0 10px;
-        }
-
-        .payment-label {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: #888;
-            margin-bottom: 25px;
-        }
-
-        .upi-box {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 14px;
-            padding: 25px;
-            margin: 20px 0;
-        }
-
-        .upi-id-display {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            color: var(--gold);
-            margin: 10px 0;
-            word-break: break-all;
-        }
-
-        .copy-btn {
-            background: rgba(255, 215, 0, 0.15);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            color: var(--gold);
-            padding: 8px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 600;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            transition: all 0.3s;
-        }
-
-        .copy-btn:hover {
-            background: rgba(255, 215, 0, 0.25);
-        }
-
-        .txn-form {
-            margin-top: 25px;
-            text-align: left;
-        }
-
-        .txn-form input {
-            width: 100%;
-            padding: 13px 16px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            color: #fff;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.95rem;
-            outline: none;
-            transition: all 0.3s;
-            margin-bottom: 14px;
-        }
-
-        .txn-form input:focus {
-            border-color: var(--green);
-            box-shadow: 0 0 20px rgba(0, 200, 83, 0.1);
-        }
-
-        .txn-form input::placeholder { color: #555; }
-
-        .pay-submit-btn {
-            display: block;
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, var(--green), #00e676);
-            color: #fff;
-            border: none;
-            border-radius: 12px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .pay-submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 30px rgba(0, 200, 83, 0.3);
-        }
-
-        /* ========== SUCCESS SECTION ========== */
-        .success-section {
-            max-width: 700px;
-            margin: 0 auto;
-            display: none;
-        }
-
-        .success-card {
-            background: linear-gradient(135deg, var(--card), #1a1a2e);
-            border: 2px solid rgba(0, 200, 83, 0.3);
-            border-radius: 20px;
-            padding: 50px 40px;
-            text-align: center;
-        }
-
-        .success-icon {
-            font-size: 4rem;
-            margin-bottom: 15px;
-        }
-
-        .success-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--green);
-            margin-bottom: 10px;
-        }
-
-        .success-msg {
-            color: #999;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 25px;
-        }
-
-        .whatsapp-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: #25D366;
-            color: #fff;
+            padding: 24px 16px;
             text-decoration: none;
-            padding: 16px 40px;
-            border-radius: 12px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            letter-spacing: 2px;
+            color: inherit;
             transition: all 0.3s;
-        }
-
-        .whatsapp-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 30px rgba(37, 211, 102, 0.3);
-        }
-
-        .whatsapp-btn svg {
-            width: 24px;
-            height: 24px;
-            fill: #fff;
-        }
-
-        .pending-card {
-            background: linear-gradient(135deg, var(--card), #1a1a2e);
-            border: 2px solid rgba(255, 140, 0, 0.3);
-            border-radius: 20px;
-            padding: 50px 40px;
             text-align: center;
         }
 
-        .pending-title {
+        .nav-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255,107,0,0.25);
+            box-shadow: 0 8px 30px rgba(255,107,0,0.06);
+        }
+
+        .nav-card-icon { font-size: 1.8rem; margin-bottom: 8px; }
+        .nav-card-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: var(--amber);
-            margin-bottom: 10px;
-        }
-
-        .pending-msg {
-            color: #999;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        /* ========== ROOM ID BANNER ========== */
-        .room-banner {
-            display: none;
-            max-width: 700px;
-            margin: 0 auto 30px;
-            background: linear-gradient(135deg, rgba(255, 69, 0, 0.1), rgba(255, 69, 0, 0.03));
-            border: 2px solid rgba(255, 69, 0, 0.4);
-            border-radius: 16px;
-            padding: 30px;
-            text-align: center;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { border-color: rgba(255, 69, 0, 0.4); }
-            50% { border-color: rgba(255, 69, 0, 0.8); }
-        }
-
-        .room-banner .room-label {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.9rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: #888;
-            margin-bottom: 12px;
-        }
-
-        .room-banner .room-info {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: var(--fire);
-            margin-bottom: 5px;
-        }
-
-        .room-banner .room-msg {
-            font-size: 0.9rem;
-            color: #777;
-            margin-top: 10px;
-        }
-
-        /* ========== STATUS CHECK ========== */
-        .status-check {
-            max-width: 700px;
-            margin: 30px auto 0;
-            text-align: center;
-        }
-
-        .status-link {
-            color: var(--amber);
-            text-decoration: underline;
-            cursor: pointer;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.95rem;
-            letter-spacing: 1px;
-        }
-
-        .status-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.85);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .status-modal.show { display: flex; }
-
-        .status-modal-inner {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 35px;
-            max-width: 450px;
-            width: 100%;
-        }
-
-        .status-modal-inner h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
-            color: var(--amber);
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .status-modal-inner input {
-            width: 100%;
-            padding: 13px 16px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            color: #fff;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.95rem;
-            outline: none;
-            margin-bottom: 14px;
-        }
-
-        .status-modal-inner input:focus {
-            border-color: var(--fire);
-        }
-
-        .status-modal-inner input::placeholder { color: #555; }
-
-        .status-modal-inner .btn-row {
-            display: flex;
-            gap: 10px;
-        }
-
-        .status-modal-inner button {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 10px;
-            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.7rem;
             font-weight: 700;
-            font-size: 1rem;
+            color: #ddd;
             letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.3s;
+            margin-bottom: 4px;
+        }
+        .nav-card-desc {
+            font-size: 0.72rem;
+            color: #666;
+            line-height: 1.3;
         }
 
-        .btn-check {
-            background: linear-gradient(135deg, var(--fire), var(--orange));
-            color: #fff;
-        }
-
-        .btn-close {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1) !important;
-            color: #888;
-        }
-
-        /* ========== FOOTER ========== */
-        .footer {
-            position: relative; z-index: 1;
+        .home-footer {
             text-align: center;
-            padding: 30px 20px;
+            padding: 12px 20px;
             border-top: 1px solid var(--border);
-            color: #444;
-            font-size: 0.85rem;
+            color: #333;
+            font-size: 0.75rem;
+            flex-shrink: 0;
         }
-        .footer span { color: var(--fire); font-weight: 600; }
+        .home-footer span { color: var(--fire); font-weight: 600; }
 
-        /* ========== TOAST ========== */
-        .toast {
+        .home-bg {
             position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            padding: 14px 30px;
-            border-radius: 12px;
+            inset: 0;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 15% 30%, rgba(255,107,0,0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 85% 60%, rgba(255,107,0,0.02) 0%, transparent 50%),
+                linear-gradient(180deg, #0a0a14 0%, #0d0d1a 50%, #0a0a14 100%);
+        }
+
+        .home-grid-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background-image:
+                linear-gradient(rgba(255,107,0,0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,107,0,0.015) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridMove 25s linear infinite;
+        }
+
+        /* Updates Strip */
+        .updates-strip {
+            background: rgba(255,107,0,0.04);
+            border-top: 1px solid rgba(255,107,0,0.08);
+            border-bottom: 1px solid rgba(255,107,0,0.08);
+            display: none;
+            align-items: center;
+            height: 34px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .updates-strip.has-items { display: flex; }
+        .updates-tag {
+            background: var(--fire);
+            color: #000;
             font-family: 'Rajdhani', sans-serif;
-            font-weight: 600;
-            font-size: 1rem;
-            letter-spacing: 1px;
-            z-index: 5000;
-            transition: transform 0.4s ease;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 0 14px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .updates-scroll {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+        }
+        .updates-track {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            animation: tickerScroll var(--ticker-dur, 20s) linear infinite;
             white-space: nowrap;
         }
-
-        .toast.show { transform: translateX(-50%) translateY(0); }
-        .toast.success { background: #00c853; color: #fff; }
-        .toast.error { background: #ff1744; color: #fff; }
-        .toast.info { background: var(--amber); color: #000; }
-
-        /* ========== LOADER ========== */
-        .loader {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-top-color: #fff;
-            border-radius: 50%;
-            animation: spinLoader 0.6s linear infinite;
-            margin-left: 8px;
-            vertical-align: middle;
-        }
-
-        @keyframes spinLoader { 100% { transform: rotate(360deg); } }
-
-        /* ========== MOBILE ========== */
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .nav-links.open {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 64px;
-                left: 0;
-                right: 0;
-                background: rgba(10, 10, 18, 0.98);
-                padding: 20px;
-                border-bottom: 1px solid var(--border);
-            }
-            .mobile-toggle { display: block; }
-            .hero-info-row { gap: 10px; }
-            .hero-chip { font-size: 0.85rem; padding: 10px 18px; }
-            .rules-grid { grid-template-columns: 1fr; }
-            .prize-row { grid-template-columns: repeat(2, 1fr) !important; }
-            .form-row { grid-template-columns: 1fr; }
-            .form-card { padding: 25px 18px; }
-            .payment-card { padding: 25px 18px; }
-            .success-card, .pending-card { padding: 35px 18px; }
-            .points-grid { grid-template-columns: repeat(3, 1fr); }
-            .point-card.first { grid-column: span 3; }
-        }
-
-        @media (max-width: 400px) {
-            .points-grid { grid-template-columns: repeat(2, 1fr); }
-            .point-card.first { grid-column: span 2; }
-        }
-
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* ========== VALIDATION ========== */
-        .form-group .field-error {
-            color: #ff4444;
-            font-size: 0.75rem;
-            margin-top: 4px;
-            display: none;
+        .updates-track:hover { animation-play-state: paused; }
+        .updates-item {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.8rem;
             font-weight: 500;
-        }
-        .form-group.has-error input {
-            border-color: #ff4444 !important;
-            box-shadow: 0 0 0 2px rgba(255,68,68,0.15);
-        }
-        .form-group.has-error .field-error { display: block; }
-        .form-group.valid input {
-            border-color: var(--green) !important;
-        }
-
-        /* ========== AUTH GATE ========== */
-        .auth-tabs {
-            display: flex;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 25px;
-            border: 1px solid var(--border);
-            background: rgba(0,0,0,0.3);
-        }
-        .auth-tab {
-            flex: 1;
-            padding: 14px;
-            border: none;
-            background: transparent;
-            color: #666;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .auth-tab.active {
-            background: linear-gradient(135deg, var(--fire), var(--orange));
-            color: #fff;
-        }
-        .auth-tab:not(.active):hover { color: #aaa; }
-        .pass-toggle {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            font-size: 1.1rem;
-            opacity: 0.4;
-            transition: opacity 0.2s;
-            user-select: none;
-        }
-        .pass-toggle:hover { opacity: 0.8; }
-
-        /* ========== FLOATING BGMI BACKGROUND ========== */
-        .bgmi-bg-canvas {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        .bgmi-bg-canvas .float-icon {
-            position: absolute;
-            opacity: 0.04;
-            filter: grayscale(0.5);
-            animation: bgFloat linear infinite;
-        }
-        @keyframes bgFloat {
-            0% { transform: translateY(110vh) rotate(0deg); }
-            100% { transform: translateY(-10vh) rotate(360deg); }
-        }
-
-        /* ========== MAP CARDS ========== */
-        .map-showcase { background: linear-gradient(180deg, rgba(10,10,20,0.92) 0%, rgba(10,10,18,0.92) 100%); padding: 80px 0; position: relative; z-index: 1; }
-        .map-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        .map-card {
-            position: relative;
-            border-radius: 18px;
-            overflow: hidden;
-            aspect-ratio: 16/10;
-            cursor: pointer;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            border: 1px solid rgba(255,255,255,0.06);
-        }
-        .map-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 50px rgba(255,69,0,0.15);
-        }
-        .map-card-bg {
-            position: absolute;
-            inset: 0;
-            background-size: cover;
-            background-position: center;
-            transition: transform 0.6s ease;
-        }
-        .map-card:hover .map-card-bg { transform: scale(1.1); }
-        .map-card-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.05) 100%);
-            z-index: 1;
-        }
-        .map-card-content {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 24px;
-            z-index: 2;
-        }
-        .map-match-num {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.7rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--amber);
-            margin-bottom: 6px;
-            display: flex;
+            color: #bbb;
+            padding: 0 40px 0 0;
+            flex-shrink: 0;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
         }
-        .map-match-num::before {
-            content: '';
-            width: 20px;
-            height: 2px;
-            background: var(--amber);
-            display: inline-block;
+        .updates-item .dot {
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            background: var(--fire);
+            opacity: 0.5;
         }
-        .map-name {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.6rem;
-            font-weight: 900;
-            color: #fff;
-            letter-spacing: 2px;
-            text-shadow: 0 2px 15px rgba(0,0,0,0.5);
-        }
-        .map-desc {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.85rem;
-            color: rgba(255,255,255,0.5);
-            margin-top: 4px;
-            letter-spacing: 1px;
-        }
-        .map-badge {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            z-index: 2;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,69,0,0.3);
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.6rem;
+        .updates-item .pinned-tag {
+            background: rgba(255,107,0,0.15);
             color: var(--amber);
-            letter-spacing: 2px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 1px 6px;
+            border-radius: 3px;
         }
-        .map-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 18px;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            z-index: 0;
-        }
-        .map-card:nth-child(1)::after { box-shadow: inset 0 0 40px rgba(45,107,63,0.3); }
-        .map-card:nth-child(2)::after { box-shadow: inset 0 0 40px rgba(139,105,20,0.3); }
-        .map-card:nth-child(3)::after { box-shadow: inset 0 0 40px rgba(100,100,255,0.3); }
-        .map-card:hover::after { opacity: 1; }
-        @media (max-width: 768px) {
-            .map-grid { grid-template-columns: 1fr; max-width: 450px; }
-            .map-card { aspect-ratio: 16/9; }
-            .map-name { font-size: 1.3rem; }
+        @keyframes tickerScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
 
-        
+        @media (max-width: 900px) {
+            .home-main {
+                flex-direction: column;
+                padding: 74px 20px 0;
+                gap: 24px;
+                justify-content: center;
+            }
+            html, body { overflow: auto; height: auto; }
+            .home-layout { height: auto; min-height: 100vh; }
+            .home-left { text-align: center; }
+            .home-chips { justify-content: center; }
+            .home-right { width: 100%; max-width: 400px; grid-template-columns: 1fr 1fr; }
+            .home-title { font-size: clamp(3rem, 10vw, 5rem); }
+            .home-subtitle { font-size: clamp(1.5rem, 6vw, 2.5rem); letter-spacing: 8px; }
+        }
     </style>
 </head>
 <body>
 
-<!-- FLOATING BGMI BACKGROUND -->
+<div class="home-bg"></div>
+<div class="home-grid-bg"></div>
 <div class="bgmi-bg-canvas" id="bgmiCanvas"></div>
 
-<!-- NAVBAR -->
 <nav class="navbar">
-    <div class="nav-logo">MALWA ESPORTS</div>
-    <button class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">&#9776;</button>
+    <a href="index.html" class="nav-logo">MALWA ESPORTS</a>
+    <button type="button" class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">&#9776;</button>
     <ul class="nav-links">
-        <li><a href="#maps">Maps</a></li>
-        <li><a href="#points">Points</a></li>
-        <li><a href="#prizes">Prizes</a></li>
-        <li><a href="#rules">Rules</a></li>
-        <li><a href="admin.html" style="color:#666;">Admin</a></li>
-        <li><a href="#register" class="nav-cta">Register</a></li>
+        <li><a href="index.html" class="nav-active">Home</a></li>
+        <li><a href="format.html">Format</a></li>
+        <li><a href="maps.html">Maps</a></li>
+        <li><a href="points.html">Points</a></li>
+        <li><a href="prizes.html">Prizes</a></li>
+        <li><a href="rules.html">Rules</a></li>
+        <li><a href="admin.html" class="nav-admin">Admin</a></li>
+        <li><a href="register.html" class="nav-cta">Register</a></li>
     </ul>
 </nav>
 
-<!-- HERO -->
-<section class="hero" id="home">
-    <div class="hero-bg"></div>
-    <div class="hero-grid"></div>
-    <div class="hero-content">
-        <div class="hero-badge">Malwa Esports Pvt. Ltd. — Season 1</div>
-        <div class="hero-game">BATTLEGROUNDS MOBILE INDIA</div>
-        <h1 class="hero-title">MALWA</h1>
-        <div class="hero-subtitle">ESPORTS</div>
-
-        <svg class="hero-crosshair" viewBox="0 0 200 200" fill="none">
-            <circle cx="100" cy="100" r="70" stroke="rgba(255,69,0,0.3)" stroke-width="2"/>
-            <circle cx="100" cy="100" r="45" stroke="rgba(255,69,0,0.15)" stroke-width="1.5"/>
-            <circle cx="100" cy="100" r="8" fill="rgba(255,69,0,0.5)"/>
-            <line x1="100" y1="15" x2="100" y2="80" stroke="rgba(255,140,0,0.4)" stroke-width="2"/>
-            <line x1="100" y1="120" x2="100" y2="185" stroke="rgba(255,140,0,0.4)" stroke-width="2"/>
-            <line x1="15" y1="100" x2="80" y2="100" stroke="rgba(255,140,0,0.4)" stroke-width="2"/>
-            <line x1="120" y1="100" x2="185" y2="100" stroke="rgba(255,140,0,0.4)" stroke-width="2"/>
-        </svg>
-
-        <div class="hero-info-row">
-            <div class="hero-chip"><strong>Daily</strong> 9 PM</div>
-            <div class="hero-chip"><strong>3</strong> Maps</div>
-            <div class="hero-chip"><strong>&#8377;99</strong> Entry</div>
-            <div class="hero-chip"><strong>Top 5</strong> Win Cash</div>
+<div class="home-layout">
+    <div class="home-main">
+        <div class="home-left">
+            <div class="home-badge">Malwa Esports Pvt. Ltd. &mdash; Season 1</div>
+            <div class="home-game">BATTLEGROUNDS MOBILE INDIA</div>
+            <h1 class="home-title">MALWA</h1>
+            <div class="home-subtitle">ESPORTS</div>
+            <div class="home-chips">
+                <div class="home-chip"><strong>Daily</strong> 9 PM</div>
+                <div class="home-chip"><strong>3</strong> Maps</div>
+                <div class="home-chip"><strong>&#8377;99</strong> Entry</div>
+                <div class="home-chip"><strong>Top 5</strong> Win Cash</div>
+            </div>
+            <a href="register.html" class="home-cta">Register Your Squad</a>
         </div>
-
-        <a href="#register" class="hero-cta">Register Your Squad</a>
-    </div>
-    <div class="hero-scroll">&#8595; Scroll Down</div>
-</section>
-
-<!-- MAP SHOWCASE -->
-<section class="map-showcase" id="maps">
-    <div class="section">
-        <div class="section-header fade-in">
-            <div class="section-label">Daily Scrims &bull; 9 PM</div>
-            <h2 class="section-title">Tonight's Battlegrounds</h2>
-            <div class="section-line"></div>
-        </div>
-
-        <div class="map-grid fade-in">
-            <!-- ERANGEL -->
-            <div class="map-card">
-                <div class="map-card-bg" style="background-image: url('assets/Erangle.webp');"></div>
-                <div class="map-card-overlay"></div>
-                <div class="map-badge">9:00 PM</div>
-                <div class="map-card-content">
-                    <div class="map-match-num">Match 1</div>
-                    <div class="map-name">ERANGEL</div>
-                    <div class="map-desc">Classic 8&times;8 &bull; Squad TPP</div>
-                </div>
-            </div>
-
-            <!-- MIRAMAR -->
-            <div class="map-card">
-                <div class="map-card-bg" style="background-image: url('assets/Miramar.webp');"></div>
-                <div class="map-card-overlay"></div>
-                <div class="map-badge">9:30 PM</div>
-                <div class="map-card-content">
-                    <div class="map-match-num">Match 2</div>
-                    <div class="map-name">MIRAMAR</div>
-                    <div class="map-desc">Desert 8&times;8 &bull; Squad TPP</div>
-                </div>
-            </div>
-
-            <!-- RONDO -->
-            <div class="map-card">
-                <div class="map-card-bg" style="background-image: url('assets/Rondo.webp');"></div>
-                <div class="map-card-overlay"></div>
-                <div class="map-badge">10:00 PM</div>
-                <div class="map-card-content">
-                    <div class="map-match-num">Match 3</div>
-                    <div class="map-name">RONDO</div>
-                    <div class="map-desc">Arena TDM &bull; Squad TPP</div>
-                </div>
-            </div>
+        <div class="home-right">
+            <a href="format.html" class="nav-card">
+                <div class="nav-card-icon">&#128196;</div>
+                <div class="nav-card-title">FORMAT</div>
+                <div class="nav-card-desc">How It Works</div>
+            </a>
+            <a href="maps.html" class="nav-card">
+                <div class="nav-card-icon">&#127758;</div>
+                <div class="nav-card-title">MAPS</div>
+                <div class="nav-card-desc">3 Battlegrounds</div>
+            </a>
+            <a href="points.html" class="nav-card">
+                <div class="nav-card-icon">&#128202;</div>
+                <div class="nav-card-title">POINTS</div>
+                <div class="nav-card-desc">Rank System</div>
+            </a>
+            <a href="prizes.html" class="nav-card">
+                <div class="nav-card-icon">&#127942;</div>
+                <div class="nav-card-title">PRIZES</div>
+                <div class="nav-card-desc">Top 5 Cash</div>
+            </a>
+            <a href="rules.html" class="nav-card">
+                <div class="nav-card-icon">&#128220;</div>
+                <div class="nav-card-title">RULES</div>
+                <div class="nav-card-desc">Fair Play</div>
+            </a>
+            <a href="register.html" class="nav-card" style="border-color:rgba(255,107,0,0.15);">
+                <div class="nav-card-icon">&#9889;</div>
+                <div class="nav-card-title">REGISTER</div>
+                <div class="nav-card-desc">Pay &#8377;99</div>
+            </a>
         </div>
     </div>
-</section>
-
-<!-- POINT SYSTEM -->
-<section id="points">
-    <div class="section">
-        <div class="section-header fade-in">
-            <div class="section-label">BGIS 2026 Format</div>
-            <h2 class="section-title">Point System</h2>
-            <div class="section-line"></div>
-        </div>
-
-        <div class="points-grid fade-in">
-            <div class="point-card first">
-                <div class="point-rank">&#127942; 1st Place</div>
-                <div class="point-value">10</div>
-                <div class="point-unit">Points</div>
-            </div>
-            <div class="point-card">
-                <div class="point-rank">2nd</div>
-                <div class="point-value" style="color: #c0c0c0;">6</div>
-                <div class="point-unit">Points</div>
-            </div>
-            <div class="point-card">
-                <div class="point-rank">3rd</div>
-                <div class="point-value" style="color: #cd7f32;">5</div>
-                <div class="point-unit">Points</div>
-            </div>
-            <div class="point-card">
-                <div class="point-rank">4th</div>
-                <div class="point-value">4</div>
-                <div class="point-unit">Points</div>
-            </div>
-            <div class="point-card">
-                <div class="point-rank">5th</div>
-                <div class="point-value">3</div>
-                <div class="point-unit">Points</div>
-            </div>
-            <div class="point-card">
-                <div class="point-rank">6th</div>
-                <div class="point-value">2</div>
-                <div class="point-unit">Points</div>
-            </div>
-            <div class="point-card">
-                <div class="point-rank">7th-8th</div>
-                <div class="point-value">1</div>
-                <div class="point-unit">Point</div>
-            </div>
-            <div class="point-card">
-                <div class="point-rank">9th-16th</div>
-                <div class="point-value" style="color: #555;">0</div>
-                <div class="point-unit">Points</div>
-            </div>
-        </div>
-
-        <div class="kill-highlight fade-in">
-            <div class="kill-title">Kill Points</div>
-            <div class="kill-val">+1 Point Per Kill</div>
-            <div class="kill-desc">Total Score = Placement Points + Kill Points</div>
+    <div class="updates-strip" id="updatesStrip">
+        <div class="updates-tag">UPDATES</div>
+        <div class="updates-scroll">
+            <div class="updates-track" id="updatesTrack"></div>
         </div>
     </div>
-</section>
-
-<!-- PRIZES -->
-<section id="prizes">
-    <div class="section">
-        <div class="section-header fade-in">
-            <div class="section-label">Rewards</div>
-            <h2 class="section-title">Prize Pool</h2>
-            <div class="section-line"></div>
-        </div>
-
-        <div class="prize-row fade-in" style="grid-template-columns: repeat(5, 1fr); max-width:900px;">
-            <div class="prize-card g">
-                <div class="prize-emoji">&#127942;</div>
-                <div class="prize-place">1st Place</div>
-                <div class="prize-amt">&#8377;400</div>
-            </div>
-            <div class="prize-card s">
-                <div class="prize-emoji">&#129352;</div>
-                <div class="prize-place">2nd Place</div>
-                <div class="prize-amt">&#8377;250</div>
-            </div>
-            <div class="prize-card b">
-                <div class="prize-emoji">&#129353;</div>
-                <div class="prize-place">3rd Place</div>
-                <div class="prize-amt">&#8377;200</div>
-            </div>
-            <div class="prize-card" style="background:linear-gradient(135deg,rgba(100,100,255,0.08),rgba(100,100,255,0.02)); border:2px solid rgba(100,100,255,0.2);">
-                <div class="prize-emoji">&#11088;</div>
-                <div class="prize-place">4th Place</div>
-                <div class="prize-amt" style="color:#7B8CFF;">&#8377;150</div>
-            </div>
-            <div class="prize-card" style="background:linear-gradient(135deg,rgba(0,200,150,0.08),rgba(0,200,150,0.02)); border:2px solid rgba(0,200,150,0.2);">
-                <div class="prize-emoji">&#127775;</div>
-                <div class="prize-place">5th Place</div>
-                <div class="prize-amt" style="color:#00C896;">&#8377;100</div>
-            </div>
-        </div>
-
-        <p style="text-align: center; color: #555; margin-top: 25px; font-size: 0.9rem;">
-            Entry Fee: <strong style="color:var(--amber);">&#8377;99 per team</strong> &mdash; Daily scrims at 9 PM
-        </p>
-    </div>
-</section>
-
-<!-- RULES -->
-<section id="rules">
-    <div class="section">
-        <div class="section-header fade-in">
-            <div class="section-label">Fair Play</div>
-            <h2 class="section-title">Tournament Rules</h2>
-            <div class="section-line"></div>
-        </div>
-
-        <div class="rules-grid fade-in">
-            <div class="rule-item"><div class="rule-num">1</div><div class="rule-text">All members must have a valid BGMI account with <strong>Level 20+</strong>.</div></div>
-            <div class="rule-item"><div class="rule-num">2</div><div class="rule-text">Each team: <strong>4 players + 1 substitute</strong> (sub optional).</div></div>
-            <div class="rule-item"><div class="rule-num">3</div><div class="rule-text"><strong>Hacks, cheats, emulators, triggers</strong> = instant ban. Zero tolerance.</div></div>
-            <div class="rule-item"><div class="rule-num">4</div><div class="rule-text">Join lobby <strong>10 minutes before</strong> match time. Late = walkover.</div></div>
-            <div class="rule-item"><div class="rule-num">5</div><div class="rule-text"><strong>Team killing</strong> is strictly prohibited. Leads to disqualification.</div></div>
-            <div class="rule-item"><div class="rule-num">6</div><div class="rule-text"><strong>Organizer's decision is final</strong> in all disputes.</div></div>
-            <div class="rule-item"><div class="rule-num">7</div><div class="rule-text"><strong>Screen recording mandatory</strong> for all matches.</div></div>
-            <div class="rule-item"><div class="rule-num">8</div><div class="rule-text">Use your <strong>registered IGN</strong> during all matches.</div></div>
-            <div class="rule-item"><div class="rule-num">9</div><div class="rule-text"><strong>No griefing, teaming</strong>, or unsportsmanlike conduct.</div></div>
-            <div class="rule-item"><div class="rule-num">10</div><div class="rule-text">Room ID shared <strong>15 min before</strong> each match via official group.</div></div>
-            <div class="rule-item"><div class="rule-num">11</div><div class="rule-text"><strong>Mobile phones only</strong> — no iPads/tablets unless specified.</div></div>
-            <div class="rule-item"><div class="rule-num">12</div><div class="rule-text">Server crash replay only if <strong>&lt;50% teams</strong> eliminated.</div></div>
-        </div>
-    </div>
-</section>
-
-<!-- REGISTRATION SECTION -->
-<section id="register">
-    <div class="section">
-        <div class="section-header fade-in">
-            <div class="section-label">Join The Battle</div>
-            <h2 class="section-title">Register Your Squad</h2>
-            <div class="section-line"></div>
-        </div>
-
-        <!-- STEP 0: Auth Gate (Sign In / Sign Up) -->
-        <div class="form-card fade-in" id="authGate">
-            <div style="text-align:center; margin-bottom:25px;">
-                <div style="font-size:3rem; margin-bottom:10px;">&#128272;</div>
-                <h3 class="section-heading" style="justify-content:center;">
-                    <span class="icon-box">&#128100;</span> Player Account
-                </h3>
-                <p style="color:#888; font-size:0.9rem;">Sign in or create account to register your squad</p>
-            </div>
-
-            <!-- Auth Tabs -->
-            <div class="auth-tabs">
-                <button class="auth-tab active" id="tabSignIn" onclick="switchAuthTab('signin')">Sign In</button>
-                <button class="auth-tab" id="tabSignUp" onclick="switchAuthTab('signup')">Sign Up</button>
-            </div>
-
-            <!-- SIGN IN FORM -->
-            <div id="signinForm">
-                <div class="form-group">
-                    <label>Email <span class="req">*</span></label>
-                    <input type="email" id="siEmail" placeholder="your@email.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Password <span class="req">*</span></label>
-                    <div style="position:relative;">
-                        <input type="password" id="siPassword" placeholder="Enter password" required>
-                        <span class="pass-toggle" onclick="togglePass('siPassword', this)">&#128065;</span>
-                    </div>
-                </div>
-                <button type="button" class="submit-btn" id="signinBtn" onclick="doSignIn()">
-                    &#128274; Sign In
-                </button>
-                <p style="text-align:center; margin-top:16px; font-size:0.85rem; color:#666;">
-                    New here? <span onclick="switchAuthTab('signup')" style="color:var(--amber); cursor:pointer; font-weight:600;">Create Account &#8594;</span>
-                </p>
-            </div>
-
-            <!-- SIGN UP FORM -->
-            <div id="signupForm" style="display:none;">
-                <div class="form-group">
-                    <label>Full Name <span class="req">*</span></label>
-                    <input type="text" id="suName" placeholder="Your name" required>
-                </div>
-                <div class="form-group">
-                    <label>Email <span class="req">*</span></label>
-                    <input type="email" id="suEmail" placeholder="your@email.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Password <span class="req">*</span> <span style="color:#555; font-weight:400; font-size:0.75rem;">(min 6 chars)</span></label>
-                    <div style="position:relative;">
-                        <input type="password" id="suPassword" placeholder="Create password" required>
-                        <span class="pass-toggle" onclick="togglePass('suPassword', this)">&#128065;</span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Confirm Password <span class="req">*</span></label>
-                    <div style="position:relative;">
-                        <input type="password" id="suConfirm" placeholder="Re-enter password" required>
-                        <span class="pass-toggle" onclick="togglePass('suConfirm', this)">&#128065;</span>
-                    </div>
-                </div>
-                <button type="button" class="submit-btn" id="signupBtn" onclick="doSignUp()">
-                    &#9889; Create Account
-                </button>
-                <p style="text-align:center; margin-top:16px; font-size:0.85rem; color:#666;">
-                    Already have account? <span onclick="switchAuthTab('signin')" style="color:var(--amber); cursor:pointer; font-weight:600;">Sign In &#8594;</span>
-                </p>
-            </div>
-        </div>
-
-        <!-- STEP 1: Registration Form (hidden until signed in) -->
-        <div class="form-card fade-in" id="regFormCard" style="display:none;">
-            <div style="background:rgba(0,200,83,0.08); border:1px solid rgba(0,200,83,0.2); border-radius:10px; padding:12px 18px; margin-bottom:20px; display:flex; align-items:center; justify-content:space-between;">
-                <div style="display:flex; align-items:center; gap:10px;">
-                    <span style="color:var(--green); font-size:1.2rem;">&#9989;</span>
-                    <span style="color:#aaa; font-size:0.85rem;">Signed in as <strong id="verifiedEmail" style="color:#fff;"></strong></span>
-                </div>
-                <span onclick="doLogout()" style="color:#666; font-size:0.78rem; cursor:pointer; padding:4px 12px; border:1px solid #333; border-radius:6px; transition:all 0.2s;">Logout</span>
-            </div>
-
-            <form id="regForm" onsubmit="return false;">
-
-                <h3 class="section-heading">
-                    <span class="icon-box">&#9889;</span> Team Information
-                </h3>
-
-                <div class="form-group">
-                    <label>Team Name <span class="req">*</span></label>
-                    <input type="text" id="teamName" placeholder="e.g. Team SouL, GodLike Esports" required minlength="3" maxlength="30" onblur="validateField(this,'teamName')">
-                    <div class="field-error" id="err-teamName"></div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Team Tag <span class="req">*</span></label>
-                        <input type="text" id="teamTag" placeholder="e.g. TSM, GL" maxlength="6" minlength="2" required style="text-transform:uppercase;" onblur="validateField(this,'teamTag')">
-                        <div class="field-error" id="err-teamTag"></div>
-                    </div>
-                    <div class="form-group">
-                        <label>Team Leader Name <span class="req">*</span></label>
-                        <input type="text" id="leaderName" placeholder="Real name" required minlength="2" maxlength="50" onblur="validateField(this,'leaderName')">
-                        <div class="field-error" id="err-leaderName"></div>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Leader WhatsApp <span class="req">*</span></label>
-                        <input type="tel" id="leaderWhatsApp" placeholder="10 digit mobile number" required maxlength="10" onblur="validateField(this,'leaderWhatsApp')" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
-                        <div class="field-error" id="err-leaderWhatsApp"></div>
-                    </div>
-                    <div class="form-group">
-                        <label>Leader Email <span class="req">*</span></label>
-                        <input type="email" id="leaderEmail" placeholder="email@example.com" required readonly>
-                        <div class="field-error" id="err-leaderEmail"></div>
-                    </div>
-                </div>
-
-                <div class="form-divider"></div>
-
-                <h3 class="section-heading">
-                    <span class="icon-box">&#128101;</span> Squad Members
-                </h3>
-
-                <div class="player-block">
-                    <div class="p-head"><div class="p-num">1</div><div class="p-label">Player 1 (IGL / Leader)</div></div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>IGN (In-Game Name) <span class="req">*</span></label>
-                            <input type="text" id="p1ign" placeholder="Exact BGMI name" required minlength="2" maxlength="20" onblur="validateField(this,'ign')">
-                            <div class="field-error" id="err-p1ign"></div>
-                        </div>
-                        <div class="form-group">
-                            <label>BGMI ID <span class="req">*</span></label>
-                            <input type="text" id="p1id" placeholder="e.g. 5123456789" required maxlength="12" onblur="validateField(this,'bgmiId')" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
-                            <div class="field-error" id="err-p1id"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="player-block">
-                    <div class="p-head"><div class="p-num">2</div><div class="p-label">Player 2</div></div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>IGN <span class="req">*</span></label>
-                            <input type="text" id="p2ign" placeholder="Exact BGMI name" required minlength="2" maxlength="20" onblur="validateField(this,'ign')">
-                            <div class="field-error" id="err-p2ign"></div>
-                        </div>
-                        <div class="form-group">
-                            <label>BGMI ID <span class="req">*</span></label>
-                            <input type="text" id="p2id" placeholder="e.g. 5123456789" required maxlength="12" onblur="validateField(this,'bgmiId')" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
-                            <div class="field-error" id="err-p2id"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="player-block">
-                    <div class="p-head"><div class="p-num">3</div><div class="p-label">Player 3</div></div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>IGN <span class="req">*</span></label>
-                            <input type="text" id="p3ign" placeholder="Exact BGMI name" required minlength="2" maxlength="20" onblur="validateField(this,'ign')">
-                            <div class="field-error" id="err-p3ign"></div>
-                        </div>
-                        <div class="form-group">
-                            <label>BGMI ID <span class="req">*</span></label>
-                            <input type="text" id="p3id" placeholder="e.g. 5123456789" required maxlength="12" onblur="validateField(this,'bgmiId')" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
-                            <div class="field-error" id="err-p3id"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="player-block">
-                    <div class="p-head"><div class="p-num">4</div><div class="p-label">Player 4</div></div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>IGN <span class="req">*</span></label>
-                            <input type="text" id="p4ign" placeholder="Exact BGMI name" required minlength="2" maxlength="20" onblur="validateField(this,'ign')">
-                            <div class="field-error" id="err-p4ign"></div>
-                        </div>
-                        <div class="form-group">
-                            <label>BGMI ID <span class="req">*</span></label>
-                            <input type="text" id="p4id" placeholder="e.g. 5123456789" required maxlength="12" onblur="validateField(this,'bgmiId')" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
-                            <div class="field-error" id="err-p4id"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="player-block sub">
-                    <div class="p-head"><div class="p-num">5</div><div class="p-label">Substitute (Optional)</div></div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>IGN</label>
-                            <input type="text" id="p5ign" placeholder="Optional" maxlength="20" onblur="if(this.value) validateField(this,'ign')">
-                            <div class="field-error" id="err-p5ign"></div>
-                        </div>
-                        <div class="form-group">
-                            <label>BGMI ID</label>
-                            <input type="text" id="p5id" placeholder="Optional" maxlength="12" oninput="this.value=this.value.replace(/[^0-9]/g,'')" onblur="if(this.value) validateField(this,'bgmiId')">
-                            <div class="field-error" id="err-p5id"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-divider"></div>
-
-                <div class="agree-item">
-                    <input type="checkbox" required id="a1">
-                    <span><strong>I confirm</strong> all information is accurate. False info may lead to disqualification.</span>
-                </div>
-
-                <div class="agree-item">
-                    <input type="checkbox" required id="a2">
-                    <span>I agree to all <strong>tournament rules</strong>. No hacks, no emulators, no cheating.</span>
-                </div>
-
-                <div class="agree-item">
-                    <input type="checkbox" required id="a3">
-                    <span><strong>Organizer's decision is final</strong>. Screen recording is mandatory.</span>
-                </div>
-
-                <button type="button" class="submit-btn" id="submitBtn" onclick="submitRegistration()">&#9889; Register & Proceed to Pay</button>
-            </form>
-        </div>
-
-        <!-- STEP 2: Payment Processing -->
-        <div class="payment-section" id="paymentSection">
-            <div class="payment-card">
-                <div class="section-heading" style="justify-content: center;">
-                    <span class="icon-box">&#128176;</span> Payment
-                </div>
-                <div class="payment-amount" id="entryFeeDisplay">&#8377;100</div>
-                <div class="payment-label">Entry Fee Per Team</div>
-
-                <div style="margin: 25px 0; padding: 20px; background: rgba(0,200,83,0.05); border: 1px solid rgba(0,200,83,0.2); border-radius: 14px;">
-                    <div style="font-size: 0.9rem; color: #aaa; margin-bottom: 12px;">
-                        Pay securely via <strong style="color:#fff;">UPI, Card, NetBanking, Wallet</strong> — powered by Razorpay
-                    </div>
-                    <button class="pay-submit-btn" id="payNowBtn" onclick="openRazorpayCheckout()">&#9889; PAY NOW</button>
-                </div>
-
-                <div style="font-size: 0.8rem; color: #555; margin-top: 10px;">
-                    <span id="mockBadge" style="display:none; background:rgba(255,215,0,0.15); border:1px solid rgba(255,215,0,0.3); color:var(--gold); padding:4px 12px; border-radius:6px; font-family:'Rajdhani',sans-serif; font-weight:600;">
-                        TEST MODE — No real money charged
-                    </span>
-                </div>
-            </div>
-        </div>
-
-        <!-- STEP 2b: Payment Processing (loading) -->
-        <div class="success-section" id="processingSection">
-            <div class="pending-card">
-                <div class="success-icon"><span class="loader" style="width:40px;height:40px;border-width:4px;"></span></div>
-                <div class="pending-title" style="margin-top:15px;">Processing Payment...</div>
-                <div class="pending-msg">Please wait while we verify your payment.</div>
-            </div>
-        </div>
-
-        <!-- STEP 3b: Payment Verified - WhatsApp Link -->
-        <div class="success-section" id="successSection">
-            <!-- Room ID Banner -->
-            <div class="room-banner" id="roomBanner">
-                <div class="room-label">&#127919; Today's Match</div>
-                <div class="room-info" id="roomIdDisplay"></div>
-                <div class="room-info" id="roomPassDisplay"></div>
-                <div class="room-msg" id="roomMsgDisplay"></div>
-            </div>
-
-            <div class="success-card">
-                <div class="success-icon">&#9989;</div>
-                <div class="success-title">Registration Complete!</div>
-                <div class="success-msg">
-                    Payment verified! Ab tum officially registered ho.<br>
-                    Neeche WhatsApp group join karo — Room ID wahi milega.
-                </div>
-                <a href="#" class="whatsapp-btn" id="whatsappLink" target="_blank">
-                    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                    Join WhatsApp Group
-                </a>
-            </div>
-        </div>
-
-        <!-- Status Check Link -->
-        <div class="status-check" id="statusCheckArea">
-            <br>
-            <span class="status-link" onclick="openStatusModal()">Already registered? Check your status</span>
-        </div>
-
-        <!-- DEMO MODE PREVIEW BUTTONS -->
-        <div id="demoBar" style="display:none; max-width:700px; margin:30px auto 0; background:rgba(255,215,0,0.06); border:1px dashed rgba(255,215,0,0.3); border-radius:14px; padding:20px; text-align:center;">
-            <div style="font-family:'Orbitron',sans-serif; font-size:0.8rem; color:var(--gold); letter-spacing:2px; margin-bottom:14px;">DEMO MODE — Preview All Screens</div>
-            <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
-                <button onclick="demoShow('form')" style="padding:8px 18px; background:rgba(255,69,0,0.15); border:1px solid rgba(255,69,0,0.3); color:var(--fire); border-radius:8px; cursor:pointer; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:0.85rem;">Registration Form</button>
-                <button onclick="demoShow('payment')" style="padding:8px 18px; background:rgba(0,200,83,0.15); border:1px solid rgba(0,200,83,0.3); color:var(--green); border-radius:8px; cursor:pointer; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:0.85rem;">Payment Screen</button>
-                <button onclick="demoShow('success')" style="padding:8px 18px; background:rgba(37,211,102,0.15); border:1px solid rgba(37,211,102,0.3); color:#25D366; border-radius:8px; cursor:pointer; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:0.85rem;">Success + WhatsApp</button>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- STATUS CHECK MODAL -->
-<div class="status-modal" id="statusModal">
-    <div class="status-modal-inner">
-        <h3>Check Registration Status</h3>
-        <input type="email" id="statusEmail" placeholder="Enter your registered email">
-        <div class="btn-row">
-            <button class="btn-check" onclick="checkStatus()">Check Status</button>
-            <button class="btn-close" onclick="closeStatusModal()">Close</button>
-        </div>
+    <div class="home-footer">
+        &copy; 2026 <span>Malwa Esports Private Limited</span> &mdash; Founded by Purushottam Patidar &mdash; 7489244521
     </div>
 </div>
 
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
-
-<!-- FOOTER -->
-<footer class="footer">
-    &copy; 2026 <span>Malwa Esports Private Limited</span><br>
-    <span style="font-size: 0.8rem; color: #555;">Founded by Purushottam Patidar</span><br>
-    <span style="font-size: 0.78rem; color: #444; margin-top: 4px; display: inline-block;">
-        &#128222; 7489244521 &nbsp;|&nbsp; &#9993; malwaesports@1605.com
-    </span>
-</footer>
-
-<!-- Razorpay Checkout SDK -->
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
 <script>
-    // ============================================================
-    // GLOBALS
-    // ============================================================
-    let siteConfig = { entryFee: 100, keyId: 'rzp_test_MOCK', mockMode: true };
-    let currentReg = null;
-
-    // ============================================================
-    // INIT
-    // ============================================================
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-    document.querySelector('.navbar').addEventListener('click', (e) => {
-        if (e.target.tagName === 'A') document.querySelector('.nav-links').classList.remove('open');
-    });
-
-    function showToast(msg, type = 'info') {
-        const t = document.getElementById('toast');
-        t.textContent = msg;
-        t.className = 'toast ' + type;
-        setTimeout(() => t.classList.add('show'), 10);
-        setTimeout(() => t.classList.remove('show'), 3500);
-    }
-
-    // Load settings from server
-    async function loadConfig() {
-        try {
-            const res = await fetch('/api/settings');
-            siteConfig = await res.json();
-            document.getElementById('entryFeeDisplay').textContent = '\u20B9' + (siteConfig.entryFee || 100);
-            if (siteConfig.mockMode) {
-                document.getElementById('demoBar').style.display = 'block';
-                document.getElementById('mockBadge').style.display = 'inline-block';
+(function () {
+    var nav = document.querySelector('.navbar');
+    if (nav) {
+        nav.addEventListener('click', function (e) {
+            if (e.target.tagName === 'A') {
+                var links = document.querySelector('.nav-links');
+                if (links) links.classList.remove('open');
             }
-        } catch (e) {
-            document.getElementById('entryFeeDisplay').textContent = '\u20B9100';
-            document.getElementById('demoBar').style.display = 'block';
-            document.getElementById('mockBadge').style.display = 'inline-block';
-        }
+        });
     }
-    loadConfig();
+})();
 
-    // ============================================================
-    // SCREEN MANAGEMENT
-    // ============================================================
-    // ============================================================
-    // AUTH SYSTEM (Sign In / Sign Up)
-    // ============================================================
-    let currentUser = null;
-
-    function switchAuthTab(tab) {
-        document.getElementById('tabSignIn').classList.toggle('active', tab === 'signin');
-        document.getElementById('tabSignUp').classList.toggle('active', tab === 'signup');
-        document.getElementById('signinForm').style.display = tab === 'signin' ? 'block' : 'none';
-        document.getElementById('signupForm').style.display = tab === 'signup' ? 'block' : 'none';
+(function () {
+    var c = document.getElementById('bgmiCanvas'); if (!c) return;
+    var icons = [
+        '<svg viewBox="0 0 24 60" fill="currentColor"><rect x="6" y="0" width="12" height="40" rx="6" ry="6"/><rect x="4" y="36" width="16" height="20" rx="2"/><rect x="6" y="52" width="12" height="8" rx="1"/></svg>',
+        '<svg viewBox="0 0 60 50" fill="currentColor"><path d="M10,35 Q10,8 30,5 Q50,8 50,35 L48,40 Q30,45 12,40Z"/><rect x="8" y="35" width="44" height="6" rx="3"/></svg>',
+        '<svg viewBox="0 0 40 55" fill="currentColor"><rect x="14" y="0" width="12" height="10" rx="2"/><ellipse cx="20" cy="35" rx="16" ry="20"/></svg>',
+        '<svg viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="2"><circle cx="25" cy="25" r="18"/><circle cx="25" cy="25" r="8"/><line x1="25" y1="2" x2="25" y2="15"/><line x1="25" y1="35" x2="25" y2="48"/><line x1="2" y1="25" x2="15" y2="25"/><line x1="35" y1="25" x2="48" y2="25"/></svg>',
+        '<svg viewBox="0 0 44 50" fill="currentColor"><rect x="8" y="12" width="28" height="35" rx="5"/><rect x="14" y="5" width="16" height="10" rx="4"/><rect x="12" y="20" width="20" height="10" rx="2" opacity="0.5"/></svg>',
+        '<svg viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="2"><circle cx="25" cy="25" r="22"/><circle cx="25" cy="25" r="14"/><circle cx="25" cy="25" r="4" fill="currentColor"/></svg>'
+    ];
+    for (var i = 0; i < 20; i++) {
+        var el = document.createElement('div');
+        el.className = 'float-icon';
+        el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+        var s = 18 + Math.random() * 30, l = Math.random() * 100, d = 20 + Math.random() * 30, dl = Math.random() * -40, o = 0.015 + Math.random() * 0.03;
+        el.style.cssText = 'left:' + l + '%;width:' + s + 'px;height:' + s + 'px;color:rgba(255,107,0,' + (o / 0.03) + ');opacity:' + o + ';animation-duration:' + d + 's;animation-delay:' + dl + 's;';
+        c.appendChild(el);
     }
+})();
 
-    function togglePass(inputId, el) {
-        const inp = document.getElementById(inputId);
-        if (inp.type === 'password') { inp.type = 'text'; el.style.opacity = '0.8'; }
-        else { inp.type = 'password'; el.style.opacity = '0.4'; }
-    }
-
-    function setLoading(btn, loading) {
-        btn.disabled = loading;
-        if (loading) { btn.dataset.origText = btn.innerHTML; btn.innerHTML = 'Please wait... <span class="loader"></span>'; }
-        else { btn.innerHTML = btn.dataset.origText || btn.innerHTML; }
-    }
-
-    async function doSignUp() {
-        const name = document.getElementById('suName').value.trim();
-        const email = document.getElementById('suEmail').value.trim();
-        const password = document.getElementById('suPassword').value;
-        const confirm = document.getElementById('suConfirm').value;
-
-        if (!name || name.length < 2) { showToast('Enter your name (min 2 chars)', 'error'); return; }
-        if (!email || !email.includes('@')) { showToast('Enter a valid email', 'error'); return; }
-        if (password.length < 6) { showToast('Password must be at least 6 characters', 'error'); return; }
-        if (password !== confirm) { showToast('Passwords do not match!', 'error'); return; }
-
-        const btn = document.getElementById('signupBtn');
-        setLoading(btn, true);
-
-        try {
-            const res = await fetch('/api/auth', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'signup', name, email, password }),
+(function(){
+    fetch('/api/settings')
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+            var items = d.announcements || [];
+            if (!items.length) return;
+            var strip = document.getElementById('updatesStrip');
+            var track = document.getElementById('updatesTrack');
+            var oneSet = '';
+            items.forEach(function(a){
+                oneSet += '<span class="updates-item">';
+                oneSet += '<span class="dot"></span>';
+                if (a.pinned) oneSet += '<span class="pinned-tag">PINNED</span>';
+                oneSet += a.text;
+                oneSet += '</span>';
             });
-            const data = await res.json();
-            if (!res.ok) { showToast(data.error || 'Sign up failed', 'error'); setLoading(btn, false); return; }
-
-            currentUser = data.user;
-            localStorage.setItem('bgmi_auth', JSON.stringify({ email: data.user.email, token: data.user.token, name: data.user.name }));
-            onAuthSuccess();
-            showToast('Account created! Welcome, ' + data.user.name, 'success');
-        } catch (e) {
-            showToast('Network error. Try again.', 'error');
-        }
-        setLoading(btn, false);
-    }
-
-    async function doSignIn() {
-        const email = document.getElementById('siEmail').value.trim();
-        const password = document.getElementById('siPassword').value;
-
-        if (!email || !email.includes('@')) { showToast('Enter a valid email', 'error'); return; }
-        if (!password) { showToast('Enter your password', 'error'); return; }
-
-        const btn = document.getElementById('signinBtn');
-        setLoading(btn, true);
-
-        try {
-            const res = await fetch('/api/auth', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'signin', email, password }),
-            });
-            const data = await res.json();
-            if (!res.ok) { showToast(data.error || 'Sign in failed', 'error'); setLoading(btn, false); return; }
-
-            currentUser = data.user;
-            localStorage.setItem('bgmi_auth', JSON.stringify({ email: data.user.email, token: data.user.token, name: data.user.name }));
-            onAuthSuccess();
-            showToast('Welcome back, ' + data.user.name + '!', 'success');
-        } catch (e) {
-            showToast('Network error. Try again.', 'error');
-        }
-        setLoading(btn, false);
-    }
-
-    function onAuthSuccess() {
-        document.getElementById('authGate').style.display = 'none';
-        document.getElementById('regFormCard').style.display = 'block';
-        document.getElementById('leaderEmail').value = currentUser.email;
-        document.getElementById('leaderName').value = currentUser.name;
-        document.getElementById('verifiedEmail').textContent = currentUser.email;
-    }
-
-    function doLogout() {
-        currentUser = null;
-        localStorage.removeItem('bgmi_auth');
-        localStorage.removeItem('bgmi_reg_id');
-        document.getElementById('regFormCard').style.display = 'none';
-        document.getElementById('authGate').style.display = 'block';
-        showToast('Logged out', 'info');
-    }
-
-    // Auto-restore session
-    (async function() {
-        const saved = localStorage.getItem('bgmi_auth');
-        if (!saved) return;
-        try {
-            const { email, token, name } = JSON.parse(saved);
-            const res = await fetch('/api/auth', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'verify', email, password: '_', token }),
-            });
-            if (res.ok) {
-                const data = await res.json();
-                currentUser = { ...data.user, token };
-                onAuthSuccess();
-            } else {
-                localStorage.removeItem('bgmi_auth');
-            }
-        } catch (e) {
-            localStorage.removeItem('bgmi_auth');
-        }
-    })();
-
-    function showScreen(screen) {
-        document.getElementById('authGate').style.display = 'none';
-        document.getElementById('regFormCard').style.display = 'none';
-        document.getElementById('paymentSection').style.display = 'none';
-        document.getElementById('processingSection').style.display = 'none';
-        document.getElementById('successSection').style.display = 'none';
-
-        if (screen === 'form') {
-            if (currentUser) {
-                document.getElementById('regFormCard').style.display = 'block';
-            } else {
-                document.getElementById('authGate').style.display = 'block';
-            }
-        } else if (screen === 'payment') {
-            document.getElementById('paymentSection').style.display = 'block';
-        } else if (screen === 'processing') {
-            document.getElementById('processingSection').style.display = 'block';
-        } else if (screen === 'success') {
-            document.getElementById('successSection').style.display = 'block';
-            if (siteConfig.roomInfo && siteConfig.roomInfo.roomId) {
-                document.getElementById('roomBanner').style.display = 'block';
-                document.getElementById('roomIdDisplay').textContent = 'Room ID: ' + siteConfig.roomInfo.roomId;
-                document.getElementById('roomPassDisplay').textContent = 'Password: ' + siteConfig.roomInfo.roomPass;
-                document.getElementById('roomMsgDisplay').textContent = siteConfig.roomInfo.roomMessage || '';
-            }
-            document.getElementById('whatsappLink').href = siteConfig.whatsappLink || '#';
-        }
-    }
-
-    function demoShow(screen) {
-        showScreen(screen);
-        document.getElementById('register').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        showToast('Preview: ' + screen.charAt(0).toUpperCase() + screen.slice(1), 'info');
-    }
-
-    // ============================================================
-    // FORM VALIDATION
-    // ============================================================
-    const V = {
-        email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
-        phone: v => /^[6-9]\d{9}$/.test(v),
-        teamName: v => v.length >= 3 && v.length <= 30,
-        teamTag: v => /^[A-Za-z0-9]{2,6}$/.test(v),
-        name: v => v.length >= 2 && /^[A-Za-z\s.'-]+$/.test(v),
-        ign: v => v.length >= 2 && v.length <= 20,
-        bgmiId: v => /^\d{8,12}$/.test(v),
-    };
-
-    const ERRS = {
-        teamName: 'Team name must be 3-30 characters',
-        teamTag: 'Team tag must be 2-6 alphanumeric chars (e.g. TSM, GL)',
-        leaderName: 'Enter a valid name (letters only, min 2 chars)',
-        leaderWhatsApp: 'Enter a valid 10-digit Indian mobile number',
-        leaderEmail: 'Enter a valid email address',
-        ign: 'IGN must be 2-20 characters',
-        bgmiId: 'BGMI ID must be 8-12 digits (numbers only)',
-    };
-
-    function validateField(input, type) {
-        const val = input.value.trim();
-        const group = input.closest('.form-group');
-        const errEl = group.querySelector('.field-error');
-        let valid = false;
-
-        if (type === 'teamName') valid = V.teamName(val);
-        else if (type === 'teamTag') valid = V.teamTag(val);
-        else if (type === 'leaderName') valid = V.name(val);
-        else if (type === 'leaderWhatsApp') valid = V.phone(val);
-        else if (type === 'leaderEmail') valid = V.email(val);
-        else if (type === 'ign') valid = V.ign(val);
-        else if (type === 'bgmiId') valid = V.bgmiId(val);
-
-        group.classList.remove('has-error', 'valid');
-        if (!val && !input.required) return true;
-        if (!val || !valid) {
-            group.classList.add('has-error');
-            if (errEl) errEl.textContent = ERRS[type] || 'Invalid input';
-            return false;
-        }
-        group.classList.add('valid');
-        return true;
-    }
-
-    function validateAllFields() {
-        let allGood = true;
-        let firstBad = null;
-
-        const checks = [
-            ['teamName', 'teamName'], ['teamTag', 'teamTag'], ['leaderName', 'leaderName'],
-            ['leaderWhatsApp', 'leaderWhatsApp'], ['leaderEmail', 'leaderEmail'],
-            ['p1ign', 'ign'], ['p1id', 'bgmiId'], ['p2ign', 'ign'], ['p2id', 'bgmiId'],
-            ['p3ign', 'ign'], ['p3id', 'bgmiId'], ['p4ign', 'ign'], ['p4id', 'bgmiId'],
-        ];
-
-        for (const [id, type] of checks) {
-            const input = document.getElementById(id);
-            if (!validateField(input, type)) {
-                allGood = false;
-                if (!firstBad) firstBad = input;
-            }
-        }
-
-        // Validate sub only if filled
-        const p5ign = document.getElementById('p5ign');
-        const p5id = document.getElementById('p5id');
-        if (p5ign.value.trim()) { if (!validateField(p5ign, 'ign')) { allGood = false; if (!firstBad) firstBad = p5ign; } }
-        if (p5id.value.trim()) { if (!validateField(p5id, 'bgmiId')) { allGood = false; if (!firstBad) firstBad = p5id; } }
-
-        // Check for duplicate BGMI IDs
-        const ids = ['p1id','p2id','p3id','p4id'].map(id => document.getElementById(id).value.trim()).filter(Boolean);
-        if (p5id.value.trim()) ids.push(p5id.value.trim());
-        const dupes = ids.filter((v, i, a) => a.indexOf(v) !== i);
-        if (dupes.length > 0) {
-            showToast('Duplicate BGMI ID found: ' + dupes[0] + '. Each player must have a unique ID!', 'error');
-            allGood = false;
-        }
-
-        // Check for duplicate IGNs
-        const igns = ['p1ign','p2ign','p3ign','p4ign'].map(id => document.getElementById(id).value.trim().toLowerCase()).filter(Boolean);
-        if (p5ign.value.trim()) igns.push(p5ign.value.trim().toLowerCase());
-        const dupeIgns = igns.filter((v, i, a) => a.indexOf(v) !== i);
-        if (dupeIgns.length > 0) {
-            showToast('Duplicate IGN found: ' + dupeIgns[0] + '. Each player must have a unique IGN!', 'error');
-            allGood = false;
-        }
-
-        if (!allGood && firstBad) {
-            firstBad.focus();
-            firstBad.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-
-        return allGood;
-    }
-
-    // ============================================================
-    // REGISTRATION (Step 1 — Form Submit)
-    // ============================================================
-    async function submitRegistration() {
-        const agreementChecks = [document.getElementById('a1'), document.getElementById('a2'), document.getElementById('a3')];
-        if (!agreementChecks.every(c => c.checked)) { showToast('Please agree to all terms!', 'error'); return; }
-
-        if (!validateAllFields()) {
-            showToast('Please fix the errors in the form!', 'error');
-            return;
-        }
-
-        const btn = document.getElementById('submitBtn');
-        btn.disabled = true;
-        btn.innerHTML = 'Registering... <span class="loader"></span>';
-
-        const body = {
-            teamName: document.getElementById('teamName').value.trim(),
-            teamTag: document.getElementById('teamTag').value.trim(),
-            leaderName: document.getElementById('leaderName').value.trim(),
-            leaderWhatsApp: document.getElementById('leaderWhatsApp').value.trim(),
-            leaderEmail: document.getElementById('leaderEmail').value.trim(),
-            players: [
-                { ign: document.getElementById('p1ign').value.trim(), bgmiId: document.getElementById('p1id').value.trim() },
-                { ign: document.getElementById('p2ign').value.trim(), bgmiId: document.getElementById('p2id').value.trim() },
-                { ign: document.getElementById('p3ign').value.trim(), bgmiId: document.getElementById('p3id').value.trim() },
-                { ign: document.getElementById('p4ign').value.trim(), bgmiId: document.getElementById('p4id').value.trim() },
-            ],
-            substitute: { ign: document.getElementById('p5ign').value.trim(), bgmiId: document.getElementById('p5id').value.trim() },
-        };
-
-        try {
-            const res = await fetch('/api/create-order', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body),
-            });
-            const data = await res.json();
-
-            if (data.existing) {
-                currentReg = data.registration;
-                localStorage.setItem('bgmi_reg_id', currentReg.id);
-                if (currentReg.paymentStatus === 'verified') {
-                    showScreen('success');
-                    showToast('Already registered & paid!', 'info');
-                } else {
-                    showScreen('payment');
-                    showToast('Already registered! Complete payment.', 'info');
-                }
-                btn.disabled = false; btn.innerHTML = '&#9889; Register & Proceed to Pay';
-                return;
-            }
-
-            currentReg = data.registration;
-            localStorage.setItem('bgmi_reg_id', currentReg.id);
-            siteConfig.keyId = data.keyId;
-            siteConfig._orderId = data.orderId;
-            siteConfig._amount = data.amount;
-            siteConfig._mockMode = data.mockMode;
-
-            showToast('Registered! Now complete payment.', 'success');
-            showScreen('payment');
-
-        } catch (err) {
-            showToast('Error: ' + err.message, 'error');
-        }
-
-        btn.disabled = false; btn.innerHTML = '&#9889; Register & Proceed to Pay';
-    }
-
-    // ============================================================
-    // PAYMENT (Step 2 — Razorpay Checkout)
-    // ============================================================
-    function openRazorpayCheckout() {
-        if (!currentReg) { showToast('Register first!', 'error'); return; }
-
-        // Mock mode — simulate payment instantly
-        if (siteConfig._mockMode || siteConfig.mockMode) {
-            showScreen('processing');
-            setTimeout(async () => {
-                try {
-                    const res = await fetch('/api/verify-payment', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            razorpay_order_id: siteConfig._orderId || currentReg.orderId,
-                            razorpay_payment_id: 'mock_pay_' + Date.now(),
-                            razorpay_signature: 'mock_sig',
-                            registrationId: currentReg.id,
-                        }),
-                    });
-                    const data = await res.json();
-                    if (data.verified) {
-                        currentReg = data.registration;
-                        if (data.roomInfo) siteConfig.roomInfo = data.roomInfo;
-                        if (data.whatsappLink) siteConfig.whatsappLink = data.whatsappLink;
-                        showScreen('success');
-                        showToast('Payment verified! (Test Mode)', 'success');
-                    } else {
-                        showScreen('payment');
-                        showToast('Verification failed', 'error');
-                    }
-                } catch (err) {
-                    showScreen('payment');
-                    showToast('Error: ' + err.message, 'error');
-                }
-            }, 1500);
-            return;
-        }
-
-        // Real Razorpay Checkout
-        const options = {
-            key: siteConfig.keyId,
-            amount: siteConfig._amount,
-            currency: 'INR',
-            name: 'Malwa Esports',
-            description: 'BGMI Tournament Entry Fee',
-            order_id: siteConfig._orderId,
-            prefill: {
-                name: currentReg.leaderName,
-                email: currentReg.leaderEmail,
-                contact: currentReg.leaderWhatsApp,
-            },
-            theme: { color: '#ff4500' },
-            handler: async function(response) {
-                showScreen('processing');
-                try {
-                    const res = await fetch('/api/verify-payment', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            razorpay_order_id: response.razorpay_order_id,
-                            razorpay_payment_id: response.razorpay_payment_id,
-                            razorpay_signature: response.razorpay_signature,
-                            registrationId: currentReg.id,
-                        }),
-                    });
-                    const data = await res.json();
-                    if (data.verified) {
-                        currentReg = data.registration;
-                        if (data.roomInfo) siteConfig.roomInfo = data.roomInfo;
-                        if (data.whatsappLink) siteConfig.whatsappLink = data.whatsappLink;
-                        showScreen('success');
-                        showToast('Payment verified!', 'success');
-                    } else {
-                        showScreen('payment');
-                        showToast('Payment verification failed!', 'error');
-                    }
-                } catch (err) {
-                    showScreen('payment');
-                    showToast('Error verifying payment', 'error');
-                }
-            },
-            modal: {
-                ondismiss: function() { showToast('Payment cancelled', 'info'); }
-            }
-        };
-
-        const rzp = new Razorpay(options);
-        rzp.open();
-    }
-
-    // ============================================================
-    // STATUS CHECK
-    // ============================================================
-    function openStatusModal() { document.getElementById('statusModal').classList.add('show'); }
-    function closeStatusModal() { document.getElementById('statusModal').classList.remove('show'); }
-
-    async function checkStatus() {
-        const email = document.getElementById('statusEmail').value.trim().toLowerCase();
-        if (!email) { showToast('Enter your email!', 'error'); return; }
-
-        try {
-            const res = await fetch('/api/registrations?email=' + encodeURIComponent(email));
-            const data = await res.json();
-
-            if (!data.registration) { showToast('No registration found.', 'error'); return; }
-
-            currentReg = data.registration;
-            localStorage.setItem('bgmi_reg_id', currentReg.id);
-            closeStatusModal();
-
-            if (currentReg.paymentStatus === 'verified') {
-                showScreen('success');
-                showToast('Payment verified!', 'success');
-            } else {
-                showScreen('payment');
-                showToast('Payment pending — complete it now.', 'info');
-            }
-        } catch (err) {
-            showToast('Error checking status', 'error');
-        }
-    }
-
-    // ============================================================
-    // AUTO-CHECK ON PAGE LOAD
-    // ============================================================
-    (async function() {
-        const regId = localStorage.getItem('bgmi_reg_id');
-        if (!regId) return;
-        try {
-            const res = await fetch('/api/registrations');
-            const data = await res.json();
-            const reg = (data.registrations || []).find(r => r.id === regId);
-            if (!reg) return;
-            currentReg = reg;
-            if (reg.paymentStatus === 'verified') showScreen('success');
-            else showScreen('payment');
-        } catch (e) {}
-    })();
-
-    // ============================================================
-    // FLOATING BGMI BACKGROUND ICONS
-    // ============================================================
-    (function() {
-        const canvas = document.getElementById('bgmiCanvas');
-        if (!canvas) return;
-
-        const icons = [
-            // Bullet
-            `<svg viewBox="0 0 24 60" fill="currentColor"><rect x="6" y="0" width="12" height="40" rx="6" ry="6"/><rect x="4" y="36" width="16" height="20" rx="2"/><rect x="6" y="52" width="12" height="8" rx="1"/></svg>`,
-            // Helmet (Level 3)
-            `<svg viewBox="0 0 60 50" fill="currentColor"><path d="M10,35 Q10,8 30,5 Q50,8 50,35 L48,40 Q30,45 12,40Z"/><rect x="8" y="35" width="44" height="6" rx="3"/><rect x="15" y="18" width="30" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>`,
-            // Grenade
-            `<svg viewBox="0 0 40 55" fill="currentColor"><rect x="14" y="0" width="12" height="10" rx="2"/><rect x="16" y="2" width="2" height="6"/><ellipse cx="20" cy="35" rx="16" ry="20"/><line x1="20" y1="10" x2="20" y2="15" stroke="currentColor" stroke-width="3"/></svg>`,
-            // Crosshair
-            `<svg viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="2"><circle cx="25" cy="25" r="18"/><circle cx="25" cy="25" r="8"/><line x1="25" y1="2" x2="25" y2="15"/><line x1="25" y1="35" x2="25" y2="48"/><line x1="2" y1="25" x2="15" y2="25"/><line x1="35" y1="25" x2="48" y2="25"/></svg>`,
-            // Backpack
-            `<svg viewBox="0 0 44 50" fill="currentColor"><rect x="8" y="12" width="28" height="35" rx="5"/><rect x="14" y="5" width="16" height="10" rx="4"/><rect x="12" y="20" width="20" height="10" rx="2" opacity="0.5"/><rect x="0" y="20" width="8" height="18" rx="3"/><rect x="36" y="20" width="8" height="18" rx="3"/></svg>`,
-            // Medkit
-            `<svg viewBox="0 0 50 40" fill="currentColor"><rect x="2" y="5" width="46" height="30" rx="5"/><rect x="20" y="10" width="10" height="20" rx="1" fill="#0a0a12"/><rect x="15" y="15" width="20" height="10" rx="1" fill="#0a0a12"/></svg>`,
-            // Scope
-            `<svg viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="2"><circle cx="25" cy="25" r="22"/><circle cx="25" cy="25" r="14"/><circle cx="25" cy="25" r="4" fill="currentColor"/></svg>`,
-            // Pan
-            `<svg viewBox="0 0 55 30" fill="currentColor"><circle cx="20" cy="15" r="14"/><rect x="32" y="12" width="22" height="6" rx="3"/><circle cx="20" cy="15" r="10" opacity="0.4"/></svg>`,
-            // Energy Drink
-            `<svg viewBox="0 0 24 50" fill="currentColor"><rect x="4" y="8" width="16" height="38" rx="3"/><rect x="6" y="0" width="12" height="10" rx="2"/><rect x="2" y="8" width="20" height="4" rx="1"/><rect x="8" y="18" width="8" height="14" rx="1" opacity="0.4"/></svg>`,
-            // Airdrop
-            `<svg viewBox="0 0 50 50" fill="currentColor"><rect x="5" y="15" width="40" height="32" rx="3"/><polygon points="25,0 5,15 45,15" opacity="0.6"/><line x1="25" y1="0" x2="25" y2="-10" stroke="currentColor" stroke-width="2"/><rect x="15" y="25" width="20" height="12" rx="2" opacity="0.3"/></svg>`,
-        ];
-
-        const COUNT = 25;
-        for (let i = 0; i < COUNT; i++) {
-            const el = document.createElement('div');
-            el.className = 'float-icon';
-            el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
-            const size = 20 + Math.random() * 35;
-            const left = Math.random() * 100;
-            const dur = 18 + Math.random() * 30;
-            const delay = Math.random() * -40;
-            const extraOpacity = 0.02 + Math.random() * 0.04;
-            el.style.cssText = `
-                left: ${left}%;
-                width: ${size}px;
-                height: ${size}px;
-                color: rgba(255,140,0,${extraOpacity / 0.04});
-                opacity: ${extraOpacity};
-                animation-duration: ${dur}s;
-                animation-delay: ${delay}s;
-            `;
-            canvas.appendChild(el);
-        }
-    })();
+            var repeatCount = Math.max(4, Math.ceil(3000 / (oneSet.length || 1)));
+            var half = '';
+            for (var r = 0; r < repeatCount; r++) half += oneSet;
+            track.innerHTML = half + half;
+            var totalChars = items.reduce(function(s,a){ return s + a.text.length; }, 0) * repeatCount;
+            var dur = Math.max(15, totalChars * 0.12);
+            strip.style.setProperty('--ticker-dur', dur + 's');
+            strip.classList.add('has-items');
+        })
+        .catch(function(){});
+})();
 </script>
 
 </body>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rules | Malwa Esports</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="bgmi-bg-canvas" id="bgmiCanvas"></div>
+
+<nav class="navbar">
+    <a href="index.html" class="nav-logo">MALWA ESPORTS</a>
+    <button type="button" class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">&#9776;</button>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="format.html">Format</a></li>
+        <li><a href="maps.html">Maps</a></li>
+        <li><a href="points.html">Points</a></li>
+        <li><a href="prizes.html">Prizes</a></li>
+        <li><a href="rules.html" class="nav-active">Rules</a></li>
+        <li><a href="admin.html" class="nav-admin">Admin</a></li>
+        <li><a href="register.html" class="nav-cta">Register</a></li>
+    </ul>
+</nav>
+
+<div class="page-top"></div>
+
+<section id="rules">
+    <div class="section">
+        <div class="section-header fade-in">
+            <div class="section-label">Fair Play</div>
+            <h2 class="section-title">Tournament Rules</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="simple-rules fade-in">
+            <div class="srule"><span>01</span> Squad mode only — 4 players per team (1 substitute allowed)</div>
+            <div class="srule"><span>02</span> TPP (Third Person Perspective) — no FPP matches</div>
+            <div class="srule"><span>03</span> Use of hacks, emulators, triggers, or any unfair means = permanent ban</div>
+            <div class="srule"><span>04</span> All players must join the room 10 minutes before match time</div>
+            <div class="srule"><span>05</span> Late entry will not be entertained — no exceptions</div>
+            <div class="srule"><span>06</span> Team killing is strictly prohibited and results in disqualification</div>
+            <div class="srule"><span>07</span> Entry fee is non-refundable once payment is confirmed</div>
+            <div class="srule"><span>08</span> Admin's decision will be final in case of any disputes</div>
+            <div class="srule"><span>09</span> Prize money will be sent within 24 hours via UPI after results</div>
+            <div class="srule"><span>10</span> Players must share valid BGMI IDs — wrong IDs will not be allowed to play</div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    &copy; 2026 <span>Malwa Esports Private Limited</span><br>
+    <span style="font-size:0.8rem;color:#555;">Founded by Purushottam Patidar</span><br>
+    <span style="font-size:0.78rem;color:#444;margin-top:4px;display:inline-block;">7489244521 | malwaesports@1605.com</span>
+</footer>
+
+<script>
+(function(){
+    var observer = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('visible'); });
+    },{threshold:0.1});
+    document.querySelectorAll('.fade-in').forEach(function(el){ observer.observe(el); });
+    document.querySelector('.navbar').addEventListener('click',function(e){
+        if(e.target.tagName==='A') document.querySelector('.nav-links').classList.remove('open');
+    });
+})();
+
+(function(){
+    var c=document.getElementById('bgmiCanvas'); if(!c) return;
+    var icons=['<svg viewBox="0 0 24 60" fill="currentColor"><rect x="6" y="0" width="12" height="40" rx="6" ry="6"/><rect x="4" y="36" width="16" height="20" rx="2"/><rect x="6" y="52" width="12" height="8" rx="1"/></svg>','<svg viewBox="0 0 60 50" fill="currentColor"><path d="M10,35 Q10,8 30,5 Q50,8 50,35 L48,40 Q30,45 12,40Z"/><rect x="8" y="35" width="44" height="6" rx="3"/></svg>','<svg viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="2"><circle cx="25" cy="25" r="18"/><circle cx="25" cy="25" r="8"/><line x1="25" y1="2" x2="25" y2="15"/><line x1="25" y1="35" x2="25" y2="48"/><line x1="2" y1="25" x2="15" y2="25"/><line x1="35" y1="25" x2="48" y2="25"/></svg>'];
+    for(var i=0;i<20;i++){var el=document.createElement('div');el.className='float-icon';el.innerHTML=icons[Math.floor(Math.random()*icons.length)];var s=20+Math.random()*35,l=Math.random()*100,d=18+Math.random()*30,dl=Math.random()*-40,o=0.02+Math.random()*0.04;el.style.cssText='left:'+l+'%;width:'+s+'px;height:'+s+'px;color:rgba(255,107,0,'+(o/0.04)+');opacity:'+o+';animation-duration:'+d+'s;animation-delay:'+dl+'s;';c.appendChild(el);}
+})();
+</script>
+
+</body>
+</html>
