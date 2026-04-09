@@ -94,15 +94,17 @@ module.exports = async function handler(req, res) {
     }
 
     if (type === 'addTournament') {
+      const mapSchedule = req.body.mapSchedule || [];
       const t = {
         name: req.body.name || 'Untitled',
         mode: req.body.mode || 'Squad',
         perspective: req.body.perspective || 'TPP',
         entryFee: parseInt(req.body.entryFee) || 99,
         teamSize: parseInt(req.body.teamSize) || 4,
-        maps: req.body.maps || [],
-        matches: parseInt(req.body.matches) || 1,
-        time: req.body.time || '9:00 PM',
+        maps: req.body.maps || mapSchedule.map(m => m.map),
+        mapSchedule: mapSchedule,
+        matches: mapSchedule.length || parseInt(req.body.matches) || 1,
+        time: req.body.time || (mapSchedule[0] && mapSchedule[0].time) || '9:00 PM',
         prizes: req.body.prizes || [],
         status: req.body.status || 'active',
         createdAt: Date.now(),
@@ -119,6 +121,11 @@ module.exports = async function handler(req, res) {
       ['name','mode','perspective','time','status'].forEach(k => { if (req.body[k]) update[k] = req.body[k]; });
       ['entryFee','teamSize','matches'].forEach(k => { if (req.body[k]) update[k] = parseInt(req.body[k]); });
       if (req.body.maps) update.maps = req.body.maps;
+      if (req.body.mapSchedule) {
+        update.mapSchedule = req.body.mapSchedule;
+        update.maps = req.body.mapSchedule.map(m => m.map);
+        update.matches = req.body.mapSchedule.length;
+      }
       if (req.body.prizes) update.prizes = req.body.prizes;
       await ref.update(update);
       return res.status(200).json({ success: true });

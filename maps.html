@@ -33,41 +33,12 @@
 <section class="map-showcase" id="maps">
     <div class="section">
         <div class="section-header fade-in">
-            <div class="section-label">Daily Scrims &bull; 9 PM</div>
+            <div class="section-label" id="mapLabel">Loading...</div>
             <h2 class="section-title">Tonight's Battlegrounds</h2>
             <div class="section-line"></div>
         </div>
-        <div class="map-grid">
-            <div class="map-card fade-in">
-                <div class="map-card-bg" style="background-image:url('assets/Erangle.webp')"></div>
-                <div class="map-card-overlay"></div>
-                <div class="map-badge">9:00 PM</div>
-                <div class="map-card-content">
-                    <div class="map-match-num">Match 1</div>
-                    <div class="map-name">ERANGEL</div>
-                    <div class="map-desc">Classic 8x8 — TPP Squad</div>
-                </div>
-            </div>
-            <div class="map-card fade-in">
-                <div class="map-card-bg" style="background-image:url('assets/Miramar.webp')"></div>
-                <div class="map-card-overlay"></div>
-                <div class="map-badge">9:30 PM</div>
-                <div class="map-card-content">
-                    <div class="map-match-num">Match 2</div>
-                    <div class="map-name">MIRAMAR</div>
-                    <div class="map-desc">Desert 8x8 — TPP Squad</div>
-                </div>
-            </div>
-            <div class="map-card fade-in">
-                <div class="map-card-bg" style="background-image:url('assets/Rondo.webp')"></div>
-                <div class="map-card-overlay"></div>
-                <div class="map-badge">10:00 PM</div>
-                <div class="map-card-content">
-                    <div class="map-match-num">Match 3</div>
-                    <div class="map-name">RONDO</div>
-                    <div class="map-desc">Arena Map — TPP Squad</div>
-                </div>
-            </div>
+        <div class="map-grid" id="mapGrid">
+            <div style="text-align:center;color:#555;padding:40px;font-family:'Rajdhani',sans-serif;letter-spacing:1px;">Loading schedule...</div>
         </div>
     </div>
 </section>
@@ -80,10 +51,67 @@
 
 <script>
 (function(){
-    var observer = new IntersectionObserver(function(entries){
-        entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('visible'); });
-    },{threshold:0.1});
-    document.querySelectorAll('.fade-in').forEach(function(el){ observer.observe(el); });
+    var mapImages = {
+        'erangel': 'assets/Erangle.webp',
+        'miramar': 'assets/Miramar.webp',
+        'rondo': 'assets/Rondo.webp'
+    };
+
+    function getMapImage(name) {
+        var key = (name || '').toLowerCase().trim();
+        return mapImages[key] || 'assets/' + name + '.webp';
+    }
+
+    fetch('/api/settings')
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+            var tournaments = d.tournaments || [];
+            var active = tournaments.filter(function(t){ return t.status === 'active'; })[0] || tournaments[0];
+            if (!active) {
+                document.getElementById('mapLabel').textContent = 'No schedule available';
+                document.getElementById('mapGrid').innerHTML = '<div style="text-align:center;color:#555;padding:40px;font-family:Rajdhani,sans-serif;">No active tournament found.</div>';
+                return;
+            }
+
+            var schedule = active.mapSchedule || [];
+            if (!schedule.length && active.maps && active.maps.length) {
+                active.maps.forEach(function(m, i){
+                    schedule.push({ matchNum: i+1, map: m, time: active.time || '', desc: '' });
+                });
+            }
+
+            document.getElementById('mapLabel').textContent = active.name + ' \u2022 ' + (schedule[0] && schedule[0].time ? schedule[0].time : active.time || '');
+
+            var grid = document.getElementById('mapGrid');
+            if (!schedule.length) {
+                grid.innerHTML = '<div style="text-align:center;color:#555;padding:40px;font-family:Rajdhani,sans-serif;">No matches scheduled.</div>';
+                return;
+            }
+
+            var html = '';
+            schedule.forEach(function(m){
+                html += '<div class="map-card fade-in">';
+                html += '<div class="map-card-bg" style="background-image:url(\'' + getMapImage(m.map) + '\')"></div>';
+                html += '<div class="map-card-overlay"></div>';
+                html += '<div class="map-badge">' + (m.time || '') + '</div>';
+                html += '<div class="map-card-content">';
+                html += '<div class="map-match-num">Match ' + m.matchNum + '</div>';
+                html += '<div class="map-name">' + m.map.toUpperCase() + '</div>';
+                html += '<div class="map-desc">' + (m.desc || active.mode + ' — ' + active.perspective) + '</div>';
+                html += '</div></div>';
+            });
+            grid.innerHTML = html;
+
+            var observer = new IntersectionObserver(function(entries){
+                entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('visible'); });
+            },{threshold:0.1});
+            document.querySelectorAll('.fade-in').forEach(function(el){ observer.observe(el); });
+        })
+        .catch(function(){
+            document.getElementById('mapLabel').textContent = 'Error loading';
+            document.getElementById('mapGrid').innerHTML = '<div style="text-align:center;color:#e74c3c;padding:40px;">Failed to load schedule.</div>';
+        });
+
     document.querySelector('.navbar').addEventListener('click',function(e){
         if(e.target.tagName==='A') document.querySelector('.nav-links').classList.remove('open');
     });

@@ -197,7 +197,13 @@
                 html += '<div class="fmt-item"><span class="fmt-key">Winners</span><span class="fmt-val">Top ' + (t.prizes || []).length + '</span></div>';
                 html += '</div>';
 
-                if (t.maps && t.maps.length) {
+                if (t.mapSchedule && t.mapSchedule.length) {
+                    html += '<div class="fmt-maps">';
+                    t.mapSchedule.forEach(function(m){
+                        html += '<span class="fmt-map-tag">Match ' + m.matchNum + ': ' + m.map + (m.time ? ' @ ' + m.time : '') + '</span>';
+                    });
+                    html += '</div>';
+                } else if (t.maps && t.maps.length) {
                     html += '<div class="fmt-maps">';
                     t.maps.forEach(function(m){ html += '<span class="fmt-map-tag">' + m + '</span>'; });
                     html += '</div>';

@@ -719,15 +719,14 @@
                             <div><label>Mode</label><input id="tMode" placeholder="Squad / Duo / Solo" value="Squad"></div>
                             <div><label>Perspective</label><input id="tPerspective" placeholder="TPP / FPP" value="TPP"></div>
                         </div>
-                        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                             <div><label>Team Size</label><input id="tTeamSize" type="number" value="4"></div>
-                            <div><label>Matches</label><input id="tMatches" type="number" value="3"></div>
                             <div><label>Entry Fee</label><input id="tEntryFee" type="number" value="99"></div>
                         </div>
-                        <label>Time</label>
-                        <input id="tTime" placeholder="9:00 PM" value="9:00 PM">
-                        <label>Maps (comma separated)</label>
-                        <input id="tMaps" placeholder="Erangel, Miramar, Rondo" value="Erangel, Miramar, Rondo">
+                        <label>Match Schedule</label>
+                        <p style="color:#555;font-size:0.75rem;margin-bottom:8px;">Add each match with map name, time, and description.</p>
+                        <div id="matchScheduleInputs"></div>
+                        <button type="button" style="background:rgba(255,107,0,0.08);border:1px solid rgba(255,107,0,0.15);color:var(--amber);padding:8px 16px;border-radius:8px;font-size:0.8rem;cursor:pointer;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;margin-bottom:14px;" onclick="addMatchRow()">+ Add Match</button>
                         <label>Prizes (comma separated, e.g. 400,250,200,150,100)</label>
                         <input id="tPrizes" placeholder="400,250,200,150,100" value="400,250,200,150,100">
                         <label>Status</label>
@@ -1132,6 +1131,45 @@
 
     document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') adminLogin(); });
 
+    // ==================== MATCH SCHEDULE BUILDER ====================
+    var matchRowCount = 0;
+    function addMatchRow(map, time, desc) {
+        matchRowCount++;
+        var container = document.getElementById('matchScheduleInputs');
+        var row = document.createElement('div');
+        row.className = 'match-row';
+        row.style.cssText = 'display:grid;grid-template-columns:1fr 100px 1fr 32px;gap:8px;align-items:center;margin-bottom:8px;';
+        row.innerHTML = '<input class="mr-map" placeholder="Map name" value="' + (map||'') + '" style="padding:8px 10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-size:0.85rem;">'
+            + '<input class="mr-time" placeholder="9:00 PM" value="' + (time||'') + '" style="padding:8px 10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-size:0.85rem;">'
+            + '<input class="mr-desc" placeholder="Classic 8x8 — TPP Squad" value="' + (desc||'') + '" style="padding:8px 10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-size:0.85rem;">'
+            + '<button type="button" onclick="this.parentElement.remove()" style="background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.2);color:#e74c3c;width:32px;height:32px;border-radius:6px;cursor:pointer;font-size:1rem;">×</button>';
+        container.appendChild(row);
+    }
+
+    function getMapSchedule() {
+        var rows = document.querySelectorAll('#matchScheduleInputs .match-row');
+        var schedule = [];
+        rows.forEach(function(row, i) {
+            var map = row.querySelector('.mr-map').value.trim();
+            var time = row.querySelector('.mr-time').value.trim();
+            var desc = row.querySelector('.mr-desc').value.trim();
+            if (map) {
+                schedule.push({ matchNum: i + 1, map: map, time: time || '', desc: desc || '' });
+            }
+        });
+        return schedule;
+    }
+
+    function initDefaultMatches() {
+        var container = document.getElementById('matchScheduleInputs');
+        container.innerHTML = '';
+        matchRowCount = 0;
+        addMatchRow('Erangel', '9:00 PM', 'Classic 8x8 — TPP Squad');
+        addMatchRow('Miramar', '9:30 PM', 'Desert 8x8 — TPP Squad');
+        addMatchRow('Rondo', '10:00 PM', 'Arena Map — TPP Squad');
+    }
+    initDefaultMatches();
+
     // ==================== TOURNAMENTS ====================
     async function loadTournaments() {
         try {
@@ -1144,13 +1182,20 @@
             ts.forEach(function(t) {
                 const total = (t.prizes||[]).reduce((a,b)=>a+b,0);
                 const statusColor = t.status === 'active' ? '#2ecc71' : 'var(--amber)';
+                const schedule = t.mapSchedule || [];
                 html += '<div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px;">';
                 html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">';
                 html += '<span style="font-family:Orbitron,sans-serif;font-size:0.85rem;font-weight:700;color:#fff;">' + t.name + '</span>';
                 html += '<span style="font-size:0.7rem;color:' + statusColor + ';font-weight:700;letter-spacing:1px;text-transform:uppercase;">' + t.status + '</span>';
                 html += '</div>';
-                html += '<div style="font-size:0.8rem;color:#888;">' + t.mode + ' ' + t.perspective + ' | ' + t.matches + ' matches | ' + t.time + ' | \u20B9' + t.entryFee + ' entry | \u20B9' + total + ' prizes</div>';
-                html += '<div style="font-size:0.75rem;color:#666;margin-top:4px;">Maps: ' + (t.maps||[]).join(', ') + '</div>';
+                html += '<div style="font-size:0.8rem;color:#888;">' + t.mode + ' ' + t.perspective + ' | ' + schedule.length + ' matches | \u20B9' + t.entryFee + ' entry | \u20B9' + total + ' prizes</div>';
+                if (schedule.length) {
+                    html += '<div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">';
+                    schedule.forEach(function(m) {
+                        html += '<span style="background:rgba(255,107,0,0.06);border:1px solid rgba(255,107,0,0.12);padding:4px 10px;border-radius:6px;font-size:0.75rem;color:#bbb;">Match ' + m.matchNum + ': <strong style=color:var(--amber)>' + m.map + '</strong> @ ' + m.time + '</span>';
+                    });
+                    html += '</div>';
+                }
                 html += '<button style="margin-top:8px;background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.2);color:#e74c3c;padding:5px 14px;border-radius:6px;font-size:0.75rem;cursor:pointer;" onclick="deleteTournament(\'' + t.id + '\')">Delete</button>';
                 html += '</div>';
             });
@@ -1161,7 +1206,8 @@
     async function addTournament() {
         const name = document.getElementById('tName').value.trim();
         if (!name) { showToast('Enter tournament name', 'error'); return; }
-        const maps = document.getElementById('tMaps').value.split(',').map(s=>s.trim()).filter(Boolean);
+        const mapSchedule = getMapSchedule();
+        if (!mapSchedule.length) { showToast('Add at least one match', 'error'); return; }
         const prizes = document.getElementById('tPrizes').value.split(',').map(s=>parseInt(s.trim())).filter(n=>!isNaN(n));
         try {
             const res = await fetch('/api/settings', {
@@ -1173,10 +1219,11 @@
                     mode: document.getElementById('tMode').value.trim() || 'Squad',
                     perspective: document.getElementById('tPerspective').value.trim() || 'TPP',
                     teamSize: document.getElementById('tTeamSize').value || 4,
-                    matches: document.getElementById('tMatches').value || 3,
+                    matches: mapSchedule.length,
                     entryFee: document.getElementById('tEntryFee').value || 99,
-                    time: document.getElementById('tTime').value.trim() || '9:00 PM',
-                    maps: maps,
+                    time: mapSchedule[0].time || '9:00 PM',
+                    maps: mapSchedule.map(function(m){ return m.map; }),
+                    mapSchedule: mapSchedule,
                     prizes: prizes,
                     status: document.getElementById('tStatus').value
                 })
@@ -1185,6 +1232,7 @@
             if (d.success) {
                 showToast('Tournament added!', 'success');
                 document.getElementById('tName').value = '';
+                initDefaultMatches();
                 loadTournaments();
             }
         } catch(e) { showToast('Error adding tournament', 'error'); }

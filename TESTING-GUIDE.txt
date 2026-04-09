@@ -1,0 +1,225 @@
+=====================================================
+   MALWA ESPORTS - BGMI TOURNAMENT PLATFORM
+   TESTING GUIDE
+=====================================================
+
+Website URL: http://localhost:3000 (local)
+
+=====================================================
+PAGES LIST
+=====================================================
+1. Home        → http://localhost:3000/index.html
+2. Format      → http://localhost:3000/format.html
+3. Maps        → http://localhost:3000/maps.html
+4. Points      → http://localhost:3000/points.html
+5. Prizes      → http://localhost:3000/prizes.html
+6. Rules       → http://localhost:3000/rules.html
+7. Register    → http://localhost:3000/register.html
+8. Admin Panel → http://localhost:3000/admin.html
+
+=====================================================
+STEP 1: INITIAL SETUP (ONE TIME ONLY)
+=====================================================
+Browser me ye URL open karo:
+
+http://localhost:3000/api/setup?secret=setup_change_me_too&adminEmail=malwaesports@1605.com&adminPassword=Admin@123
+
+→ Response aayega: {"success": true, "message": "Setup complete!"}
+→ Ye sirf ek baar karna hai. Database me admin account ban jaayega.
+
+NOTE: "setup_change_me_too" ye .env file me SETUP_SECRET ki value hai.
+      "Admin@123" ye example password hai, apna set kar sakte ho.
+
+
+=====================================================
+STEP 2: ADMIN PANEL TEST
+=====================================================
+URL: http://localhost:3000/admin.html
+
+LOGIN:
+  - Email: malwaesports@1605.com
+  - Password: Admin@123 (jo Step 1 me set kiya)
+
+LOGIN KE BAAD DASHBOARD ME YE TABS HONGE:
+
+  A) SETTINGS TAB
+     - UPI ID set karo (payment ke liye)
+     - WhatsApp Group Link set karo (registration ke baad milega)
+     - SAVE karo
+
+  B) ROOM TAB
+     - Room ID daalo (jaise: 12345678)
+     - Room Password daalo (jaise: abc123)
+     - Custom message likh sakte ho (optional)
+     - SEND karo → registered players ko dikhega
+
+  C) REGISTRATIONS TAB
+     - Saare registered squads ki list dikhegi
+     - Payment status dikhega (pending/paid)
+     - Status change kar sakte ho
+
+  D) TOURNAMENTS TAB
+     - Naya tournament add karo
+       → Name: Daily Scrims
+       → Mode: Squad, Perspective: TPP, Team Size: 4
+       → Entry Fee: 99
+       → Match Schedule (per match):
+          Match 1: Erangel | 9:00 PM | Classic 8x8 — TPP Squad
+          Match 2: Miramar | 9:30 PM | Desert 8x8 — TPP Squad
+          Match 3: Rondo   | 10:00 PM | Arena Map — TPP Squad
+       → "+ Add Match" se naye matches add kar sakte ho
+       → "×" button se koi match hata sakte ho
+       → Prizes: 400,250,200,150,100
+       → Status: Active/Upcoming
+     - Map schedule Maps page pe dikhega automatically
+     - Time change karna ho to tournament delete karke naya add karo
+     - Delete bhi kar sakte ho
+
+  E) ANNOUNCEMENTS TAB
+     - Update messages add karo (home page pe dikhenge)
+     - Pin kar sakte ho important messages ko
+     - Delete bhi kar sakte ho
+
+
+=====================================================
+STEP 3: USER FLOW TEST (As a Player)
+=====================================================
+
+3A. SIGN UP (New User)
+    → register.html pe jaao
+    → "Sign Up" tab select karo
+    → Email daalo (test@gmail.com)
+    → Password daalo (min 6 characters)
+    → Sign Up click karo
+    → Account ban jaayega, logged in ho jaayega
+
+3B. SIGN IN (Existing User)
+    → register.html pe jaao
+    → "Sign In" tab select karo
+    → Email aur Password daalo
+    → Sign In click karo
+
+3C. SQUAD REGISTRATION
+    → Login ke baad registration form dikhega
+    → Ye fields fill karo:
+
+    Squad Name: TestSquad
+    
+    Player 1 (Leader):
+      - IGN: Player1_IGN
+      - BGMI ID: 5123456789
+      - Mobile: 9876543210
+    
+    Player 2:
+      - IGN: Player2_IGN
+      - BGMI ID: 5234567890
+      - Mobile: 9876543211
+    
+    Player 3:
+      - IGN: Player3_IGN
+      - BGMI ID: 5345678901
+      - Mobile: 9876543212
+    
+    Player 4:
+      - IGN: Player4_IGN
+      - BGMI ID: 5456789012
+      - Mobile: 9876543213
+
+    → "REGISTER & PAY ₹99" button click karo
+
+    VALIDATIONS CHECK:
+      ✓ Email format sahi hona chahiye
+      ✓ Mobile number 10 digit hona chahiye
+      ✓ BGMI ID number hona chahiye
+      ✓ IGN unique hona chahiye (duplicate nahi)
+      ✓ Saare fields required hain
+
+3D. PAYMENT
+    → Razorpay popup open hoga (test mode me)
+    → NOTE: Agar Razorpay keys mock hain to error aayega
+       "Payment gateway not configured. Contact admin."
+    → Ye expected hai local testing me bina Razorpay keys ke
+
+3E. AFTER PAYMENT (jab Razorpay live hoga)
+    → Payment success hone pe WhatsApp group link milega
+    → Room ID/Password dikhega (agar admin ne set kiya hai)
+
+
+=====================================================
+STEP 4: PAGES CHECK
+=====================================================
+
+HOME PAGE (index.html):
+  ✓ Navigation bar sab pages ka link hai
+  ✓ Quick links cards dikh rahe hain
+  ✓ Bottom me "UPDATES" strip scroll ho rahi hai
+    (announcements jo admin ne add kiye)
+  ✓ Footer me company details hain
+
+FORMAT PAGE (format.html):
+  ✓ Tournament cards dikh rahe hain
+  ✓ Jo admin ne tournaments add kiye vo yahan dikhenge
+  ✓ Entry fee, prize pool, timing sab dikhna chahiye
+
+MAPS PAGE (maps.html):
+  ✓ 3 maps dikhne chahiye: Erangel, Miramar, Rondo
+  ✓ Map images load ho rahi hain
+
+POINTS PAGE (points.html):
+  ✓ Kill points table dikhni chahiye
+  ✓ Position points table dikhni chahiye
+
+PRIZES PAGE (prizes.html):
+  ✓ Top 5 prizes dikhne chahiye:
+    1st: ₹400
+    2nd: ₹250
+    3rd: ₹200
+    4th: ₹150
+    5th: ₹100
+  ✓ Total prize pool: ₹1,100
+
+RULES PAGE (rules.html):
+  ✓ Tournament rules list dikhni chahiye
+
+REGISTER PAGE (register.html):
+  ✓ Sign In / Sign Up toggle kaam kar raha hai
+  ✓ Form validation kaam kar rahi hai
+  ✓ Logged in hone pe registration form dikhta hai
+
+
+=====================================================
+STEP 5: MOBILE RESPONSIVE CHECK
+=====================================================
+  → Browser me F12 press karo (DevTools)
+  → Toggle Device Toolbar (Ctrl+Shift+M)
+  → Mobile sizes check karo:
+     - iPhone SE (375px)
+     - iPhone 12 (390px)
+     - Samsung Galaxy (360px)
+  ✓ Navbar hamburger menu kaam kare
+  ✓ Cards stack ho jaaye
+  ✓ Text readable ho
+  ✓ Forms properly dikh rahe ho
+
+
+=====================================================
+KNOWN LIMITATIONS (LOCAL TESTING)
+=====================================================
+  - Razorpay payment mock keys se kaam nahi karega
+    (live keys .env me daalne padenge)
+  - Images: map images assets/ folder me honi chahiye
+  - WhatsApp link admin panel se set karna zaroori hai
+
+
+=====================================================
+BUG REPORT FORMAT
+=====================================================
+Agar koi issue mile to ye format me batao:
+
+  PAGE: (kis page pe issue hai)
+  STEP: (kya kar rahe the)
+  EXPECTED: (kya hona chahiye tha)
+  ACTUAL: (kya hua)
+  SCREENSHOT: (agar ho sake to attach karo)
+
+=====================================================
