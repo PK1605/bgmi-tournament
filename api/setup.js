@@ -3,11 +3,21 @@ const { db } = require('./_firebase');
 
 module.exports = async function handler(req, res) {
   res.setHeader('Content-Type', 'application/json');
-  if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
 
-  const { setupSecret, adminEmail, adminPassword } = req.body || {};
+  let setupSecret, adminEmail, adminPassword;
 
-  // Protect with SETUP_SECRET env var
+  if (req.method === 'GET') {
+    setupSecret = req.query.secret;
+    adminEmail = req.query.adminEmail;
+    adminPassword = req.query.adminPassword;
+  } else if (req.method === 'POST') {
+    setupSecret = (req.body || {}).setupSecret;
+    adminEmail = (req.body || {}).adminEmail;
+    adminPassword = (req.body || {}).adminPassword;
+  } else {
+    return res.status(405).json({ error: 'GET or POST only' });
+  }
+
   const expected = process.env.SETUP_SECRET;
   if (!expected || setupSecret !== expected) {
     return res.status(403).json({ error: 'Invalid setup secret' });
@@ -54,6 +64,11 @@ module.exports = async function handler(req, res) {
     entryFee: 99,
     teamSize: 4,
     maps: ['Erangel', 'Miramar', 'Rondo'],
+    mapSchedule: [
+      { matchNum: 1, map: 'Erangel', time: '9:00 PM', desc: 'Classic 8x8 — TPP Squad' },
+      { matchNum: 2, map: 'Miramar', time: '9:30 PM', desc: 'Desert 8x8 — TPP Squad' },
+      { matchNum: 3, map: 'Rondo', time: '10:00 PM', desc: 'Arena Map — TPP Squad' },
+    ],
     matches: 3,
     time: '9:00 PM',
     prizes: [400, 250, 200, 150, 100],
