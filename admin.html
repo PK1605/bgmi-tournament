@@ -607,6 +607,7 @@
             <button class="tab-btn" onclick="switchTab('room',this)">Room ID / Pass</button>
             <button class="tab-btn" onclick="switchTab('tournaments',this)">Tournaments</button>
             <button class="tab-btn" onclick="switchTab('announcements',this)">Announcements</button>
+            <button class="tab-btn" onclick="switchTab('broadcast',this)">WhatsApp Broadcast</button>
             <button class="tab-btn" onclick="switchTab('settings',this)">Settings</button>
         </div>
 
@@ -698,7 +699,9 @@
                     <label>Match Time / Message</label>
                     <input type="text" id="roomMsg" placeholder="e.g. Match at 8 PM - Erangel">
                     <button class="save-btn" onclick="saveRoomInfo()">&#127919; Update Room Info</button>
+                    <button class="save-btn" style="background:rgba(37,211,102,0.12);color:#25D366;margin-left:8px;" onclick="sendRoomViaWhatsApp()">&#128172; Send to All via WhatsApp</button>
                     <button class="save-btn" style="background: rgba(255,23,68,0.15); color: var(--red); margin-left: 8px;" onclick="clearRoomInfo()">Clear Room Info</button>
+                    <div id="roomWaStatus" style="margin-top:10px;font-size:0.8rem;color:#666;"></div>
                 </div>
                 <div class="settings-card">
                     <h3>&#128203; Current Room Info</h3>
@@ -762,6 +765,37 @@
                             <input type="checkbox" id="annPinned" style="accent-color:var(--fire);width:16px;height:16px;"> Pin this update
                         </label>
                         <button class="save-btn" onclick="addAnnouncement()">Post Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: WHATSAPP BROADCAST -->
+        <div class="tab-content" id="tab-broadcast">
+            <div class="settings-grid" style="grid-template-columns:1fr;">
+                <div class="settings-card">
+                    <div class="settings-title">WhatsApp Broadcast</div>
+                    <p style="color:#666;font-size:0.8rem;margin-bottom:16px;">Send custom WhatsApp messages to all verified players of a tournament.</p>
+
+                    <label>Select Tournament</label>
+                    <select id="bcTournament" style="width:100%;padding:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:0.9rem;margin-bottom:14px;">
+                        <option value="">Loading...</option>
+                    </select>
+
+                    <label>Message</label>
+                    <textarea id="bcMessage" rows="4" placeholder="Type your message here... e.g. Tonight's scrims postponed to 10 PM" style="width:100%;padding:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:0.9rem;font-family:'Inter',sans-serif;resize:vertical;"></textarea>
+
+                    <div style="display:flex;gap:10px;margin-top:14px;">
+                        <button class="save-btn" onclick="sendCustomBroadcast()" style="background:rgba(37,211,102,0.12);color:#25D366;">&#128172; Send to All</button>
+                    </div>
+
+                    <div id="bcResult" style="margin-top:16px;display:none;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:16px;">
+                        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.85rem;color:#fff;margin-bottom:8px;letter-spacing:1px;">DELIVERY REPORT</div>
+                        <div style="display:flex;gap:20px;">
+                            <div style="font-size:0.85rem;color:#888;">Total: <span id="bcTotal" style="color:#fff;font-weight:600;">0</span></div>
+                            <div style="font-size:0.85rem;color:#888;">Sent: <span id="bcSent" style="color:#25D366;font-weight:600;">0</span></div>
+                            <div style="font-size:0.85rem;color:#888;">Failed: <span id="bcFailed" style="color:#e74c3c;font-weight:600;">0</span></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1336,6 +1370,101 @@
         } catch(e) {}
     }
 
+    // ==================== WHATSAPP BROADCAST ====================
+    async function loadBroadcastTournaments() {
+        try {
+            const res = await fetch('/api/settings');
+            const d = await res.json();
+            const sel = document.getElementById('bcTournament');
+            sel.innerHTML = '<option value="">-- Select Tournament --</option>';
+            (d.tournaments || []).forEach(function(t) {
+                sel.innerHTML += '<option value="' + t.id + '">' + esc(t.name) + (t.date ? ' (' + t.date + ')' : '') + '</option>';
+            });
+        } catch(e) {}
+    }
+
+    async function sendRoomViaWhatsApp() {
+        const roomId = document.getElementById('roomId').value.trim();
+        if (!roomId) { showToast('Set Room ID first!', 'error'); return; }
+
+        const statusEl = document.getElementById('roomWaStatus');
+        statusEl.textContent = 'Sending...';
+        statusEl.style.color = '#f39c12';
+
+        try {
+            const settingsRes = await fetch('/api/settings');
+            const settingsData = await settingsRes.json();
+            const tournaments = (settingsData.tournaments || []).filter(t => t.status === 'active');
+
+            if (!tournaments.length) {
+                statusEl.textContent = 'No active tournament found';
+                statusEl.style.color = '#e74c3c';
+                return;
+            }
+
+            let totalSent = 0, totalFailed = 0, totalAll = 0;
+
+            for (const t of tournaments) {
+                const res = await fetch('/api/wa-broadcast', {
+                    method: 'POST',
+                    headers: adminHeaders(),
+                    body: JSON.stringify({ type: 'room', tournamentId: t.id })
+                });
+                const d = await res.json();
+                if (d.error) {
+                    statusEl.textContent = d.error;
+                    statusEl.style.color = '#e74c3c';
+                    return;
+                }
+                totalSent += (d.sent || 0);
+                totalFailed += (d.failed || 0);
+                totalAll += (d.total || 0);
+            }
+
+            statusEl.innerHTML = 'Sent: <strong style="color:#25D366;">' + totalSent + '</strong> | Failed: <strong style="color:#e74c3c;">' + totalFailed + '</strong> | Total: ' + totalAll;
+            statusEl.style.color = '#888';
+            showToast('Room details sent via WhatsApp!', 'success');
+        } catch(e) {
+            statusEl.textContent = 'Error: ' + e.message;
+            statusEl.style.color = '#e74c3c';
+        }
+    }
+
+    async function sendCustomBroadcast() {
+        const tournamentId = document.getElementById('bcTournament').value;
+        const message = document.getElementById('bcMessage').value.trim();
+        const resultEl = document.getElementById('bcResult');
+
+        if (!tournamentId) { showToast('Select a tournament', 'error'); return; }
+        if (!message) { showToast('Enter a message', 'error'); return; }
+        if (!confirm('Send this message to all verified players?')) return;
+
+        resultEl.style.display = 'none';
+
+        try {
+            showToast('Sending messages...', 'info');
+            const res = await fetch('/api/wa-broadcast', {
+                method: 'POST',
+                headers: adminHeaders(),
+                body: JSON.stringify({ type: 'custom', tournamentId: tournamentId, message: message })
+            });
+            const d = await res.json();
+
+            if (d.error) {
+                showToast(d.error, 'error');
+                return;
+            }
+
+            document.getElementById('bcTotal').textContent = d.total || 0;
+            document.getElementById('bcSent').textContent = d.sent || 0;
+            document.getElementById('bcFailed').textContent = d.failed || 0;
+            resultEl.style.display = '';
+            showToast('Broadcast complete! Sent: ' + d.sent, 'success');
+        } catch(e) {
+            showToast('Error: ' + e.message, 'error');
+        }
+    }
+
     const origSwitchTab = switchTab;
     const _switchTab = switchTab;
     switchTab = function(tab, btn) {
@@ -1343,6 +1472,7 @@
         if (tab === 'tournaments') loadTournaments();
         if (tab === 'announcements') loadAnnouncements();
         if (tab === 'registrations') { loadTournamentFilter(); loadRegistrations(); }
+        if (tab === 'broadcast') loadBroadcastTournaments();
     };
 </script>
 

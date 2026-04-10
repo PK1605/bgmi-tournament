@@ -12,5 +12,11 @@
   ],
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/:path*" }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron-room",
+      "schedule": "*/5 * * * *"
+    }
   ]
 }
