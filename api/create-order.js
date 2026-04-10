@@ -32,6 +32,42 @@ module.exports = async function handler(req, res) {
       });
     }
 
+    // Collect all BGMI IDs from submitted players (+ substitute if present)
+    const allBgmiIds = players.map(p => p.bgmiId).filter(Boolean);
+    const subId = (substitute && substitute.bgmiId) ? substitute.bgmiId : null;
+    if (subId) allBgmiIds.push(subId);
+
+    // --- BLACKLIST CHECK ---
+    if (allBgmiIds.length) {
+      const blacklistSnap = await db.collection('blacklist')
+        .where('bgmiId', 'in', allBgmiIds).get();
+      if (!blacklistSnap.empty) {
+        const banned = blacklistSnap.docs[0].data();
+        return res.status(403).json({
+          error: 'Banned player detected',
+          detail: 'Player ' + (banned.ign || '') + ' (BGMI ID: ' + banned.bgmiId + ') is banned: ' + (banned.reason || 'Cheating'),
+          banned: true,
+        });
+      }
+    }
+
+    // --- DUPLICATE BGMI ID CHECK (same tournament) ---
+    const tournamentRegsSnap = await db.collection('registrations')
+      .where('tournamentId', '==', tournamentId).get();
+    for (const doc of tournamentRegsSnap.docs) {
+      const regData = doc.data();
+      const existingIds = (regData.players || []).map(p => p.bgmiId);
+      if (regData.substitute && regData.substitute.bgmiId) existingIds.push(regData.substitute.bgmiId);
+      const overlap = allBgmiIds.filter(id => existingIds.includes(id));
+      if (overlap.length) {
+        return res.status(409).json({
+          error: 'Duplicate BGMI ID in this tournament',
+          detail: 'BGMI ID ' + overlap[0] + ' is already registered by team "' + (regData.teamName || '') + '"',
+          duplicate: true,
+        });
+      }
+    }
+
     const settingsSnap = await db.collection('config').doc('settings').get();
     const settings = settingsSnap.exists ? settingsSnap.data() : {};
     const amount = (settings.entryFee || 99) * 100;

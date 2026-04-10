@@ -589,7 +589,13 @@ function submitRegistration() {
         btn.textContent = 'REGISTER SQUAD — \u20B999';
 
         if (!res.ok) {
-            showToast(res.data.error || 'Registration failed', 'error');
+            if (res.data.banned) {
+                showToast('BANNED: ' + (res.data.detail || 'A player in your team is blacklisted'), 'error');
+            } else if (res.data.duplicate) {
+                showToast('DUPLICATE: ' + (res.data.detail || 'A BGMI ID is already registered in this tournament'), 'error');
+            } else {
+                showToast(res.data.error || 'Registration failed', 'error');
+            }
             return;
         }
 

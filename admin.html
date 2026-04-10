@@ -608,6 +608,7 @@
             <button class="tab-btn" onclick="switchTab('tournaments',this)">Tournaments</button>
             <button class="tab-btn" onclick="switchTab('announcements',this)">Announcements</button>
             <button class="tab-btn" onclick="switchTab('broadcast',this)">WhatsApp Broadcast</button>
+            <button class="tab-btn" onclick="switchTab('blacklist',this)">Blacklist</button>
             <button class="tab-btn" onclick="switchTab('settings',this)">Settings</button>
         </div>
 
@@ -642,7 +643,8 @@
                                 <th>Email</th>
                                 <th>Tournament</th>
                                 <th>Txn ID</th>
-                                <th>Status</th>
+                                <th>Payment</th>
+                                <th>Ban</th>
                                 <th>Date</th>
                                 <th>Actions</th>
                             </tr>
@@ -797,6 +799,35 @@
                             <div style="font-size:0.85rem;color:#888;">Failed: <span id="bcFailed" style="color:#e74c3c;font-weight:600;">0</span></div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: BLACKLIST -->
+        <div class="tab-content" id="tab-blacklist">
+            <div class="table-wrap">
+                <div class="table-header">
+                    <div class="table-title">Banned Players — <span id="blacklistCount">0</span> total</div>
+                    <div class="table-filters">
+                        <input class="filter-input" type="text" id="blacklistSearch" placeholder="Search BGMI ID or IGN..." oninput="filterBlacklist()">
+                    </div>
+                </div>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>BGMI ID</th>
+                                <th>IGN</th>
+                                <th>Team</th>
+                                <th>Reason</th>
+                                <th>Banned On</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="blacklistTableBody">
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -972,7 +1003,7 @@
 
     function renderTable(data) {
         const tbody = document.getElementById('regTableBody');
-        if (data.length === 0) { tbody.innerHTML = '<tr><td colspan="11" class="empty-state">No registrations found</td></tr>'; return; }
+        if (data.length === 0) { tbody.innerHTML = '<tr><td colspan="12" class="empty-state">No registrations found</td></tr>'; return; }
         tbody.innerHTML = data.map((r, i) => `<tr>
             <td>${i+1}</td>
             <td style="color:#fff;font-weight:600;">${esc(r.teamName)}</td>
@@ -983,10 +1014,12 @@
             <td style="font-size:0.78rem;color:var(--amber);">${esc(r.tournamentDate||r.date||'—')}</td>
             <td style="font-size:0.8rem;color:#888;">${esc(r.txnId||'—')}</td>
             <td><span class="badge ${r.paymentStatus}">${r.paymentStatus}</span></td>
+            <td>${r.cheater ? '<span style="background:rgba(231,76,60,0.15);color:#e74c3c;padding:2px 8px;border-radius:4px;font-size:0.7rem;font-weight:700;letter-spacing:1px;">CHEATER</span>' : '<span style="color:#555;font-size:0.75rem;">Clean</span>'}</td>
             <td style="font-size:0.8rem;color:#666;">${r.date||'—'}</td>
             <td>
                 ${r.paymentStatus!=='verified'?`<button class="action-btn btn-verify" onclick="verifyPayment('${r.id}')">Verify</button>`:''}
                 ${r.paymentStatus==='submitted'?`<button class="action-btn btn-reject" onclick="rejectPayment('${r.id}')">Reject</button>`:''}
+                ${!r.cheater?`<button class="action-btn" style="background:rgba(231,76,60,0.1);color:#e74c3c;border-color:rgba(231,76,60,0.2);" onclick="markCheater('${r.id}')">Ban</button>`:`<button class="action-btn" style="background:rgba(46,204,113,0.1);color:#2ecc71;border-color:rgba(46,204,113,0.2);" onclick="unmarkCheater('${r.id}')">Unban</button>`}
                 <button class="action-btn btn-details" onclick="showDetails('${r.id}')">Details</button>
             </td>
         </tr>`).join('');
@@ -1465,6 +1498,94 @@
         }
     }
 
+    // ==================== CHEATER / BLACKLIST ====================
+    async function markCheater(id) {
+        const reason = prompt('Ban reason (e.g. Speed hack, Aimbot, ESP):');
+        if (!reason) return;
+        try {
+            const res = await fetch('/api/registrations', {
+                method: 'PATCH',
+                headers: adminHeaders(),
+                body: JSON.stringify({ id, action: 'markCheater', reason })
+            });
+            const d = await res.json();
+            if (d.success) showToast('Team banned! All players added to blacklist.', 'success');
+            loadRegistrations();
+        } catch(e) { showToast('Error', 'error'); }
+    }
+
+    async function unmarkCheater(id) {
+        if (!confirm('Remove ban from this team? All players will be removed from blacklist.')) return;
+        try {
+            const res = await fetch('/api/registrations', {
+                method: 'PATCH',
+                headers: adminHeaders(),
+                body: JSON.stringify({ id, action: 'unmarkCheater' })
+            });
+            const d = await res.json();
+            if (d.success) showToast('Ban removed.', 'success');
+            loadRegistrations();
+        } catch(e) { showToast('Error', 'error'); }
+    }
+
+    let allBlacklistData = [];
+
+    async function loadBlacklist() {
+        try {
+            const res = await fetch('/api/settings', { headers: { 'Authorization': 'Bearer ' + (localStorage.getItem('bgmi_admin_token') || '') } });
+            const d = await res.json();
+            allBlacklistData = d.blacklist || [];
+            document.getElementById('blacklistCount').textContent = allBlacklistData.length;
+            renderBlacklist(allBlacklistData);
+        } catch(e) {
+            showToast('Error loading blacklist', 'error');
+        }
+    }
+
+    function renderBlacklist(data) {
+        const tbody = document.getElementById('blacklistTableBody');
+        if (!data.length) {
+            tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No banned players</td></tr>';
+            return;
+        }
+        tbody.innerHTML = data.map((b, i) => {
+            const date = b.bannedAt ? new Date(b.bannedAt).toLocaleDateString() : '—';
+            return `<tr>
+                <td>${i+1}</td>
+                <td style="color:var(--amber);font-weight:600;font-family:'Rajdhani',sans-serif;">${esc(b.bgmiId)}</td>
+                <td style="color:#fff;">${esc(b.ign||'—')}</td>
+                <td style="font-size:0.85rem;color:#888;">${esc(b.teamName||'—')}</td>
+                <td style="font-size:0.85rem;color:#e74c3c;">${esc(b.reason||'—')}</td>
+                <td style="font-size:0.8rem;color:#666;">${date}</td>
+                <td><button class="action-btn" style="background:rgba(46,204,113,0.1);color:#2ecc71;border-color:rgba(46,204,113,0.2);" onclick="removeFromBlacklist('${esc(b.bgmiId)}')">Remove</button></td>
+            </tr>`;
+        }).join('');
+    }
+
+    function filterBlacklist() {
+        const q = (document.getElementById('blacklistSearch').value || '').toLowerCase();
+        if (!q) { renderBlacklist(allBlacklistData); return; }
+        const filtered = allBlacklistData.filter(b =>
+            (b.bgmiId || '').toLowerCase().includes(q) ||
+            (b.ign || '').toLowerCase().includes(q) ||
+            (b.teamName || '').toLowerCase().includes(q)
+        );
+        renderBlacklist(filtered);
+    }
+
+    async function removeFromBlacklist(bgmiId) {
+        if (!confirm('Remove BGMI ID ' + bgmiId + ' from blacklist?')) return;
+        try {
+            await fetch('/api/settings', {
+                method: 'POST',
+                headers: adminHeaders(),
+                body: JSON.stringify({ type: 'removeFromBlacklist', bgmiId: bgmiId })
+            });
+            showToast('Removed from blacklist', 'success');
+            loadBlacklist();
+        } catch(e) { showToast('Error', 'error'); }
+    }
+
     const origSwitchTab = switchTab;
     const _switchTab = switchTab;
     switchTab = function(tab, btn) {
@@ -1473,6 +1594,7 @@
         if (tab === 'announcements') loadAnnouncements();
         if (tab === 'registrations') { loadTournamentFilter(); loadRegistrations(); }
         if (tab === 'broadcast') loadBroadcastTournaments();
+        if (tab === 'blacklist') loadBlacklist();
     };
 </script>
 
