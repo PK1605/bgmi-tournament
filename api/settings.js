@@ -23,6 +23,16 @@ module.exports = async function handler(req, res) {
     const announcementsSnap = await db.collection('announcements').orderBy('createdAt', 'desc').get();
     const announcements = announcementsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
 
+    const blacklistSnap = await db.collection('blacklist').get();
+    const blacklistCount = blacklistSnap.size;
+
+    // If admin token present, include full blacklist
+    let blacklist = [];
+    const adminUser = requireAdmin(req);
+    if (adminUser) {
+      blacklist = blacklistSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+    }
+
     return res.status(200).json({
       entryFee: settings.entryFee || 99,
       upiId: settings.upiId || '',
@@ -32,6 +42,8 @@ module.exports = async function handler(req, res) {
       roomInfo,
       tournaments,
       announcements,
+      blacklistCount,
+      blacklist,
     });
   }
 
@@ -152,6 +164,13 @@ module.exports = async function handler(req, res) {
 
     if (type === 'deleteAnnouncement') {
       await db.collection('announcements').doc(req.body.id).delete();
+      return res.status(200).json({ success: true });
+    }
+
+    if (type === 'removeFromBlacklist') {
+      const bgmiId = req.body.bgmiId;
+      if (!bgmiId) return res.status(400).json({ error: 'bgmiId required' });
+      await db.collection('blacklist').doc(bgmiId).delete();
       return res.status(200).json({ success: true });
     }
 

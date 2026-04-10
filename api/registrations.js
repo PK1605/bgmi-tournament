@@ -68,6 +68,41 @@ module.exports = async function handler(req, res) {
       await ref.update({ paymentStatus: 'verified', txnId: snap.data().txnId || 'ADMIN_VERIFIED' });
     } else if (action === 'reject') {
       await ref.update({ paymentStatus: 'pending', txnId: '' });
+    } else if (action === 'markCheater') {
+      const reason = req.body.reason || 'Cheating';
+      const regData = snap.data();
+      const allPlayers = [...(regData.players || [])];
+      if (regData.substitute && regData.substitute.bgmiId) allPlayers.push(regData.substitute);
+
+      const batch = db.batch();
+      for (const p of allPlayers) {
+        if (!p.bgmiId) continue;
+        const docRef = db.collection('blacklist').doc(p.bgmiId);
+        batch.set(docRef, {
+          bgmiId: p.bgmiId,
+          ign: p.ign || '',
+          reason: reason,
+          teamName: regData.teamName || '',
+          tournamentId: regData.tournamentId || '',
+          bannedBy: 'admin',
+          bannedAt: Date.now(),
+        });
+      }
+      batch.update(ref, { cheater: true, cheaterReason: reason });
+      await batch.commit();
+    } else if (action === 'unmarkCheater') {
+      const regData = snap.data();
+      const allPlayers = [...(regData.players || [])];
+      if (regData.substitute && regData.substitute.bgmiId) allPlayers.push(regData.substitute);
+
+      const batch = db.batch();
+      for (const p of allPlayers) {
+        if (!p.bgmiId) continue;
+        const docRef = db.collection('blacklist').doc(p.bgmiId);
+        batch.delete(docRef);
+      }
+      batch.update(ref, { cheater: false, cheaterReason: '' });
+      await batch.commit();
     }
 
     const updated = await ref.get();
