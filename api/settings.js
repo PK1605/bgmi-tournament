@@ -97,6 +97,7 @@ module.exports = async function handler(req, res) {
       const mapSchedule = req.body.mapSchedule || [];
       const t = {
         name: req.body.name || 'Untitled',
+        date: req.body.date || new Date().toISOString().split('T')[0],
         mode: req.body.mode || 'Squad',
         perspective: req.body.perspective || 'TPP',
         entryFee: parseInt(req.body.entryFee) || 99,
@@ -118,7 +119,7 @@ module.exports = async function handler(req, res) {
       const snap = await ref.get();
       if (!snap.exists) return res.status(404).json({ error: 'Not found' });
       const update = {};
-      ['name','mode','perspective','time','status'].forEach(k => { if (req.body[k]) update[k] = req.body[k]; });
+      ['name','date','mode','perspective','time','status'].forEach(k => { if (req.body[k]) update[k] = req.body[k]; });
       ['entryFee','teamSize','matches'].forEach(k => { if (req.body[k]) update[k] = parseInt(req.body[k]); });
       if (req.body.maps) update.maps = req.body.maps;
       if (req.body.mapSchedule) {

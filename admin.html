@@ -616,6 +616,10 @@
                 <div class="table-header">
                     <div class="table-title">All Registrations</div>
                     <div class="table-filters">
+                        <select class="filter-select" id="filterTournament" onchange="loadRegistrations()">
+                            <option value="all">All Tournaments</option>
+                        </select>
+                        <input class="filter-input" type="date" id="filterRegDate" onchange="loadRegistrations()">
                         <select class="filter-select" id="filterStatus" onchange="loadRegistrations()">
                             <option value="all">All Status</option>
                             <option value="pending">Pending</option>
@@ -635,6 +639,7 @@
                                 <th>Leader</th>
                                 <th>WhatsApp</th>
                                 <th>Email</th>
+                                <th>Tournament</th>
                                 <th>Txn ID</th>
                                 <th>Status</th>
                                 <th>Date</th>
@@ -719,6 +724,8 @@
                             <div><label>Mode</label><input id="tMode" placeholder="Squad / Duo / Solo" value="Squad"></div>
                             <div><label>Perspective</label><input id="tPerspective" placeholder="TPP / FPP" value="TPP"></div>
                         </div>
+                        <label>Tournament Date</label>
+                        <input id="tDate" type="date" style="width:100%;padding:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:0.9rem;">
                         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                             <div><label>Team Size</label><input id="tTeamSize" type="number" value="4"></div>
                             <div><label>Entry Fee</label><input id="tEntryFee" type="number" value="99"></div>
@@ -903,6 +910,7 @@
         }
 
         updateRoomDisplay();
+        loadTournamentFilter();
         loadRegistrations();
     }
 
@@ -930,7 +938,7 @@
 
     function renderTable(data) {
         const tbody = document.getElementById('regTableBody');
-        if (data.length === 0) { tbody.innerHTML = '<tr><td colspan="10" class="empty-state">No registrations found</td></tr>'; return; }
+        if (data.length === 0) { tbody.innerHTML = '<tr><td colspan="11" class="empty-state">No registrations found</td></tr>'; return; }
         tbody.innerHTML = data.map((r, i) => `<tr>
             <td>${i+1}</td>
             <td style="color:#fff;font-weight:600;">${esc(r.teamName)}</td>
@@ -938,6 +946,7 @@
             <td>${esc(r.leaderName)}</td>
             <td><a href="https://wa.me/${(r.leaderWhatsApp||'').replace(/[^0-9]/g,'')}" target="_blank" style="color:#25D366;">${esc(r.leaderWhatsApp)}</a></td>
             <td style="font-size:0.8rem;">${esc(r.leaderEmail)}</td>
+            <td style="font-size:0.78rem;color:var(--amber);">${esc(r.tournamentDate||r.date||'—')}</td>
             <td style="font-size:0.8rem;color:#888;">${esc(r.txnId||'—')}</td>
             <td><span class="badge ${r.paymentStatus}">${r.paymentStatus}</span></td>
             <td style="font-size:0.8rem;color:#666;">${r.date||'—'}</td>
@@ -952,8 +961,12 @@
     async function loadRegistrations() {
         const filter = document.getElementById('filterStatus').value;
         const search = document.getElementById('filterSearch').value;
+        const tournamentFilter = document.getElementById('filterTournament').value;
+        const dateFilter = document.getElementById('filterRegDate').value;
         let url = '/api/registrations?status=' + filter;
         if (search) url += '&search=' + encodeURIComponent(search);
+        if (tournamentFilter && tournamentFilter !== 'all') url += '&tournamentId=' + encodeURIComponent(tournamentFilter);
+        if (dateFilter) url += '&date=' + dateFilter;
 
         try {
             const res = await fetch(url, { headers: { 'Authorization': 'Bearer ' + (localStorage.getItem('bgmi_admin_token') || '') } });
@@ -965,6 +978,18 @@
         } catch (e) {
             showToast('Error loading registrations', 'error');
         }
+    }
+
+    async function loadTournamentFilter() {
+        try {
+            const res = await fetch('/api/settings');
+            const d = await res.json();
+            const sel = document.getElementById('filterTournament');
+            sel.innerHTML = '<option value="all">All Tournaments</option>';
+            (d.tournaments || []).forEach(function(t) {
+                sel.innerHTML += '<option value="' + t.id + '">' + esc(t.name) + (t.date ? ' (' + t.date + ')' : '') + '</option>';
+            });
+        } catch(e) {}
     }
 
     async function loadTodayEntries() {
@@ -1169,6 +1194,7 @@
         addMatchRow('Rondo', '10:00 PM', 'Arena Map — TPP Squad');
     }
     initDefaultMatches();
+    document.getElementById('tDate').value = new Date().toISOString().split('T')[0];
 
     // ==================== TOURNAMENTS ====================
     async function loadTournaments() {
@@ -1185,7 +1211,9 @@
                 const schedule = t.mapSchedule || [];
                 html += '<div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px;">';
                 html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">';
-                html += '<span style="font-family:Orbitron,sans-serif;font-size:0.85rem;font-weight:700;color:#fff;">' + t.name + '</span>';
+                html += '<div><span style="font-family:Orbitron,sans-serif;font-size:0.85rem;font-weight:700;color:#fff;">' + t.name + '</span>';
+                if (t.date) html += '<span style="margin-left:10px;font-size:0.75rem;color:var(--amber);font-weight:600;">' + t.date + '</span>';
+                html += '</div>';
                 html += '<span style="font-size:0.7rem;color:' + statusColor + ';font-weight:700;letter-spacing:1px;text-transform:uppercase;">' + t.status + '</span>';
                 html += '</div>';
                 html += '<div style="font-size:0.8rem;color:#888;">' + t.mode + ' ' + t.perspective + ' | ' + schedule.length + ' matches | \u20B9' + t.entryFee + ' entry | \u20B9' + total + ' prizes</div>';
@@ -1216,6 +1244,7 @@
                 body: JSON.stringify({
                     type: 'addTournament',
                     name: name,
+                    date: document.getElementById('tDate').value || new Date().toISOString().split('T')[0],
                     mode: document.getElementById('tMode').value.trim() || 'Squad',
                     perspective: document.getElementById('tPerspective').value.trim() || 'TPP',
                     teamSize: document.getElementById('tTeamSize').value || 4,
@@ -1313,6 +1342,7 @@
         _switchTab(tab, btn);
         if (tab === 'tournaments') loadTournaments();
         if (tab === 'announcements') loadAnnouncements();
+        if (tab === 'registrations') { loadTournamentFilter(); loadRegistrations(); }
     };
 </script>
 

@@ -104,6 +104,24 @@
             </div>
 
             <form id="regForm" onsubmit="return false;">
+                <div class="section-heading"><span class="icon-box">&#127942;</span> Select Tournament</div>
+                <div class="form-group">
+                    <label>Tournament <span class="req">*</span></label>
+                    <select id="tournamentSelect" required style="width:100%;padding:12px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-size:0.95rem;font-family:'Rajdhani',sans-serif;font-weight:600;">
+                        <option value="">Loading tournaments...</option>
+                    </select>
+                    <div class="field-error" id="err-tournamentSelect">Please select a tournament</div>
+                </div>
+                <div id="tournamentInfo" style="display:none;background:rgba(255,107,0,0.04);border:1px solid rgba(255,107,0,0.1);border-radius:10px;padding:14px 18px;margin-bottom:20px;">
+                    <div style="display:flex;gap:20px;flex-wrap:wrap;font-size:0.85rem;color:#999;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:0.5px;">
+                        <span id="tInfoMode"></span>
+                        <span id="tInfoTime" style="color:var(--amber);"></span>
+                        <span id="tInfoFee"></span>
+                        <span id="tInfoMaps"></span>
+                    </div>
+                </div>
+
+                <div class="form-divider"></div>
                 <div class="section-heading"><span class="icon-box">&#9813;</span> Team Info</div>
                 <div class="form-row">
                     <div class="form-group">
@@ -291,6 +309,7 @@ var currentUser = null;
 var authMode = 'signin';
 var currentRegistration = null;
 var currentOrder = null;
+var allTournaments = [];
 
 // ==================== TOAST ====================
 function showToast(msg, type) {
@@ -409,6 +428,49 @@ function doLogout() {
     } catch (e) {}
 })();
 
+// ==================== LOAD TOURNAMENTS ====================
+(function() {
+    fetch('/api/settings')
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+            allTournaments = (d.tournaments || []).filter(function(t){ return t.status === 'active'; });
+            var sel = document.getElementById('tournamentSelect');
+            if (!allTournaments.length) {
+                sel.innerHTML = '<option value="">No active tournaments</option>';
+                return;
+            }
+            var html = '<option value="">-- Select Tournament --</option>';
+            allTournaments.forEach(function(t){
+                var label = t.name + (t.date ? ' — ' + t.date : '');
+                var totalPrize = (t.prizes||[]).reduce(function(a,b){return a+b;},0);
+                label += ' (₹' + t.entryFee + ' entry)';
+                html += '<option value="' + t.id + '">' + label + '</option>';
+            });
+            sel.innerHTML = html;
+        })
+        .catch(function(){
+            document.getElementById('tournamentSelect').innerHTML = '<option value="">Error loading</option>';
+        });
+})();
+
+function onTournamentChange() {
+    var sel = document.getElementById('tournamentSelect');
+    var t = allTournaments.find(function(x){ return x.id === sel.value; });
+    var infoDiv = document.getElementById('tournamentInfo');
+    if (!t) { infoDiv.style.display = 'none'; return; }
+    infoDiv.style.display = '';
+    document.getElementById('tInfoMode').textContent = t.mode + ' ' + t.perspective;
+    document.getElementById('tInfoTime').textContent = t.time || (t.mapSchedule && t.mapSchedule[0] ? t.mapSchedule[0].time : '');
+    document.getElementById('tInfoFee').textContent = '₹' + t.entryFee + ' entry';
+    var maps = (t.mapSchedule || []).map(function(m){ return m.map; });
+    if (!maps.length) maps = t.maps || [];
+    document.getElementById('tInfoMaps').textContent = maps.join(', ');
+    var btn = document.querySelector('#regForm .submit-btn');
+    if (btn) btn.textContent = 'REGISTER SQUAD — ₹' + t.entryFee;
+}
+
+document.getElementById('tournamentSelect').addEventListener('change', onTournamentChange);
+
 // ==================== VALIDATION ====================
 var V = {
     teamName: { min: 3, max: 30 },
@@ -477,7 +539,17 @@ function validateAllFields() {
 
 // ==================== REGISTRATION ====================
 function submitRegistration() {
+    var selTournament = document.getElementById('tournamentSelect').value;
+    if (!selTournament) {
+        showToast('Please select a tournament', 'error');
+        var g = document.getElementById('tournamentSelect').closest('.form-group');
+        if (g) g.classList.add('has-error');
+        return;
+    }
+
     if (!validateAllFields()) return;
+
+    var t = allTournaments.find(function(x){ return x.id === selTournament; });
 
     var players = [];
     for (var i = 1; i <= 4; i++) {
@@ -497,7 +569,9 @@ function submitRegistration() {
         substitute: {
             ign: document.getElementById('subIgn').value.trim(),
             bgmiId: document.getElementById('subBgmi').value.trim()
-        }
+        },
+        tournamentId: selTournament,
+        tournamentDate: t ? t.date : ''
     };
 
     var btn = document.querySelector('#regForm .submit-btn');
@@ -530,6 +604,8 @@ function submitRegistration() {
 
         document.getElementById('regFormCard').style.display = 'none';
         document.getElementById('paymentSection').style.display = '';
+        var payAmt = res.data.amount ? (res.data.amount / 100) : 99;
+        document.querySelector('.payment-amount').textContent = '\u20B9' + payAmt;
         showToast('Squad registered! Proceed to payment.', 'success');
     })
     .catch(function () {

@@ -57,8 +57,10 @@ module.exports = async function handler(req, res) {
   });
 
   // Seed first tournament
+  const todayDate = new Date().toISOString().split('T')[0];
   await db.collection('tournaments').add({
     name: 'Daily Squad Scrims',
+    date: todayDate,
     mode: 'Squad',
     perspective: 'TPP',
     entryFee: 99,

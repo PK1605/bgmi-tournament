@@ -6,23 +6,29 @@ module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const { teamName, teamTag, leaderName, leaderWhatsApp, leaderEmail, players, substitute } = req.body;
+    const { teamName, teamTag, leaderName, leaderWhatsApp, leaderEmail, players, substitute, tournamentId, tournamentDate } = req.body;
 
     if (!teamName || !leaderEmail || !players || players.length < 4) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
+    if (!tournamentId) {
+      return res.status(400).json({ error: 'Please select a tournament' });
+    }
+
     const emailLower = leaderEmail.toLowerCase();
-    const existingSnap = await db.collection('registrations')
+
+    let existingQuery = db.collection('registrations')
       .where('leaderEmail', '==', emailLower)
-      .limit(1).get();
+      .where('tournamentId', '==', tournamentId);
+    const existingSnap = await existingQuery.limit(1).get();
 
     if (!existingSnap.empty) {
       const existing = { id: existingSnap.docs[0].id, ...existingSnap.docs[0].data() };
       return res.status(200).json({
         existing: true,
         registration: existing,
-        message: 'Already registered with this email',
+        message: 'Already registered for this tournament',
       });
     }
 
@@ -71,6 +77,8 @@ module.exports = async function handler(req, res) {
       leaderEmail: emailLower,
       players,
       substitute: substitute || { ign: '', bgmiId: '' },
+      tournamentId: tournamentId || '',
+      tournamentDate: tournamentDate || '',
       paymentStatus: 'pending',
       txnId: '',
       payNote: '',

@@ -22,14 +22,15 @@ module.exports = async function handler(req, res) {
       return res.status(401).json({ error: 'Unauthorized — admin login required' });
     }
 
-    const { status, date, search } = req.query;
+    const { status, date, search, tournamentId } = req.query;
     let query = db.collection('registrations').orderBy('date', 'desc');
 
     const allSnap = await query.get();
     let data = allSnap.docs.map(d => ({ id: d.id, ...d.data() }));
 
     if (status && status !== 'all') data = data.filter(r => r.paymentStatus === status);
-    if (date) data = data.filter(r => r.date === date);
+    if (date) data = data.filter(r => r.date === date || r.tournamentDate === date);
+    if (tournamentId) data = data.filter(r => r.tournamentId === tournamentId);
     if (search) {
       const s = search.toLowerCase();
       data = data.filter(r =>
